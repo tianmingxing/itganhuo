@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.itganhuo.core.dao.SubjectMapper">
+
+	<sql id="base_column_list">
+		id, user_id, name, description, post_date, rownum
+	</sql>
+
+	<resultMap id="result_map" type="SubjectModel">
+		<id property="id" column="id" />
+		<result property="user_id" column="user_id" />
+		<result property="name" column="name" />
+		<result property="description" column="description" />
+		<result property="post_date" column="post_date" />
+		<result property="rownum" column="rownum" />
+	</resultMap>
+
+	<select id="getSubjectByCondition" resultMap="result_map" parameterType="SubjectModel">
+		SELECT
+		<include refid="base_column_list" />
+		FROM t_subject
+		<where>
+			<if test="user_id != null and user_id != ''">user_id = #{user_id}</if>
+			<if test="name != null and name != ''">name like "%"#{name}"%"</if>
+			<if test="description != null and description != ''">description like "%"#{description}"%"</if>
+		</where>
+	</select>
+	
+	<insert id="insert" parameterType="SubjectModel">
+		INSERT INTO t_subject
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">id,</if>
+			<if test="user_id != null">user_id,</if>
+			<if test="name != null">name,</if>
+			<if test="description != null">description,</if>
+			<if test="post_date != null">post_date,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="user_id != null">#{user_id},</if>
+			<if test="name != null">#{name},</if>
+			<if test="description != null">#{description},</if>
+			<if test="post_date != null">#{post_date},</if>
+		</trim>
+	</insert>
+
+	<delete id="delById" parameterType="String">
+		DELETE FROM t_subject WHERE id = #{id}
+	</delete>
+	
+	<update id="updateById" parameterType="SubjectModel">
+		UPDATE t_subject
+		<set>
+			<if test="user_id != null">user_id = #{user_id},</if>
+			<if test="name != null">name = #{name},</if>
+			<if test="description != null">description = #{description},</if>
+			<if test="post_date != null">post_date = #{post_date},</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

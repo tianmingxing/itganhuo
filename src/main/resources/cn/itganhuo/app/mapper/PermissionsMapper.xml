@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.itganhuo.core.dao.PermissionsMapper">
+
+	<resultMap id="baseResultMap" type="PermissionsModel">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="permission" property="permission" jdbcType="VARCHAR" />
+		<result column="description" property="description" jdbcType="VARCHAR" />
+		<result column="available" property="available" jdbcType="TINYINT" />
+	</resultMap>
+	<sql id="base_Column_List">
+		id, permission, description, available
+	</sql>
+	
+	<select id="loadById" resultMap="baseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="base_Column_List" />
+		from t_permissions
+		where id = #{id}
+	</select>
+	
+	<select id="getPermissionsList" resultMap="baseResultMap"
+		parameterType="Map">
+		SELECT
+		<include refid="base_Column_List" />
+		FROM t_permissions
+		<if
+			test="pageModel != null and pageModel.sort != null and pageModel.order != null">
+			ORDER BY ${pageModel.sort} ${pageModel.order}
+		</if>
+		<if
+			test="pageModel == null or pageModel.sort == null or pageModel.order == null">
+			ORDER BY id DESC
+		</if>
+		<if test="pageModel.page > 0 and pageModel.rows > 0">LIMIT #{pageModel.offrow}, #{pageModel.rows}</if>
+	</select>
+	
+	<select id="countPermissionsList" resultType="int" parameterType="Map">
+		SELECT
+		count(1)
+		FROM t_permissions
+	</select>
+
+	<insert id="insert" parameterType="PermissionsModel">
+		insert into t_permissions
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">id,</if>
+			<if test="permission != null">
+				permission,
+			</if>
+			<if test="description != null">
+				description,
+			</if>
+			<if test="available != null">
+				available,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="permission != null">
+				#{permission},
+			</if>
+			<if test="description != null">
+				#{description},
+			</if>
+			<if test="available != null">
+				#{available},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateInfo" parameterType="PermissionsModel">
+		update t_permissions set 
+			<if test="permission != null">
+				permission = #{permission},
+			</if>
+			<if test="description != null">
+				description = #{description},
+			</if>
+			<if test="available != null">
+				available = #{available}
+			</if>
+		where id = #{id }
+	</update>
+	
+	<delete id="delete" parameterType="java.lang.String">
+		delete from t_permissions where id = #{id}
+	</delete>
+	
+</mapper>

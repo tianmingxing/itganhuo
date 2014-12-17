@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.itganhuo.core.dao.CommentMapper">
+
+	<sql id="comment_base_column_list">
+		a.id a_id,
+		a.user_id a_user_id,
+		a.object_id a_object_id,
+		a.content a_content,
+		a.post_date a_post_date,
+		a.praise a_praise,
+		a.trample a_trample,
+		a.operation_type a_operation_type,
+		a.type a_type
+	</sql>
+
+	<resultMap id="commentResult" type="CommentModel">
+		<id property="id" column="a_id" />
+		<result property="user_id" column="a_user_id" />
+		<result property="object_id" column="a_object_id" />
+		<result property="content" column="a_content" />
+		<result property="post_date" column="a_post_date" />
+		<result property="praise" column="a_praise" />
+		<result property="trample" column="a_trample" />
+		<result property="operation_type" column="a_operation_type" />
+		<result property="type" column="a_type" />
+	</resultMap>
+
+	<!-- 保存用户针对某篇文章发表的评论 -->
+	<insert id="insert" parameterType="CommentModel">
+		INSERT INTO t_comment
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">id,</if>
+			<if test="user_id != null">user_id,</if>
+			<if test="object_id != null">object_id,</if>
+			<if test="content != null">content,</if>
+			<if test="post_date != null">post_date,</if>
+			<if test="operation_type != null">operation_type,</if>
+			<if test="type != null">type,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="user_id != null">#{user_id},</if>
+			<if test="object_id != null">#{object_id},</if>
+			<if test="content != null">#{content},</if>
+			<if test="post_date != null">#{post_date},</if>
+			<if test="operation_type != null">#{operation_type},</if>
+			<if test="type != null">#{type},</if>
+		</trim>
+	</insert>
+	
+	<!-- 会员对评论点赞 -->
+	<update id="addPraiseById" parameterType="java.lang.String">
+		UPDATE t_comment a
+		SET a.praise = a.praise + 1
+		WHERE a.id= #{id}
+	</update>
+	
+	<!-- 会员对评论点踩 -->
+	<update id="addTrampleById" parameterType="java.lang.String">
+		UPDATE t_comment a
+		SET a.trample = a.trample + 1
+		WHERE a.id= #{id}
+	</update>
+	
+	<!-- 根据主键查询评论信息 -->
+	<select id="getCommentById" resultMap="commentResult" parameterType="java.lang.String">
+		SELECT
+		<include refid="comment_base_column_list" />
+		FROM t_comment a
+		WHERE a.id=#{id}
+	</select>
+	<!-- 评论点赞 -->
+     <update id="addPraise" parameterType="java.lang.String">
+      update t_comment a
+       a.praise = a.Praise + 1
+       where a.id = #{id}
+     </update>
+     <!-- 评论点踩 -->
+     <update id="addTrample" parameterType="java.lang.String">
+      update t_comment a
+       a.trample = a.trample + 1
+       where a.id = #{id}
+     </update>
+	<select id="getCommentModelBySomeThing" resultMap="commentResult" parameterType="Map">
+		SELECT
+		<include refid="comment_base_column_list" />
+		FROM t_comment a
+		where object_id = #{object_id} and type=#{type} and user_id = #{user_id}
+	</select>
+</mapper>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.itganhuo.core.dao.ArticleSubjectMapper">
+
+	<resultMap id="article_subject_result" type="ArticleSubjectModel">
+		<id property="id" column="a_id" />
+		<result property="subject_id" column="a_subject_id" />
+		<result property="article_id" column="a_article_id" />
+		<result property="user_id" column="a_user_id" />
+		<result property="post_date" column="a_post_date" />
+		<result property="rownum" column="a_rownum" />
+		<association property="subject" javaType="SubjectModel" resultMap="subject_result"/>
+	</resultMap>
+	
+	<resultMap id="subject_result" type="SubjectModel">
+		<id property="id" column="b_id" />
+		<result property="user_id" column="b_user_id" />
+		<result property="name" column="b_name" />
+		<result property="description" column="b_description" />
+		<result property="post_date" column="b_post_date" />
+		<result property="rownum" column="b_rownum" />
+	</resultMap>
+	
+	<!-- 保存文章和标签的多对多关系 -->
+	<insert id="insert" parameterType="ArticleSubjectModel">
+		INSERT INTO t_article_subject
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">id,</if>
+			<if test="subject_id != null">subject_id,</if>
+			<if test="article_id != null">article_id,</if>
+			<if test="user_id != null">user_id,</if>
+			<if test="post_date != null">post_date,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="subject_id != null">#{subject_id},</if>
+			<if test="article_id != null">#{article_id},</if>
+			<if test="user_id != null">#{user_id},</if>
+			<if test="post_date != null">#{post_date},</if>
+		</trim>
+	</insert>
+	
+	<!-- 根据文章主键到文章标签中间表中查询其对应的标签集合 -->
+	<select id="getArticleSubjectByArticleId" resultMap="article_subject_result" parameterType="String">
+		SELECT 
+		    a.id a_id,
+		    a.subject_id a_subject_id,
+		    a.article_id a_article_id,
+		    a.user_id a_user_id,
+		    a.post_date a_post_date,
+		    a.rownum a_rownum,
+		    b.id b_id,
+		    b.user_id b_user_id,
+		    b.name b_name,
+		    b.description b_description,
+		    b.post_date b_post_date,
+		    b.rownum b_rownum
+		FROM
+		    t_article_subject a 
+		    LEFT JOIN t_subject b ON a.subject_id = b.id
+		WHERE a.article_id = #{article_id}
+	</select>
+
+</mapper>

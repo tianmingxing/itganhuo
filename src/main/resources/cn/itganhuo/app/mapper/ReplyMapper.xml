@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.itganhuo.core.dao.ReplyMapper">
+
+	<sql id="reply_column_list">
+		a.id a_id,
+		a.user_id a_user_id,
+		a.comment_id a_comment_id,
+		a.content a_content,
+		a.post_date a_post_date,
+		a.parent_id a_parent_id,
+		a.rownum a_rownum
+	</sql>
+
+	<resultMap id="reply_result" type="ReplyModel">
+		<id property="id" column="a_id" />
+		<result property="user_id" column="a_user_id" />
+		<result property="comment_id" column="a_comment_id" />
+		<result property="content" column="a_content" />
+		<result property="post_date" column="a_post_date" />
+		<result property="parent_id" column="a_parent_id" />
+		<result property="rownum" column="a_rownum" />
+	</resultMap>
+
+	<!-- 保存用户针对某评论发表的回复 -->
+	<insert id="insert" parameterType="ReplyModel">
+		INSERT INTO t_reply
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">id,</if>
+			<if test="user_id != null">user_id,</if>
+			<if test="comment_id != null">comment_id,</if>
+			<if test="content != null">content,</if>
+			<if test="post_date != null">post_date,</if>
+			<if test="parent_id != null">parent_id,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="user_id != null">#{user_id},</if>
+			<if test="comment_id != null">#{comment_id},</if>
+			<if test="content != null">#{content},</if>
+			<if test="post_date != null">#{post_date},</if>
+			<if test="parent_id != null">#{parent_id},</if>
+		</trim>
+	</insert>
+	
+	<!-- 根据主键查询回复信息 -->
+	<select id="getReplyById" resultMap="reply_result" parameterType="java.lang.String">
+		SELECT
+		<include refid="reply_column_list" />
+		FROM 
+			t_comment a 
+		WHERE a.id=#{id}
+	</select>
+</mapper>

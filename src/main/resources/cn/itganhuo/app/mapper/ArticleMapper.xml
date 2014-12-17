@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.itganhuo.core.dao.ArticleMapper">
+
+	<sql id="article_column_list">
+		a.id a_id,
+	    a.user_id a_user_id,
+	    a.title a_title,
+	    a.content a_content,
+	    a.post_date a_post_date,
+	    a.visitor_volume a_visitor_volume,
+	    a.update_date a_update_date,
+	    a.useful a_useful,
+	    a.useless a_useless,
+	    a.answer_number a_answer_number,
+	    a.rownum a_rownum
+	</sql>
+	
+	<sql id="article_line_column_list">
+		b.id b_id,
+	    b.article_id b_article_id,
+	    b.content b_content,
+	    b.post_date b_post_date,
+	    b.support b_support,
+	    b.oppose b_oppose,
+	    b.is_pass b_is_pass,
+	    b.describe b_describe
+	</sql>
+	
+	<sql id="article_user_column_list">
+		c.id c_id,
+	    c.account c_account,
+	    c.is_lock c_is_lock,
+	    c.name c_name,
+	    c.sex c_sex,
+	    c.email c_email,
+	    c.qq c_qq,
+	    c.phone c_phone,
+	    c.post_date c_post_date,
+	    c.type c_type,
+	    c.last_login_ip c_last_login_ip,
+	    c.last_login_date c_last_login_date,
+	    c.validate_date c_validate_date,
+	    c.validate_email c_validate_email,
+	    c.img c_img,
+	    c.rownum c_rownum
+	</sql>
+	
+	<sql id="article_line_user_column_list">
+		c2.id c2_id,
+	    c2.account c2_account,
+	    c2.password c2_password,
+	    c2.is_lock c2_is_lock,
+	    c2.name c2_name,
+	    c2.sex c2_sex,
+	    c2.email c2_email,
+	    c2.qq c2_qq,
+	    c2.phone c2_phone,
+	    c2.post_date c2_post_date,
+	    c2.type c2_type,
+	    c2.last_login_ip c2_last_login_ip,
+	    c2.last_login_date c2_last_login_date,
+	    c2.img c2_img
+	</sql>
+	
+	<sql id="comment_column_list">
+		d.id d_id,
+	    d.user_id d_user_id,
+	    d.object_id d_object_id,
+	    d.content d_content,
+	    d.post_date d_post_date,
+	    d.praise d_praise,
+	    d.trample d_trample,
+	    d.operation_type d_operation_type,
+	    d.type d_type
+	</sql>
+	
+	<sql id="comment_user_column_list">
+		c3.id c3_id,
+	    c3.account c3_account,
+	    c3.password c3_password,
+	    c3.is_lock c3_is_lock,
+	    c3.name c3_name,
+	    c3.sex c3_sex,
+	    c3.email c3_email,
+	    c3.qq c3_qq,
+	    c3.phone c3_phone,
+	    c3.post_date c3_post_date,
+	    c3.type c3_type,
+	    c3.last_login_ip c3_last_login_ip,
+	    c3.last_login_date c3_last_login_date,
+	    c3.img c3_img
+	</sql>
+	
+	<sql id="reply_column_list">
+		e.id e_id,
+	    e.user_id e_user_id,
+	    e.comment_id e_comment_id,
+	    e.content e_content,
+	    e.post_date e_post_date,
+	    e.parent_id e_parent_id,
+	    e.rownum e_rownum
+	</sql>
+	
+	<sql id="reply_user_column_list">
+		c4.id c4_id,
+	    c4.account c4_account,
+	    c4.password c4_password,
+	    c4.is_lock c4_is_lock,
+	    c4.name c4_name,
+	    c4.sex c4_sex,
+	    c4.email c4_email,
+	    c4.qq c4_qq,
+	    c4.phone c4_phone,
+	    c4.post_date c4_post_date,
+	    c4.type c4_type,
+	    c4.last_login_ip c4_last_login_ip,
+	    c4.last_login_date c4_last_login_date,
+	    c4.img c4_img
+	</sql>
+	
+	<sql id="article_subject_column_list">
+		f.id f_id,
+	    f.subject_id f_subject_id,
+	    f.article_id f_article_id,
+	    f.user_id f_user_id,
+	    f.post_date f_post_date,
+	    f.rownum f_rownum
+	</sql>
+	
+	<sql id="subject_column_list">
+		g.id g_id,
+	    g.user_id g_user_id,
+	    g.name g_name,
+	    g.description g_description,
+	    g.post_date g_post_date,
+	    g.rownum g_rownum
+	</sql>
+	<resultMap id="article_result" type="ArticleModel">
+		<id property="id" column="a_id" />
+		<result property="user_id" column="a_user_id" />
+		<result property="title" column="a_title" />
+		<result property="content" column="a_content" />
+		<result property="post_date" column="a_post_date" />
+		<result property="visitor_volume" column="a_visitor_volume" />
+		<result property="update_date" column="a_update_date" />
+		<result property="useful" column="a_useful" />
+		<result property="useless" column="a_useless" />
+		<result property="answer_number" column="a_answer_number" />
+		<result property="rownum" column="a_rownum" />
+		<association property="user" javaType="UserModel" resultMap="article_user_result"/>
+		<collection property="articleLines" ofType="ArticleLineModel" resultMap="article_line_result"/>
+ 		<collection property="comments" ofType="CommentModel" resultMap="comment_result" />
+	</resultMap>
+	
+	<resultMap id="article_user_result" type="UserModel">
+		<id property="id" column="c_id" />
+		<result property="account" column="c_account" />
+		<result property="isLock" column="c_is_lock" />
+		<result property="name" column="c_name" />
+		<result property="sex" column="c_sex" />
+		<result property="email" column="c_email" />
+		<result property="qq" column="c_qq" />
+		<result property="phone" column="c_phone" />
+		<result property="postDate" column="c_post_date" />
+		<result property="type" column="c_type" />
+		<result property="lastLoginIp" column="c_last_login_ip" />
+		<result property="lastLoginDate" column="c_last_login_date" />
+		<result property="img" column="c_img" />
+	</resultMap>
+	
+	<resultMap id="article_line_result" type="ArticleLineModel">
+		<id property="id" column="b_id" />
+		<result property="user_id" column="b_user_id" />
+		<result property="article_id" column="b_article_id" />
+		<result property="content" column="b_content" />
+		<result property="post_date" column="b_post_date" />
+		<result property="support" column="b_support" />
+		<result property="oppose" column="b_oppose" />
+		<result property="is_pass" column="b_is_pass" />
+		<result property="describe" column="b_describe" />
+		<association property="user" javaType="UserModel" resultMap="article_line_user_result"/>
+	</resultMap>
+	
+	<resultMap id="article_line_user_result" type="UserModel">
+		<id property="id" column="c2_id" />
+		<result property="account" column="2c_account" />
+		<result property="isLock" column="c2_is_lock" />
+		<result property="name" column="c2_name" />
+		<result property="sex" column="c2_sex" />
+		<result property="email" column="c2_email" />
+		<result property="qq" column="c2_qq" />
+		<result property="phone" column="c2_phone" />
+		<result property="postDate" column="c2_post_date" />
+		<result property="type" column="c2_type" />
+		<result property="lastLoginIp" column="c2_last_login_ip" />
+		<result property="lastLoginDate" column="c2_last_login_date" />
+		<result property="img" column="c2_img" />
+	</resultMap>
+	
+	<resultMap id="comment_result" type="CommentModel">
+		<id property="id" column="d_id" />
+		<result property="user_id" column="d_user_id" />
+		<result property="object_id" column="d_object_id" />
+		<result property="content" column="d_content" />
+		<result property="post_date" column="d_post_date" />
+		<result property="praise" column="d_praise" />
+		<result property="trample" column="d_trample" />
+		<result property="operation_type" column="d_operation_type" />
+		<result property="type" column="d_type" />
+		<association property="user" javaType="UserModel" resultMap="comment_user_result"/>
+		<collection property="replys" ofType="ReplyModel" resultMap="reply_result" />
+	</resultMap>
+	
+	<resultMap id="comment_user_result" type="UserModel">
+		<id property="id" column="c3_id" />
+		<result property="account" column="c3_account" />
+		<result property="password" column="c3_password" />
+		<result property="isLock" column="c3_is_lock" />
+		<result property="name" column="c3_name" />
+		<result property="sex" column="c3_sex" />
+		<result property="email" column="c3_email" />
+		<result property="qq" column="c3_qq" />
+		<result property="phone" column="c3_phone" />
+		<result property="postDate" column="c3_post_date" />
+		<result property="type" column="c3_type" />
+		<result property="lastLoginIp" column="c3_last_login_ip" />
+		<result property="lastLoginDate" column="c3_last_login_date" />
+		<result property="img" column="c3_img" />
+	</resultMap>
+	
+	<resultMap id="reply_result" type="ReplyModel">
+		<id property="id" column="e_id" />
+		<result property="user_id" column="e_user_id" />
+		<result property="comment_id" column="e_comment_id" />
+		<result property="content" column="e_content" />
+		<result property="post_date" column="e_post_date" />
+		<result property="parent_id" column="e_parent_id" />
+		<result property="rownum" column="e_rownum" />
+		<association property="user" javaType="UserModel" resultMap="reply_user_result"/>
+	</resultMap>
+	
+	<resultMap id="reply_user_result" type="UserModel">
+		<id property="id" column="c4_id" />
+		<result property="account" column="c4_account" />
+		<result property="password" column="c4_password" />
+		<result property="isLock" column="c4_is_lock" />
+		<result property="name" column="c4_name" />
+		<result property="sex" column="c4_sex" />
+		<result property="email" column="c4_email" />
+		<result property="qq" column="c4_qq" />
+		<result property="phone" column="c4_phone" />
+		<result property="postDate" column="c4_post_date" />
+		<result property="type" column="c4_type" />
+		<result property="lastLoginIp" column="c4_last_login_ip" />
+		<result property="lastLoginDate" column="c4_last_login_date" />
+		<result property="img" column="c4_img" />
+	</resultMap>
+	
+	<resultMap id="article_subject_result" type="ArticleSubjectModel">
+		<id property="id" column="f_id" />
+		<result property="subject_id" column="f_subject_id" />
+		<result property="article_id" column="f_article_id" />
+		<result property="user_id" column="f_user_id" />
+		<result property="post_date" column="f_post_date" />
+		<result property="rownum" column="f_rownum" />
+		<association property="subject" javaType="SubjectModel" resultMap="subject_result"/>
+	</resultMap>
+	
+	<resultMap id="subject_result" type="SubjectModel">
+		<id property="id" column="g_id" />
+		<result property="user_id" column="g_user_id" />
+		<result property="name" column="g_name" />
+		<result property="description" column="g_description" />
+		<result property="post_date" column="g_post_date" />
+		<result property="rownum" column="g_rownum" />
+	</resultMap>
+	
+	<!-- 文章详情页：根据文章主键查询文章详细信息，包括作者、补充、补充人信息、评论、评论人信息、回复、回复人信息、标签 -->
+	<select id="getArticleDetailById" resultMap="article_result" parameterType="String">
+		SELECT 
+		    <include refid="article_column_list"/>,
+		    <include refid="article_user_column_list"/>,
+		    <include refid="article_line_column_list"/>,
+		    <include refid="article_line_user_column_list"/>,
+		    <include refid="comment_column_list"/>,
+		    <include refid="comment_user_column_list"/>,
+		    <include refid="reply_column_list"/>,
+		    <include refid="reply_user_column_list"/>,
+		    <include refid="article_subject_column_list"/>,
+		    <include refid="subject_column_list"/>
+		FROM 
+		    t_article a 
+		    LEFT JOIN t_user c ON a.user_id = c.id 
+		    LEFT JOIN t_article_line b ON a.id = b.article_id 
+		    LEFT JOIN t_user c2 ON b.user_id = c2.id 
+		    LEFT JOIN t_comment d ON a.id = d.object_id 
+		    LEFT JOIN t_user c3 ON d.user_id = c3.id 
+		    LEFT JOIN t_reply e ON d.id = e.comment_id 
+		    LEFT JOIN t_user c4 ON e.user_id = c4.id 
+		    LEFT JOIN t_article_subject f ON a.id = f.article_id 
+		    LEFT JOIN t_subject g ON f.subject_id = g.id 
+		WHERE a.id = #{id}
+		ORDER BY 
+			d.rownum, e.rownum DESC
+	</select>
+	
+	<!-- 按照条件分页查询文章列表 -->
+	<select id="findArticleByCondition" resultMap="article_result">
+		SELECT 
+		    <include refid="article_column_list"/>,
+		    <include refid="article_user_column_list"/>
+		FROM
+		    t_article a 
+		    LEFT JOIN t_user c ON a.user_id = c.id
+		<if test="page != null and page.sort != null and page.order != null">
+			ORDER BY a.${page.sort} ${page.order}
+		</if>
+		<if test="page != null and page.page > 0 and page.rows > 0">
+			LIMIT #{page.offrow}, #{page.rows}
+		</if>
+	</select>
+	
+	<!-- 查询文章总行数 -->
+	<select id="countArticleRows" resultType="int">
+		SELECT 
+		    count(1)
+		FROM
+		    t_article a
+	</select>
+	
+	<!-- 根据文章主键查询其作者和多个补充问题信息 -->
+	<select id="getArticleById" resultMap="article_result" parameterType="String">
+		SELECT 
+		    <include refid="article_column_list"/>,
+		    <include refid="article_user_column_list"/>,
+		    <include refid="article_line_column_list"/>
+		FROM
+		    t_article a 
+		    LEFT JOIN t_user c ON a.user_id = c.id
+		    LEFT JOIN t_article_line b ON a.id = b.article_id
+		WHERE a.id = #{id}
+	</select>
+	
+	<!-- 根据用户主键查询最新发布的5篇文章 -->
+	<select id="getArticleByUserId" resultMap="article_result" parameterType="String">
+		SELECT
+			<include refid="article_column_list" />
+		FROM
+			t_article a 
+		WHERE 
+			a.user_id = #{user_id}
+		ORDER BY a.rownum DESC
+		LIMIT 0,5
+	</select>
+	
+	<!-- 保存一篇文章到数据库 -->
+	<insert id="insert" parameterType="ArticleModel">
+		INSERT INTO t_article
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">id,</if>
+			<if test="user_id != null">user_id,</if>
+			<if test="title != null">title,</if>
+			<if test="content != null">content,</if>
+			<if test="post_date != null">post_date,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="user_id != null">#{user_id},</if>
+			<if test="title != null">#{title},</if>
+			<if test="content != null">#{content},</if>
+			<if test="post_date != null">#{post_date},</if>
+		</trim>
+	</insert>
+
+	<!-- 修改文章访问量 -->
+	<update id="addVisitor_volumeById" parameterType="java.lang.String">
+		UPDATE t_article a
+		SET a.visitor_volume = a.visitor_volume + 1
+		WHERE a.id = #{id}
+	</update>
+
+	<!-- 修改文章赞 -->
+	<update id="addUsefulById" parameterType="java.lang.String">
+		UPDATE t_article a
+		SET a.useful = a.useful + 1
+		WHERE a.id = #{id}
+	</update>
+
+	<!-- 修改文章踩 -->
+	<update id="addUselessById" parameterType="java.lang.String">
+		UPDATE t_article a
+		SET a.useless = a.useless + 1
+		WHERE a.id = #{id}
+	</update>
+	<select id="getArticleBySubject" parameterType="java.lang.String" resultType="ArticleModel">
+		SELECT 
+		*
+		FROM t_article WHERE id IN (
+				SELECT article_id FROM t_article_subject WHERE subject_id IN (
+						SELECT subject_id FROM t_article_subject WHERE article_id = #{id})) 
+		AND id != #{id}
+	</select>
+	<update id="addAnswer_number" parameterType="java.lang.String">
+	 UPDATE t_article a
+		SET a.answer_number = a.answer_number + 1
+		WHERE a.id = #{id}
+	</update>
+</mapper>

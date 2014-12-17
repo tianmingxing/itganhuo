@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+	<!-- 整合Spring第一步创建JavaMailSenderImpl对象 -->
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="${javamail.host}" />
+		<property name="protocol" value="${javamail.protocol}" />
+		<property name="username" value="${javamail.username}" />
+		<property name="password" value="${javamail.password}" />
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.auth">true</prop>
+			</props>
+		</property>
+	</bean>
+	<!-- 正常的情况如果要发送邮件，需要异步发送，否则会把大量的时间浪费发送邮件上面 此时可能会造成用户重复刷新，使用Spring的ThreadPoolTaskExecutor可以方便实现多线程的程序 -->
+	<bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<property name="corePoolSize" value="5" />
+		<property name="maxPoolSize" value="10" />
+		<property name="queueCapacity" value="25" />
+	</bean>
+
+</beans>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.itganhuo.core.dao.RolesMapper">
+
+	<resultMap id="baseResultMap" type="RolesModel">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="role" property="role" jdbcType="VARCHAR" />
+		<result column="description" property="description" jdbcType="VARCHAR" />
+		<result column="available" property="available" jdbcType="TINYINT" />
+	</resultMap>
+	<sql id="base_Column_List">
+		id, role, description, available
+	</sql>
+	
+	<select id="loadById" resultMap="baseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="base_Column_List" />
+		from t_roles
+		where id = #{id}
+	</select>
+	
+	<select id="getRolesList" resultMap="baseResultMap"
+		parameterType="Map">
+		SELECT
+		<include refid="base_Column_List" />
+		FROM t_roles
+		<if
+			test="pageModel != null and pageModel.sort != null and pageModel.order != null">
+			ORDER BY ${pageModel.sort} ${pageModel.order}
+		</if>
+		<if
+			test="pageModel == null or pageModel.sort == null or pageModel.order == null">
+			ORDER BY id DESC
+		</if>
+		<if test="pageModel.page > 0 and pageModel.rows > 0">LIMIT #{pageModel.offrow}, #{pageModel.rows}</if>
+	</select>
+	
+	<select id="countRolesList" resultType="int" parameterType="Map">
+		SELECT
+		count(1)
+		FROM t_roles
+	</select>
+
+	<insert id="insert" parameterType="RolesModel">
+		insert into t_roles
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">id,</if>
+			<if test="role != null">
+				role,
+			</if>
+			<if test="description != null">
+				description,
+			</if>
+			<if test="available != null">
+				available,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="role != null">
+				#{role},
+			</if>
+			<if test="description != null">
+				#{description},
+			</if>
+			<if test="available != null">
+				#{available},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateInfo" parameterType="RolesModel">
+		update t_roles set
+			<if test="role != null">
+				role = #{role},
+			</if>
+			<if test="description != null">
+				description = #{description},
+			</if>
+			<if test="available != null">
+				available = #{available}
+			</if>
+		where id = #{id }
+	</update>
+	
+	<delete id="delete" parameterType="java.lang.String">
+		delete from t_roles where id = #{id}
+	</delete>
+	
+</mapper>

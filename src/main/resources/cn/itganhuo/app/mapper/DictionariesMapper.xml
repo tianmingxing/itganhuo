@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.itganhuo.core.dao.DictionariesMapper">
+
+	<resultMap id="baseResultMap" type="DictionariesModel">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="t_name" property="name" jdbcType="VARCHAR" />
+		<result column="description" property="description" jdbcType="VARCHAR" />
+		<result column="t_group" property="group" jdbcType="INTEGER" />
+		<result column="sort" property="sort" jdbcType="INTEGER" />
+	</resultMap>
+	<sql id="base_Column_List">
+		id, t_name, description, t_group, sort
+	</sql>
+	
+	<select id="loadById" resultMap="baseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="base_Column_List" />
+		from t_dictionaries
+		where id = #{id}
+	</select>
+	
+	<select id="getDictionariesList" resultMap="baseResultMap"
+		parameterType="Map">
+		SELECT
+		<include refid="base_Column_List" />
+		FROM t_dictionaries
+		<where>
+			<if test="dictionariesModel != null and dictionariesModel.name != null and dictionariesModel.name != ''"> t_name Like "%"#{dictionariesModel.name}"%"</if>
+			<if test="dictionariesModel != null and dictionariesModel.group != null and dictionariesModel.group != ''"> t_group = #{dictionariesModel.group}</if>
+		</where>
+		<if
+			test="pageModel != null and pageModel.sort != null and pageModel.order != null">
+			ORDER BY ${pageModel.sort} ${pageModel.order}
+		</if>
+		<if
+			test="pageModel == null or pageModel.sort == null or pageModel.order == null">
+			ORDER BY id DESC
+		</if>
+		<if test="pageModel.page > 0 and pageModel.rows > 0">LIMIT #{pageModel.offrow}, #{pageModel.rows}</if>
+	</select>
+	
+	<select id="countDictionariesList" resultType="int" parameterType="Map">
+		SELECT
+		count(1)
+		FROM t_dictionaries
+		<where>
+			<if test="dictionariesModel != null and dictionariesModel.name != null and dictionariesModel.name != ''">t_name = #{dictionariesModel.name}</if>
+			<if test="dictionariesModel != null and dictionariesModel.group != null and dictionariesModel.group != ''">t_group = #{dictionariesModel.group}</if>
+		</where>
+	</select>
+
+	<insert id="insert" parameterType="DictionariesModel">
+		insert into t_dictionaries
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">id,</if>
+			<if test="name != null">
+				t_name,
+			</if>
+			<if test="description != null">
+				description,
+			</if>
+			<if test="group != null">
+				t_group,
+			</if>
+			<if test="sort != null">
+				sort,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="name != null">
+				#{name},
+			</if>
+			<if test="description != null">
+				#{description},
+			</if>
+			<if test="group != null">
+				#{group},
+			</if>
+			<if test="sort != null">
+				#{sort},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateInfo" parameterType="DictionariesModel">
+		update t_dictionaries set 
+			<if test="name != null">
+				t_name = #{name},
+			</if>
+			<if test="description != null">
+				description = #{description},
+			</if>
+			<if test="group != null">
+				t_group = #{group},
+			</if>
+			<if test="sort != null">
+				sort = #{sort}
+			</if>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="java.lang.String">
+		delete from t_dictionaries where id = #{id}
+	</delete>
+	
+</mapper>

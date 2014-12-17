@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.itganhuo.core.dao.MenuMapper">
+
+	<sql id="base_Column_List">
+		id, pid, text, state, checked, iconCls, url, sort
+	</sql>
+
+	<resultMap id="menuResultMap" type="MenuModel">
+		<id property="id" column="id" />
+		<result property="pid" column="pid" />
+		<result property="text" column="text" />
+		<result property="state" column="state" />
+		<result property="checked" column="checked" />
+		<result property="iconCls" column="iconCls" />
+		<result property="attributes" column="url" />
+		<result property="sort" column="sort" />
+	</resultMap>
+
+	<select id="findMenuById" resultMap="menuResultMap" parameterType="java.lang.String">
+		select
+		<include refid="base_Column_List" />
+		from t_menu
+		where id = #{id}
+	</select>
+	
+	<select id="findMenuByPid" resultMap="menuResultMap" parameterType="java.lang.String">
+		SELECT
+		<include refid="base_Column_List" />
+		FROM t_menu
+		WHERE pid = #{pid}
+		ORDER BY sort
+	</select>
+
+	<select id="getMenuList" resultMap="menuResultMap" parameterType="Map">
+		SELECT
+		<include refid="base_Column_List" />
+		FROM t_menu
+		<where>
+			<if test="menuModel != null and menuModel.id != null and menuModel.id != ''">id = #{menuModel.id}</if>
+			<if test="menuModel != null and menuModel.text != null and menuModel.text != ''">text LIKE "%"#{menuModel.text}"%"</if>
+		</where>
+		ORDER BY
+		<choose>
+			<when test="pageModel != null and pageModel.order != null and pageModel.order != null">${pageModel.sort} ${pageModel.order}</when>
+			<otherwise>id DESC</otherwise>
+		</choose>
+		<if test="pageModel.page > 0 and pageModel.rows > 0">LIMIT #{pageModel.offrow}, #{pageModel.rows}</if>
+	</select>
+
+	<select id="countMenuList" resultType="int" parameterType="Map">
+		SELECT
+		count(1)
+		FROM t_menu
+		<where>
+			<if test="menuModel != null and menuModel.text != null and menuModel.text != ''">text LIKE "%"#{menuModel.text}"%"</if>
+		</where>
+	</select>
+
+	<insert id="addMenu" parameterType="MenuModel">
+		insert into t_menu
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">id,</if>
+			<if test="pid != null">pid,</if>
+			<if test="text != null">text,</if>
+			<if test="state != null">state,</if>
+			<if test="checked != null">checked,</if>
+			<if test="iconCls != null">iconCls,</if>
+			<if test="attributes != null">url,</if>
+			<if test="sort != null">sort,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id},</if>
+			<if test="pid != null">#{pid},</if>
+			<if test="text != null">#{text},</if>
+			<if test="state != null">#{state},</if>
+			<if test="checked != null">#{checked},</if>
+			<if test="iconCls != null">#{iconCls},</if>
+			<if test="attributes != null">#{attributes},</if>
+			<if test="sort != null">#{sort},</if>
+		</trim>
+	</insert>
+
+	<delete id="delMenu" parameterType="String">
+		delete from t_menu where id = #{id}
+	</delete>
+	
+	<update id="updateMenu" parameterType="MenuModel">
+		update t_menu
+		<set>
+			<if test="pid != null">pid = #{pid},</if>
+			<if test="text != null">text = #{text},</if>
+			<if test="state != null">state = #{state},</if>
+			<if test="checked != null">checked = #{checked},</if>
+			<if test="iconCls != null">iconCls = #{iconCls},</if>
+			<if test="attributes != null">url = #{attributes},</if>
+			<if test="sort != null">sort = #{sort}</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+</mapper>
