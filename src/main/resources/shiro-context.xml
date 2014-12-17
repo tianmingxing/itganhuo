@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+	<!-- 启用shiro注解功能 -->
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
+	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor" >
+		<property name="proxyTargetClass" value="true" />
+	</bean>
+	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+		<property name="securityManager" ref="securityManager" />
+	</bean>
+	
+	<!-- 凭证（密码）匹配器，sha512 64位编码，针对密码重复加密2次 -->
+	<bean id="matcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+		<property name="hashAlgorithmName" value="SHA-512" />
+		<property name="storedCredentialsHexEncoded" value="false" />
+		<property name="hashIterations" value="2" />
+	</bean>
+	
+	<!-- 自定义域来源于数据库 -->
+	<bean id="dbRealm" class="cn.itganhuo.app.web.realm.DBRealm">
+		<property name="credentialsMatcher" ref="matcher" />
+	</bean>
+
+	<!-- 缺省的WEB安全管理器 -->
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<!-- 可配置多个自定义域 -->
+		<property name="realms">
+			<list>
+				<ref bean="dbRealm" />
+			</list>
+		</property>
+		<property name="sessionManager" ref="sessionManager" />
+		<property name="cacheManager" ref="ehCacheManager" />
+	</bean>
+	
+	<!-- 配置安全管理器为静态单例 -->
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="staticMethod" value="org.apache.shiro.SecurityUtils.setSecurityManager" />
+		<property name="arguments" ref="securityManager" />
+	</bean>
+	
+	<!-- 会话管理器 -->
+	<bean id="sessionManager" class="org.apache.shiro.web.session.mgt.ServletContainerSessionManager" />
+	
+	<!-- 缓存管理器 -->
+	<bean id="ehCacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager" />
+
+	<!-- Shiro的Web过滤器（web.xml中配置的shiroFilter过滤器） -->
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<property name="securityManager" ref="securityManager" />
+ 	    <property name="loginUrl" value="/user/signin"/>
+	    <property name="successUrl" value="/articles/1/1"/>
+	    <property name="unauthorizedUrl" value="/unauthorized"/>
+	    <property name="filterChainDefinitions">
+	        <value>
+	            /admin/** = authc,roles[admin]
+	            /druid/** = authc,roles[admin]
+	            /logout/** = logout
+	            /user/register = anon
+	            /user/signin = anon
+	            /user/share = authc
+	            /user/comment = authc
+	            /user/** = user
+	            /article/saveReply = authc
+	            /** = anon
+	        </value>
+	    </property>
+	</bean>
+	
+</beans>

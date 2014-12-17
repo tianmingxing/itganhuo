@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.itganhuo.app.dao.ReplyDao">
+
+	<cache />
+
+	<!-- 评论回复表字段 -->
+	<sql id="reply_column_list">
+		E.ID         E_ID,
+		E.PARENT_ID  E_PARENT_ID,
+		E.USER_ID    E_USER_ID,
+		E.COMMENT_ID E_COMMENT_ID,
+		E.CONTENT    E_CONTENT,
+		E.POST_DATE  E_POST_DATE
+	</sql>
+
+	<!-- 评论回复人信息表字段 -->
+	<sql id="reply_user_column_list">
+		C4.ID                  C4_ID,
+		C4.ACCOUNT             C4_ACCOUNT,
+		C4.ISLOCK              C4_ISLOCK,
+		C4.NICKNAME            C4_NICKNAME,
+		C4.SEX                 C4_SEX,
+		C4.EMAIL               C4_EMAIL,
+		C4.QQ                  C4_QQ,
+		C4.PHONE               C4_PHONE,
+		C4.TEL                 C4_TEL,
+		C4.POST_DATE           C4_POST_DATE,
+		C4.TYPE                C4_TYPE,
+		C4.LAST_LOGIN_IP       C4_LAST_LOGIN_IP,
+		C4.LAST_LOGIN_DATE     C4_LAST_LOGIN_DATE,
+		C4.IS_VALIDATE_EMAIL   C4_IS_VALIDATE_EMAIL,
+		C4.EMAIL_VALIDATE_CODE C4_EMAIL_VALIDATE_CODE,
+		C4.EMAIL_VALIDATE_DATE C4_EMAIL_VALIDATE_DATE
+	</sql>
+
+	<resultMap id="reply_result" type="Reply">
+		<id property="id" column="E_ID" />
+		<result property="parentId" column="E_PARENT_ID" />
+		<result property="userId" column="E_USER_ID" />
+		<result property="commentId" column="E_COMMENT_ID" />
+		<result property="content" column="E_CONTENT" />
+		<result property="postDate" column="E_POST_DATE" />
+		<association property="user" javaType="User" resultMap="reply_user_result" />
+	</resultMap>
+
+	<resultMap id="reply_user_result" type="User">
+		<id property="id" column="C4_ID" />
+		<result property="account" column="C4_ACCOUNT" />
+		<result property="isLock" column="C4_ISLOCK" />
+		<result property="nickname" column="C4_NICKNAME" />
+		<result property="sex" column="C4_SEX" />
+		<result property="email" column="C4_EMAIL" />
+		<result property="qq" column="C4_QQ" />
+		<result property="phone" column="C4_PHONE" />
+		<result property="tel" column="C4_TEL" />
+		<result property="postDate" column="C4_POST_DATE" />
+		<result property="type" column="C4_TYPE" />
+		<result property="lastLoginIp" column="C4_LAST_LOGIN_IP" />
+		<result property="lastLoginDate" column="C4_LAST_LOGIN_DATE" />
+		<result property="isValidateEmail" column="C4_IS_VALIDATE_EMAIL" />
+		<result property="emailValidateCode" column="C4_EMAIL_VALIDATE_CODE" />
+		<result property="emailValidateDate" column="C4_EMAIL_VALIDATE_DATE" />
+	</resultMap>
+
+	<!-- 保存用户针对某评论发表的回复 -->
+	<insert id="insert" parameterType="Reply" useGeneratedKeys="true" keyProperty="ID">
+		INSERT INTO T_REPLY
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="parent_id != null">PARENT_ID,</if>
+			<if test="user_id != null">USER_ID,</if>
+			<if test="comment_id != null">COMMENT_ID,</if>
+			<if test="content != null">CONTENT,</if>
+			<if test="post_date != null">POST_DATE,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="parentId != null">#{parentId},</if>
+			<if test="userId != null">#{userId},</if>
+			<if test="commentId != null">#{commentId},</if>
+			<if test="content != null">#{content},</if>
+			<if test="postDate != null">#{postDate},</if>
+		</trim>
+	</insert>
+	
+	<!-- 根据主键查询回复信息 -->
+	<select id="getReplyById" resultMap="reply_result" parameterType="java.lang.String">
+		SELECT
+		<include refid="reply_column_list" />
+		FROM 
+			T_REPLY E
+		WHERE E.ID = #{id}
+		LEFT JOIN T_USER C4 ON E.USER_ID = C4.ID 
+	</select>
+</mapper>

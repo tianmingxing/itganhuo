@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.itganhuo.app.dao.DictionariesDao">
+
+	<cache />
+
+	<sql id="dictionaries_column_list">
+		ID, T_NAME, DESCRIPTION, T_GROUP, SORT
+	</sql>
+	
+	<resultMap id="dictionaries_result" type="Dictionaries">
+		<id column="id" property="ID" jdbcType="VARCHAR" />
+		<id column="pid" property="PID" jdbcType="VARCHAR" />
+		<result column="key" property="KEY" jdbcType="VARCHAR" />
+		<result column="value" property="VALUE" jdbcType="VARCHAR" />
+		<result column="description" property="DESCRIPTION" jdbcType="INTEGER" />
+		<result column="sort" property="SORT" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<select id="loadById" resultMap="dictionaries_result" parameterType="java.lang.String">
+		SELECT
+		<include refid="dictionaries_column_list" />
+		FROM T_DICTIONARIES
+		WHERE ID = #{id}
+	</select>
+	
+	<select id="getDictionariesList" resultMap="dictionaries_result" parameterType="Map">
+		SELECT
+		<include refid="dictionaries_column_list" />
+		FROM T_DICTIONARIES
+		<where>
+			<if test="dictionaries != null and dictionaries.key != null and dictionaries.key != ''"> KEY Like "%"#{dictionaries.key}"%"</if>
+			<if test="dictionaries != null and dictionaries.pid != null and dictionaries.pid != ''"> PID = #{dictionaries.pid}</if>
+			<if test="dictionaries != null and dictionaries.description != null and dictionaries.description != ''"> DESCRIPTION = #{dictionaries.description}</if>
+		</where>
+		<if test="paging != null and paging.sort != null and paging.order != null">
+			ORDER BY ${paging.sort} ${paging.order}
+		</if>
+		<if test="paging == null or paging.sort == null or paging.order == null">
+			ORDER BY ID DESC
+		</if>
+		<if test="paging.page > 0 and paging.rows > 0">LIMIT #{paging.offrow}, #{paging.rows}</if>
+	</select>
+	
+	<select id="countDictionariesList" resultType="int" parameterType="Map">
+		SELECT
+		count(1)
+		FROM T_DICTIONARIES
+		<where>
+			<if test="dictionaries != null and dictionaries.key != null and dictionaries.key != ''"> KEY Like "%"#{dictionaries.key}"%"</if>
+			<if test="dictionaries != null and dictionaries.pid != null and dictionaries.pid != ''"> PID = #{dictionaries.pid}</if>
+			<if test="dictionaries != null and dictionaries.description != null and dictionaries.description != ''"> DESCRIPTION = #{dictionaries.description}</if>
+		</where>
+	</select>
+
+	<insert id="insert" parameterType="Dictionaries" useGeneratedKeys="true" keyProperty="ID">
+		INSERT INTO T_DICTIONARIES
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="pid != null">PID,</if>
+			<if test="key != null">KEY,</if>
+			<if test="value != null">VALUE,</if>
+			<if test="description != null">DESCRIPTION,</if>
+			<if test="sort != null">SORT,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="pid != null">#{pid},</if>
+			<if test="key != null">#{key},</if>
+			<if test="value != null">#{value},</if>
+			<if test="description != null">#{description},</if>
+			<if test="sort != null">#{sort},</if>
+		</trim>
+	</insert>
+	
+	<update id="updateInfo" parameterType="Dictionaries">
+		UPDATE T_DICTIONARIES
+		<set>
+			<trim suffixOverrides=",">
+				<if test="pid != null">PID = #{pid},</if>
+				<if test="key != null">KEY = #{key},</if>
+				<if test="value != null">VALUE = #{value},</if>
+				<if test="description != null">DESCRIPTION = #{description},</if>
+				<if test="sort != null">SORT = #{sort},</if>
+			</trim>
+		</set>
+		WHERE ID = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="java.lang.String">
+		DELETE FROM T_DICTIONARIES WHERE ID = #{id}
+	</delete>
+	
+</mapper>

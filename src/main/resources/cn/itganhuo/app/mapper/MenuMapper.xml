@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.itganhuo.app.dao.MenuDao">
+
+	<cache />
+
+	<sql id="menu_column_List">
+		ID, PID, TEXT, STATE, CHECKED, ICONCLS, URL, SORT
+	</sql>
+
+	<resultMap id="menu_result" type="Menu">
+		<id property="id" column="ID" />
+		<result property="pid" column="PID" />
+		<result property="text" column="TEXT" />
+		<result property="state" column="STATE" />
+		<result property="checked" column="CHECKED" />
+		<result property="iconCls" column="ICONCLS" />
+		<result property="attributes" column="URL" />
+		<result property="sort" column="SORT" />
+	</resultMap>
+
+	<select id="findMenuById" resultMap="menu_result" parameterType="java.lang.String">
+		SELECT
+		<include refid="menu_column_List" />
+		FROM T_MENU
+		WHERE ID = #{id}
+	</select>
+	
+	<select id="findMenuByPid" resultMap="menu_result" parameterType="java.lang.String">
+		SELECT
+		<include refid="menu_column_List" />
+		FROM T_MENU
+		WHERE PID = #{pid}
+		ORDER BY SORT
+	</select>
+
+	<select id="getMenuList" resultMap="menu_result" parameterType="Map">
+		SELECT
+		<include refid="menu_column_List" />
+		FROM T_MENU
+		<where>
+			<if test="menu != null and menu.id != null and menu.id != ''">id = #{menu.id}</if>
+			<if test="menu != null and menu.text != null and menu.text != ''">text LIKE "%"#{menu.text}"%"</if>
+		</where>
+		ORDER BY
+		<choose>
+			<when test="paging != null and paging.order != null and paging.order != null">${paging.sort} ${paging.order}</when>
+			<otherwise>ID DESC</otherwise>
+		</choose>
+		<if test="paging.page > 0 and paging.rows > 0">LIMIT #{paging.offrow}, #{paging.rows}</if>
+	</select>
+
+	<select id="countMenuList" resultType="int" parameterType="Map">
+		SELECT
+		COUNT(1)
+		FROM T_MENU
+		<where>
+			<if test="menu != null and menu.text != null and menu.text != ''">text LIKE "%"#{menu.text}"%"</if>
+		</where>
+	</select>
+
+	<insert id="addMenu" parameterType="Menu" useGeneratedKeys="true" keyProperty="ID">
+		INSERT INTO T_MENU
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="pid != null">PID,</if>
+			<if test="text != null">TEXT,</if>
+			<if test="state != null">STATE,</if>
+			<if test="checked != null">CHECKED,</if>
+			<if test="iconCls != null">ICONCLS,</if>
+			<if test="attributes != null">URL,</if>
+			<if test="sort != null">SORT,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="pid != null">#{pid},</if>
+			<if test="text != null">#{text},</if>
+			<if test="state != null">#{state},</if>
+			<if test="checked != null">#{checked},</if>
+			<if test="iconCls != null">#{iconCls},</if>
+			<if test="attributes != null">#{attributes},</if>
+			<if test="sort != null">#{sort},</if>
+		</trim>
+	</insert>
+
+	<delete id="delMenu" parameterType="String">
+		DELETE FROM T_MENU WHERE ID = #{id}
+	</delete>
+	
+	<update id="updateMenu" parameterType="Menu">
+		UPDATE T_MENU
+		<set>
+			<if test="pid != null">PID = #{pid},</if>
+			<if test="text != null">TEXT = #{text},</if>
+			<if test="state != null">STATE = #{state},</if>
+			<if test="checked != null">CHECKED = #{checked},</if>
+			<if test="iconCls != null">ICONCLS = #{iconCls},</if>
+			<if test="attributes != null">URL = #{attributes},</if>
+			<if test="sort != null">SORT = #{sort}</if>
+		</set>
+		WHERE ID = #{id}
+	</update>
+</mapper>

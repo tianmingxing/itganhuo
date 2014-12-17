@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.itganhuo.app.dao.CommentDao">
+	
+	<cache />
+
+	<sql id="comment_column_list">
+		D.ID             D_ID,
+		D.TYPE           D_TYPE,
+		D.ARTICLE_ID     D_ARTICLE_ID,
+		D.USER_ID        D_USER_ID,
+		D.CONTENT        D_CONTENT,
+		D.POST_DATE      D_POST_DATE,
+		D.PRAISE         D_PRAISE,
+		D.TRAMPLE        D_TRAMPLE
+	</sql>
+	
+	<!-- 评论用户字段 -->
+	<sql id="comment_user_column_list">
+		C3.ID                  C3_ID,
+		C3.ACCOUNT             C3_ACCOUNT,
+		C3.ISLOCK              C3_ISLOCK,
+		C3.NICKNAME            C3_NICKNAME,
+		C3.SEX                 C3_SEX,
+		C3.EMAIL               C3_EMAIL,
+		C3.QQ                  C3_QQ,
+		C3.PHONE               C3_PHONE,
+		C3.TEL                 C3_TEL,
+		C3.POST_DATE           C3_POST_DATE,
+		C3.TYPE                C3_TYPE,
+		C3.LAST_LOGIN_IP       C3_LAST_LOGIN_IP,
+		C3.LAST_LOGIN_DATE     C3_LAST_LOGIN_DATE,
+		C3.IS_VALIDATE_EMAIL   C3_IS_VALIDATE_EMAIL,
+		C3.EMAIL_VALIDATE_CODE C3_EMAIL_VALIDATE_CODE,
+		C3.EMAIL_VALIDATE_DATE C3_EMAIL_VALIDATE_DATE
+	</sql>
+
+	<!-- 评论回复表字段 -->
+	<sql id="reply_column_list">
+		E.ID         E_ID,
+		E.PARENT_ID  E_PARENT_ID,
+		E.USER_ID    E_USER_ID,
+		E.COMMENT_ID E_COMMENT_ID,
+		E.CONTENT    E_CONTENT,
+		E.POST_DATE  E_POST_DATE
+	</sql>
+
+	<!-- 评论回复人信息表字段 -->
+	<sql id="reply_user_column_list">
+		C4.ID                  C4_ID,
+		C4.ACCOUNT             C4_ACCOUNT,
+		C4.ISLOCK              C4_ISLOCK,
+		C4.NICKNAME            C4_NICKNAME,
+		C4.SEX                 C4_SEX,
+		C4.EMAIL               C4_EMAIL,
+		C4.QQ                  C4_QQ,
+		C4.PHONE               C4_PHONE,
+		C4.TEL                 C4_TEL,
+		C4.POST_DATE           C4_POST_DATE,
+		C4.TYPE                C4_TYPE,
+		C4.LAST_LOGIN_IP       C4_LAST_LOGIN_IP,
+		C4.LAST_LOGIN_DATE     C4_LAST_LOGIN_DATE,
+		C4.IS_VALIDATE_EMAIL   C4_IS_VALIDATE_EMAIL,
+		C4.EMAIL_VALIDATE_CODE C4_EMAIL_VALIDATE_CODE,
+		C4.EMAIL_VALIDATE_DATE C4_EMAIL_VALIDATE_DATE
+	</sql>
+
+	<resultMap id="comment_result" type="Comment">
+		<id property="id" column="D_ID" />
+		<result property="type" column="D_TYPE" />
+		<result property="articleId" column="D_ARTICLE_ID" />
+		<result property="userId" column="D_USER_ID" />
+		<result property="content" column="D_CONTENT" />
+		<result property="postDate" column="D_POST_DATE" />
+		<result property="praiseNum" column="D_PRAISE" />
+		<result property="trampleNum" column="D_TRAMPLE" />
+		<association property="user" javaType="User" resultMap="comment_user_result" />
+		<collection property="replys" ofType="Reply" resultMap="reply_result" />
+	</resultMap>
+	
+	<resultMap id="comment_user_result" type="User">
+		<id property="id" column="C3_ID" />
+		<result property="account" column="C3_ACCOUNT" />
+		<result property="isLock" column="C3_ISLOCK" />
+		<result property="nickname" column="C3_NICKNAME" />
+		<result property="sex" column="C3_SEX" />
+		<result property="email" column="C3_EMAIL" />
+		<result property="qq" column="C3_QQ" />
+		<result property="phone" column="C3_PHONE" />
+		<result property="tel" column="C3_TEL" />
+		<result property="postDate" column="C3_POST_DATE" />
+		<result property="type" column="C3_TYPE" />
+		<result property="lastLoginIp" column="C3_LAST_LOGIN_IP" />
+		<result property="lastLoginDate" column="C3_LAST_LOGIN_DATE" />
+		<result property="isValidateEmail" column="C3_IS_VALIDATE_EMAIL" />
+		<result property="emailValidateCode" column="C3_EMAIL_VALIDATE_CODE" />
+		<result property="emailValidateDate" column="C3_EMAIL_VALIDATE_DATE" />
+	</resultMap>
+
+	<resultMap id="reply_result" type="Reply">
+		<id property="id" column="E_ID" />
+		<result property="parentId" column="E_PARENT_ID" />
+		<result property="userId" column="E_USER_ID" />
+		<result property="commentId" column="E_COMMENT_ID" />
+		<result property="content" column="E_CONTENT" />
+		<result property="postDate" column="E_POST_DATE" />
+		<association property="user" javaType="User" resultMap="reply_user_result" />
+	</resultMap>
+
+	<resultMap id="reply_user_result" type="User">
+		<id property="id" column="C4_ID" />
+		<result property="account" column="C4_ACCOUNT" />
+		<result property="isLock" column="C4_ISLOCK" />
+		<result property="nickname" column="C4_NICKNAME" />
+		<result property="sex" column="C4_SEX" />
+		<result property="email" column="C4_EMAIL" />
+		<result property="qq" column="C4_QQ" />
+		<result property="phone" column="C4_PHONE" />
+		<result property="tel" column="C4_TEL" />
+		<result property="postDate" column="C4_POST_DATE" />
+		<result property="type" column="C4_TYPE" />
+		<result property="lastLoginIp" column="C4_LAST_LOGIN_IP" />
+		<result property="lastLoginDate" column="C4_LAST_LOGIN_DATE" />
+		<result property="isValidateEmail" column="C4_IS_VALIDATE_EMAIL" />
+		<result property="emailValidateCode" column="C4_EMAIL_VALIDATE_CODE" />
+		<result property="emailValidateDate" column="C4_EMAIL_VALIDATE_DATE" />
+	</resultMap>
+
+	<!-- 保存用户针对某篇文章发表的评论 -->
+	<insert id="insert" parameterType="Comment" useGeneratedKeys="true" keyProperty="ID">
+		INSERT INTO T_COMMENT
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="type != null">TYPE,</if>
+			<if test="articleId != null">ARTICLE_ID,</if>
+			<if test="userId != null">USER_ID,</if>
+			<if test="content != null">CONTENT,</if>
+			<if test="postDate != null">POST_DATE,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="type != null">#{type},</if>
+			<if test="articleId != null">#{articleId},</if>
+			<if test="userId != null">#{userId},</if>
+			<if test="content != null">#{content},</if>
+			<if test="postDate != null">#{postDate},</if>
+		</trim>
+	</insert>
+	
+	<!-- 会员对评论点赞 -->
+	<update id="addPraiseById" parameterType="java.lang.String">
+		UPDATE T_COMMENT A
+		SET A.PRAISE = A.PRAISE + 1
+		WHERE A.ID= #{id}
+	</update>
+	
+	<!-- 会员对评论点踩 -->
+	<update id="addTrampleById" parameterType="java.lang.String">
+		UPDATE T_COMMENT A
+		SET A.TRAMPLE = A.TRAMPLE + 1
+		WHERE A.ID= #{id}
+	</update>
+	
+	<!-- 根据主键查询评论信息 -->
+	<select id="getCommentById" resultMap="comment_result" parameterType="java.lang.String">
+		SELECT
+		<include refid="comment_column_list" />
+		,
+		<include refid="comment_user_column_list" />
+		,
+		<include refid="reply_column_list" />
+		,
+		<include refid="reply_user_column_list" />
+		FROM T_COMMENT D
+		WHERE D.ID = #{id}
+		LEFT JOIN T_USER            C3 ON D.USER_ID    = C3.ID
+		LEFT JOIN T_REPLY           E  ON D.ID         = E.COMMENT_ID
+		LEFT JOIN T_USER            C4 ON E.USER_ID    = C4.ID
+	</select>
+	<!-- 评论点赞 -->
+     <update id="addPraise" parameterType="java.lang.String">
+      UPDATE T_COMMENT A
+       A.PRAISE = A.PRAISE + 1
+       WHERE A.ID = #{id}
+     </update>
+     <!-- 评论点踩 -->
+     <update id="addTrample" parameterType="java.lang.String">
+      UPDATE T_COMMENT A
+       A.TRAMPLE = A.TRAMPLE + 1
+       WHERE A.ID = #{id}
+     </update>
+	<select id="isInvolvedComment" resultMap="comment_result" parameterType="Map">
+		SELECT
+		<include refid="comment_column_list" />
+		FROM T_COMMENT D
+		WHERE D.USER_ID = #{userId} AND D.ARTICLE_ID = #{articleId} AND D.TYPE != #{type}
+	</select>
+</mapper>
