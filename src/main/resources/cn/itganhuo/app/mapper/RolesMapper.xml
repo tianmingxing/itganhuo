@@ -76,5 +76,4 @@
 	<delete id="delete" parameterType="java.lang.String">
 		DELETE FROM T_ROLES WHERE ID = #{id}
 	</delete>
-	
 </mapper>

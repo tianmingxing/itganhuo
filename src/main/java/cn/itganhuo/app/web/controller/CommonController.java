@@ -242,3 +242,4 @@ public class CommonController {
 		return "invitation";
 	}
 }
+

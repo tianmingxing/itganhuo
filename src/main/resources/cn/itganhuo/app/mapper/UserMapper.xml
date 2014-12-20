@@ -148,5 +148,4 @@
 			<if test="user != null and user.sex != null">SEX = #{user.sex}</if>
 		</where>
 	</select>
-
 </mapper>
