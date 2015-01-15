@@ -53,7 +53,10 @@ public class PermissionsServiceImpl implements PermissionsService {
 	}
 
 	public boolean delPermissions(int id) {
-		return permissionsDao.delete(id);
+		Permissions permissions = new Permissions();
+		permissions.setId(1);
+		permissions.setIsAvailable(1);
+		return permissionsDao.updateInfo(permissions);
 	}
 
 	public Permissions getPermissionsModelById(int id) {

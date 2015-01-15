@@ -31,9 +31,9 @@ import cn.itganhuo.app.entity.Permissions;
  */
 @Repository
 public interface PermissionsDao {
+	
 	/**
-	 * 新增记录
-	 * <h2>[功能用途简述]</h2>
+	 * <h2>新增记录</h2>
 	 * <dl>
 	 * <dt>功能描述</dt>
 	 * <dd>无</dd>
@@ -49,8 +49,7 @@ public interface PermissionsDao {
 	public int insert(Permissions record);
 
 	/**
-	 * 修改记录
-	 * <h2>[功能用途简述]</h2>
+	 *  <h2>修改记录</h2>
 	 * <dl>
 	 * <dt>功能描述</dt>
 	 * <dd>无</dd>
@@ -66,25 +65,7 @@ public interface PermissionsDao {
 	public boolean updateInfo(Permissions record);
 
 	/**
-	 * 根据id删除一条记录
-	 * <h2>[功能用途简述]</h2>
-	 * <dl>
-	 * <dt>功能描述</dt>
-	 * <dd>无</dd>
-	 * <dt>使用规范</dt>
-	 * <dd>无</dd>
-	 * </dl>
-	 * 
-	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
-	 * @param id
-	 * @return
-	 */
-	public boolean delete(int id);
-
-	/**
-	 * 根据id查询一条记录
-	 * <h2>[功能用途简述]</h2>
+	 * <h2>根据id查询一条记录</h2>
 	 * <dl>
 	 * <dt>功能描述</dt>
 	 * <dd>无</dd>
@@ -100,8 +81,7 @@ public interface PermissionsDao {
 	public Permissions loadById(int id);
 
 	/**
-	 * 获得记录列表
-	 * <h2>[功能用途简述]</h2>
+	 * <h2>获得记录列表</h2>
 	 * <dl>
 	 * <dt>功能描述</dt>
 	 * <dd>无</dd>
@@ -117,8 +97,7 @@ public interface PermissionsDao {
 	public List<Object> getPermissionsList(Map<Object, Object> condition);
 
 	/**
-	 * 统计记录条数
-	 * <h2>[功能用途简述]</h2>
+	 * <h2>统计记录条数 </h2>
 	 * <dl>
 	 * <dt>功能描述</dt>
 	 * <dd>无</dd>

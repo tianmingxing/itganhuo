@@ -10,9 +10,6 @@
  */
 package cn.itganhuo.app.common.pool;
 
-import java.text.MessageFormat;
-
-import org.junit.Assert;
 import org.junit.Test;
 
 /**

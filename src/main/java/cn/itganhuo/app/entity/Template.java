@@ -78,10 +78,6 @@ public class Template implements Serializable {
 		return type;
 	}
 
-	public void setType(int type) {
-		this.type = type;
-	}
-
 	public String getName() {
 		return name;
 	}

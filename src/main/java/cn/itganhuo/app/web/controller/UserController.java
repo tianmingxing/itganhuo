@@ -73,7 +73,7 @@ import cn.itganhuo.app.service.UserService;
  * <dt>功能描述</dt>
  * <dd>提供了对用户中心所有请求的控制</dd>
  * <dt>使用规范</dt>
- * <dd>无</dd>
+ * <dd>在控制器里面一定要捕捉到来自服务层的错误，遇到错误记录日志返回状态消息给客户端。</dd>
  * </dl>
  * 
  * @version 0.0.2-SNAPSHOT

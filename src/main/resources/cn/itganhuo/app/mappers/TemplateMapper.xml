@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.itganhuo.app.dao.TemplateDao">
+
+	<cache />
+
+	<sql id="templateColumnList">id, type, name, content, postDate, isAvailable</sql>
+
+	<select id="loadByName" resultType="Template" parameterType="java.lang.String">
+		select
+		<include refid="templateColumnList" />
+		from t_template
+		where name = #{name}
+	</select>
+
+	<select id="loadById" resultType="Template" parameterType="Integer">
+		select
+		<include refid="templateColumnList" />
+		from t_template
+		where id = #{id}
+	</select>
+
+	<select id="loadAll" resultType="Template">
+		select
+		<include refid="templateColumnList" />
+		from t_template
+	</select>
+
+	<insert id="insert" parameterType="Template" useGeneratedKeys="true" keyProperty="ID">
+		insert into t_template
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="type != null">type,</if>
+			<if test="name != null">name,</if>
+			<if test="content != null">content,</if>
+			<if test="postDate != null">postDate,</if>
+			<if test="isAvailable != null">isAvailable,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="type != null">#{type},</if>
+			<if test="name != null">#{name},</if>
+			<if test="content != null">#{content},</if>
+			<if test="postDate != null">#{postDate},</if>
+			<if test="isAvailable != null">#{isAvailable},</if>
+		</trim>
+	</insert>
+
+</mapper>

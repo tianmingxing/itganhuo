@@ -46,7 +46,7 @@ public interface RolesDao {
 	 * @param record
 	 * @return
 	 */
-	public int insert(Roles record);
+	public int insert(Roles roles);
 
 	/**
 	 * 修改记录
@@ -63,24 +63,7 @@ public interface RolesDao {
 	 * @param record
 	 * @return
 	 */
-	public int updateInfo(Roles record);
-
-	/**
-	 * 根据id删除一条记录
-	 * <h2>[功能用途简述]</h2>
-	 * <dl>
-	 * <dt>功能描述</dt>
-	 * <dd>无</dd>
-	 * <dt>使用规范</dt>
-	 * <dd>无</dd>
-	 * </dl>
-	 * 
-	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
-	 * @param id
-	 * @return
-	 */
-	public boolean delete(int id);
+	public int updateInfo(Roles roles);
 
 	/**
 	 * 根据id查询一条记录

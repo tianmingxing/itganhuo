@@ -13,7 +13,6 @@ package cn.itganhuo.app.dao;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
@@ -27,9 +26,8 @@ import cn.itganhuo.app.entity.User;
  * <dt>使用规范</dt>
  * <dd>本接口的实现有两种方式：<br>
  * <ol>
- * <li>通过*Mapper.xml文件来实现本接口中的方法；</li>
+ * <li>通过resources/cn/itganhuo/app/mappers/*Mapper.xml文件来实现本接口中的方法；</li>
  * <li>直接在本接口中通过注解的方式直接写SQL语句；</li>
- * <li>本类定义的接口要和*Mapper.xml里一一对应，如果接口中有定义而xml中没有则会报错。</li>
  * </ol>
  * </dd>
  * </dl>
@@ -41,19 +39,7 @@ import cn.itganhuo.app.entity.User;
 public interface UserDao {
 
 	/**
-	 * 根据主键删除对应的一条数据
-	 * 
-	 * @version 0.0.1-SNAPSHOT
-	 * @author 深圳-小兴
-	 * @param id
-	 *            主键
-	 * @return 返回删除的数据行数
-	 */
-	@Delete("DELETE FROM T_USER WHERE ID=#{id}")
-	public int deleteById(int id);
-
-	/**
-	 * 根据主键修改对应一名用户的密码字段
+	 * 根据主键修改对应一名用户的密码字段，这个方法只是演示给大家看其实简单的SQL可以直接写在注解里面。
 	 * 
 	 * @version 0.0.1-SNAPSHOT
 	 * @author 深圳-小兴
@@ -61,8 +47,8 @@ public interface UserDao {
 	 *            用户
 	 * @return 返回修改的数据行数
 	 */
-	@Update("UPDATE T_USER SET PASSWORD=#{password} WHERE ID=#{id}")
-	public int updateById(User record);
+	@Update("update t_user set password=#{password} where id=#{id}")
+	public int updateById(User user);
 
 	/**
 	 * 添加一条用户信息
@@ -82,57 +68,42 @@ public interface UserDao {
 	 * @author 深圳-小兴
 	 * @param id
 	 *            主键
-	 * @return User
+	 * @return User 返回一名用户信息
 	 */
 	public User loadById(int id);
 
 	/**
-	 * <h2>根据账号查询一名用户信息</h2>
-	 * <dl>
-	 * <dt>功能描述</dt>
-	 * <dd>无</dd>
-	 * <dt>使用规范</dt>
-	 * <dd>无</dd>
-	 * </dl>
+	 * 根据账号查询一名用户信息
 	 * 
 	 * @version 0.0.1-SNAPSHOT
 	 * @author 深圳-小兴
-	 * @param account 账号
+	 * @param account
+	 *            账号
 	 * @return 一个用户
 	 */
 	public User loadByAccount(String account);
 
 	/**
-	 * 根据帐户修改用户信息，包括用户名，性别，email，qq， 电话号码
+	 * 根据帐户修改用户信息，不包含修改用户密码
 	 * 
 	 * @param record
 	 *            用户
 	 * @version 0.0.1-SNAPSHOT
 	 * @author 天津-朱塞佩
-	 * @return
+	 * @return 返回1表示成功
 	 */
-	public int updateInfoByAccount(User record);
+	public int updateInfoByAccount(User user);
 
 	/**
-	 * 根据帐户修改密码
+	 * 根据帐户修改密码，为了方法使用时安全，这里把修改密码单独做一个方法。
 	 * 
 	 * @param record
 	 *            用户
 	 * @version 0.0.1-SNAPSHOT
 	 * @author 天津-朱塞佩
-	 * @return
+	 * @return 返回true表示成功
 	 */
-	public boolean updatePasswordByAccount(User record);
-
-	/**
-	 * 根据账户修改头像
-	 * 
-	 * @param record
-	 * @return
-	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
-	 */
-	public int updateImg(User record);
+	public boolean updatePasswordByAccount(User user);
 
 	/**
 	 * 

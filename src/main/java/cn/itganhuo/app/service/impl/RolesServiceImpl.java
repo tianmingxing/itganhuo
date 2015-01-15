@@ -53,7 +53,10 @@ public class RolesServiceImpl implements RolesService {
 	}
 
 	public boolean delRoles(int id) {
-		return rolesDao.delete(id);
+		Roles roles = new Roles();
+		roles.setId(id);
+		roles.setIsAvailable(0);
+		return rolesDao.updateInfo(roles) == 1;
 	}
 
 	public Roles getRolesModelById(int id) {

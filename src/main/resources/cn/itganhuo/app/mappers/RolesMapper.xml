@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.itganhuo.app.dao.RolesDao">
+
+	<cache/>
+	
+	<sql id="rolesColumnList">
+		id, role, description, isAvailable
+	</sql>
+
+	<select id="loadById" resultType="Roles" parameterType="Integer">
+		select
+		<include refid="rolesColumnList" />
+		from t_roles
+		where id = #{id}
+	</select>
+	
+	<select id="getRolesList" resultType="Roles" parameterType="Map">
+		select
+		<include refid="rolesColumnList" />
+		from t_roles
+		<choose>
+			<when test="paging != null and paging.sort != null and paging.order != null">
+				order by ${paging.sort} ${paging.order}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="paging.page > 0 and paging.rows > 0">
+			limit #{paging.offrow}, #{paging.rows}
+		</if>
+	</select>
+	
+	<select id="countRolesList" resultType="int" parameterType="Map">
+		select count(1) from t_roles
+	</select>
+
+	<insert id="insert" parameterType="Roles" useGeneratedKeys="true" keyProperty="ID">
+		insert into t_roles
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="role != null">role,</if>
+			<if test="description != null">description,</if>
+			<if test="isAvailable != null">isAvailable,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="role != null">#{role},</if>
+			<if test="description != null">#{description},</if>
+			<if test="isAvailable != null">#{isAvailable},</if>
+		</trim>
+	</insert>
+	
+	<update id="updateInfo" parameterType="Roles">
+		update t_roles
+		<set>
+			<if test="role != null">role = #{role},</if>
+			<if test="description != null">description = #{description},</if>
+			<if test="isAvailable != null">isAvailable = #{isAvailable}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+</mapper>

@@ -126,6 +126,8 @@ public class User implements Serializable {
 		this.salt = salt;
 	}
 
+	
+
 	public Integer getIsLock() {
 		return isLock;
 	}
@@ -265,10 +267,15 @@ public class User implements Serializable {
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", account=" + account + ", password=" + password + ", salt=" + salt + ", isLock=" + isLock + ", nickname=" + nickname
-				+ ", sex=" + sex + ", email=" + email + ", qq=" + qq + ", phone=" + phone + ", tel=" + tel + ", postDate=" + postDate + ", type=" + type
-				+ ", lastLoginIp=" + lastLoginIp + ", lastLoginDate=" + lastLoginDate + ", isValidateEmail=" + isValidateEmail + ", emailValidateCode="
-				+ emailValidateCode + ", emailValidateDate=" + emailValidateDate + "]";
+		return "User [id=" + id + ", account=" + account + ", password="
+				+ password + ", salt=" + salt + ", isLock=" + isLock
+				+ ", nickname=" + nickname + ", sex=" + sex + ", email="
+				+ email + ", qq=" + qq + ", phone=" + phone + ", tel=" + tel
+				+ ", postDate=" + postDate + ", type=" + type
+				+ ", lastLoginIp=" + lastLoginIp + ", lastLoginDate="
+				+ lastLoginDate + ", isValidateEmail=" + isValidateEmail
+				+ ", emailValidateCode=" + emailValidateCode
+				+ ", emailValidateDate=" + emailValidateDate + "]";
 	}
 
 }

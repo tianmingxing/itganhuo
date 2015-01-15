@@ -38,4 +38,11 @@ public interface ReplyDao {
 	 * @return 返回主键
 	 */
 	public int insert(Reply reply);
+	
+	/**
+	 * 根据iD查询回复信息
+	 * @param id 主键
+	 * @return 返回唯一一条回复数据
+	 */
+	public Reply getReplyById(int id);
 }

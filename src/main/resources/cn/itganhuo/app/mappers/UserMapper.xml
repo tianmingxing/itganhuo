@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.itganhuo.app.dao.UserDao">
+
+	<cache />
+
+	<resultMap id="userResultMap" type="User">
+		<id property="id" column="id" />
+		<result property="account" column="account" />
+		<result property="password" column="password" />
+		<result property="salt" column="salt" />
+		<result property="isLock" column="isLock" />
+		<result property="nickname" column="nickname" />
+		<result property="sex" column="sex" />
+		<result property="email" column="email" />
+		<result property="qq" column="qq" />
+		<result property="phone" column="phone" />
+		<result property="tel" column="tel" />
+		<result property="postDate" column="postDate" />
+		<result property="type" column="type" />
+		<result property="lastLoginIp" column="lastLoginIp" />
+		<result property="lastLoginDate" column="lastLoginDate" />
+		<result property="isValidateEmail" column="isValidateEmail" />
+		<result property="emailValidateCode" column="emailValidateCode" />
+		<result property="emailValidateDate" column="emailValidateDate" />
+	</resultMap>
+
+	<sql id="userColumnList">
+		id, account, password, salt, isLock, nickname, sex, email, qq, phone, tel, postDate, type, lastLoginIp, lastLoginDate, isValidateEmail,
+		emailValidateCode, emailValidateDate
+	</sql>
+
+	<insert id="insert" parameterType="User" useGeneratedKeys="true" keyProperty="ID">
+		insert into t_user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="account != null">account,</if>
+			<if test="password != null">password,</if>
+			<if test="salt != null">salt,</if>
+			<if test="isLock != null">isLock,</if>
+			<if test="nickname != null">nickname,</if>
+			<if test="sex != null">sex,</if>
+			<if test="email != null">email,</if>
+			<if test="qq != null">qq,</if>
+			<if test="phone != null">phone,</if>
+			<if test="tel != null">tel,</if>
+			<if test="postDate != null">postDate,</if>
+			<if test="type != null">type,</if>
+			<if test="lastLoginIp != null">lastLoginIp,</if>
+			<if test="lastLoginDate != null">lastLoginDate,</if>
+			<if test="isValidateEmail != null">isValidateEmail,</if>
+			<if test="emailValidateCode != null">emailValidateCode,</if>
+			<if test="emailValidateDate != null">emailValidateDate,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="account != null">#{account},</if>
+			<if test="password != null">#{password},</if>
+			<if test="salt != null">#{salt},</if>
+			<if test="isLock != null">#{isLock},</if>
+			<if test="nickname != null">#{nickname},</if>
+			<if test="sex != null">#{sex},</if>
+			<if test="email != null">#{email},</if>
+			<if test="qq != null">#{qq},</if>
+			<if test="phone != null">#{phone},</if>
+			<if test="tel != null">#{tel},</if>
+			<if test="postDate != null">#{postDate},</if>
+			<if test="type != null">#{type},</if>
+			<if test="lastLoginIp != null">#{lastLoginIp},</if>
+			<if test="lastLoginDate != null">#{lastLoginDate},</if>
+			<if test="isValidateEmail != null">#{isValidateEmail},</if>
+			<if test="emailValidateCode != null">#{emailValidateCode},</if>
+			<if test="emailValidateDate != null">#{emailValidateDate},</if>
+		</trim>
+	</insert>
+
+	<select id="loadById" resultMap="userResultMap" parameterType="Integer">
+		select
+		<include refid="userColumnList" />
+		from t_user
+		where id = #{id}
+	</select>
+
+	<select id="loadByAccount" resultMap="userResultMap" parameterType="String">
+		select
+		<include refid="userColumnList" />
+		from t_user
+		where account = #{account}
+	</select>
+
+	<update id="updateInfoByAccount" parameterType="User">
+		update t_user
+		<set>
+			<trim suffixOverrides=",">
+				<if test="isLock != null">isLock = #{isLock},</if>
+				<if test="nickname != null">nickname = #{nickname},</if>
+				<if test="sex != null">sex = #{sex},</if>
+				<if test="email != null">email = #{email},</if>
+				<if test="qq != null">qq = #{qq},</if>
+				<if test="phone != null">phone = #{phone},</if>
+				<if test="tel != null">tel = #{tel},</if>
+				<if test="postDate != null">postDate = #{postDate},</if>
+				<if test="type != null">type = #{type},</if>
+				<if test="lastLoginIp != null">lastLoginIp = #{lastLoginIp},</if>
+				<if test="lastLoginDate != null">lastLoginDate = #{lastLoginDate},</if>
+				<if test="isValidateEmail != null and isValidateEmail &gt; 0">isValidateEmail = #{isValidateEmail},</if>
+				<if test="emailValidateCode != null">emailValidateCode = #{emailValidateCode},</if>
+				<if test="emailValidateDate != null">emailValidateDate = #{emailValidateDate},</if>
+			</trim>
+		</set>
+		where account = #{account}
+	</update>
+
+	<update id="updatePasswordByAccount" parameterType="User">
+		update t_user
+		<set>
+			<trim suffixOverrides=",">
+				<if test="password != null">password = #{password},</if>
+				<if test="salt != null">salt = #{salt},</if>
+			</trim>
+		</set>
+		where account = #{account}
+	</update>
+
+	<select id="getUserList" resultMap="userResultMap" parameterType="Map">
+		select
+		<include refid="userColumnList" />
+		from t_user
+		<where>
+			<if test="user != null and user.account != null and user.account != ''">account = #{user.account}</if>
+			<if test="user != null and user.nickname != null and user.nickname != ''">nickname = #{user.nickname}</if>
+		</where>
+		<choose>
+			<when test="paging != null and paging.sort != null and paging.order != null">
+				order by ${paging.sort} ${paging.order}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="paging.page &gt; 0 and paging.rows &gt; 0">limit #{paging.offrow}, #{paging.rows}</if>
+	</select>
+
+	<select id="countUserList" resultType="int" parameterType="Map">
+		select count(1) from t_user
+		<where>
+			<if test="user != null and user.account != null">account = #{user.account}</if>
+			<if test="user != null and user.nickname != null">nickname = #{user.nickname}</if>
+		</where>
+	</select>
+
+</mapper>

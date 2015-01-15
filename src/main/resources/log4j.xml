@@ -38,12 +38,12 @@
 	<!-- 
 		指定哪个位置需要记录日记
 	 -->
-	<logger name="cn.itganhuo.core" additivity="false">
+	<logger name="cn.itganhuo.app" additivity="false">
 		<level value="DEBUG" />
 		<appender-ref ref="console" />
 		<appender-ref ref="run"/>
 	</logger>
-	<logger name="cn.itganhuo.core.dao" additivity="false">
+	<logger name="cn.itganhuo.app.dao" additivity="false">
 		<level value="TRACE" />
 		<appender-ref ref="console" />
 		<appender-ref ref="db"/>
@@ -53,7 +53,7 @@
 		记录框架日志并输出到文件（开发调试时可输出到控制台）
 	 -->
 	<root>
-		<priority value="INFO" />
+		<priority value="info" />
 		<appender-ref ref="console" />
 		<appender-ref ref="thirdparty"/>
 	</root>

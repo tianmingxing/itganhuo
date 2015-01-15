@@ -50,7 +50,7 @@
 		<!-- 批量为Model启用别名 -->
 		<property name="typeAliasesPackage" value="cn.itganhuo.app.entity" />
 		<!-- 指定 MyBatis 的 XML 映射器文件的位置 -->
-		<property name="mapperLocations" value="classpath*:cn/itganhuo/app/mapper/*.xml" />
+		<property name="mapperLocations" value="classpath*:cn/itganhuo/app/mappers/*.xml" />
 	</bean>
 	
 	<!-- 启用Mapper接口作为DAO的接口 -->

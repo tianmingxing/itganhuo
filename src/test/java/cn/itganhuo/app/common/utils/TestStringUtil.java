@@ -13,6 +13,8 @@ package cn.itganhuo.app.common.utils;
 import org.junit.Assert;
 import org.junit.Test;
 
+import cn.itganhuo.app.common.utils.StringUtil;
+
 /**
  * <h2>测试StringUtil中的方法是否正确</h2>
  * <dl>
