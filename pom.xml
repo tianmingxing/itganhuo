@@ -5,7 +5,7 @@
 	<!-- The Basics -->
 	<groupId>cn.itganhuo</groupId>
 	<artifactId>app</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.3-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<dependencies>
 		<!-- spring -->
@@ -265,18 +265,103 @@
 	<name>itganhuo Maven Webapp</name>
 	<description>中国最大的IT技术经验分享社区</description>
 	<url>http://www.itganhuo.cn</url>
-	<!-- <inceptionYear>...</inceptionYear> -->
-	<!-- <licenses>...</licenses> -->
-	<!-- <organization>...</organization> -->
-	<!-- <developers>...</developers> -->
-	<!-- <contributors>...</contributors> -->
+	<inceptionYear>2014/6/1</inceptionYear>
+	<licenses>
+		<license>
+			<name>Apache 2</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+		<license>
+			<name>署名-相同方式共享 3.0 中国大陆 (CC BY-SA 3.0 CN)</name>
+			<url>http://creativecommons.org/licenses/by-sa/3.0/cn/</url>
+		</license>
+	</licenses>
+	<organization>
+		<name>IT干货工作室</name>
+		<url>http://www.itganhuo.cn/about</url>
+	</organization>
+	<developers>
+		<developer>
+			<id>846657670</id>
+			<name>北京-李春雪</name>
+			<email>846657670@qq.com</email>
+			<organization>JAVA私塾在线学习社区</organization>
+			<organizationUrl>群号329232140</organizationUrl>
+			<roles>
+				<role>后端开发工程师</role>
+			</roles>
+			<timezone>8</timezone>
+		</developer>
+		<developer>
+			<id>946594780</id>
+			<name>深圳-夕落</name>
+			<email>946594780@qq.com</email>
+			<organization>JAVA私塾在线学习社区</organization>
+			<organizationUrl>群号329232140</organizationUrl>
+			<roles>
+				<role>后端开发工程师</role>
+			</roles>
+			<timezone>8</timezone>
+		</developer>
+		<developer>
+			<id>504487927</id>
+			<name>深圳-小兴</name>
+			<email>mx.tian@qq.com</email>
+			<organization>JAVA私塾在线学习社区</organization>
+			<organizationUrl>群号329232140</organizationUrl>
+			<roles>
+				<role>前端、后端开发工程师</role>
+			</roles>
+			<timezone>8</timezone>
+		</developer>
+		<developer>
+			<id>36044976</id>
+			<name>天津-朱塞佩</name>
+			<email>36044976@qq.com</email>
+			<organization>JAVA私塾在线学习社区</organization>
+			<organizationUrl>群号329232140</organizationUrl>
+			<roles>
+				<role>后端开发工程师</role>
+			</roles>
+			<timezone>8</timezone>
+		</developer>
+	</developers>
+	<contributors>
+		<contributor>
+			<name>北京-胜子</name>
+			<email>316258416@qq.com</email>
+			<organization>JAVA私塾在线学习社区</organization>
+			<organizationUrl>群号329232140</organizationUrl>
+			<roles>
+				<role>服务器支持</role>
+			</roles>
+			<timezone>8</timezone>
+		</contributor>
+		<contributor>
+			<name>长春-零度</name>
+			<email>6021717@qq.com</email>
+			<organization>JAVA私塾在线学习社区</organization>
+			<organizationUrl>群号329232140</organizationUrl>
+			<roles>
+				<role>服务器支持</role>
+			</roles>
+			<timezone>8</timezone>
+		</contributor>
+	</contributors>
 
 	<!-- Environment Settings -->
 	<!-- <issueManagement>...</issueManagement> -->
 	<!-- <ciManagement>...</ciManagement> -->
 	<!-- <mailingLists>...</mailingLists> -->
-	<!-- <scm>...</scm> -->
-	<!-- <prerequisites>...</prerequisites> -->
+	<scm>
+		<url>https://github.com/xiaoxing598/itganhuo</url>
+		<connection>scm:git:git://github.com/xiaoxing598/itganhuo.git</connection>
+		<developerConnection>scm:git:git@github.com:xiaoxing598/itganhuo.git</developerConnection>
+	</scm>
+	<prerequisites>
+		<maven>3.2.5</maven>
+	</prerequisites>
 	<!-- <repositories>...</repositories> -->
 	<!-- <pluginRepositories>...</pluginRepositories> -->
 	<!-- <distributionManagement>...</distributionManagement> -->

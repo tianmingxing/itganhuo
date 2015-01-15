@@ -11,7 +11,6 @@
 package cn.itganhuo.app.dao;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.junit.Assert;
@@ -56,27 +55,27 @@ public class TestUserDao extends AbstractContextControllerTests {
 		Assert.assertTrue(dao.countUserList(condition) > 0);
 	}
 
-//	@Test
-//	public void testInsert() {
-//		User user = new User();
-//		user.setAccount("superadmin");
-//		user.setPassword("8888");
-//		user.setSalt("8908");
-//		user.setIsLock(1);
-//		user.setNickname("超级管理员");
-//		user.setSex(2);
-//		user.setEmail("tianmx@mas-china.com");
-//		user.setQq(168303836);
-//		user.setPhone("18612345678");
-//		user.setTel("0755 12345678");
-//		user.setPostDate("2014-12-18 17:36:59");
-//		user.setType(999);
-//		user.setLastLoginIp("127.0.0.1");
-//		user.setLastLoginDate("2014-12-18 17:40:10");
-//		user.setIsValidateEmail(1);
-//		user.setEmailValidateCode("JOHKHIH879HGU899HKHJLKJ");
-//		user.setEmailValidateDate("2014-12-18 17:40:12");
-//		dao.insert(user);
-//	}
+	@Test
+	public void testInsert() {
+		User user = new User();
+		user.setAccount("superadmin");
+		user.setPassword("8888");
+		user.setSalt("8908");
+		user.setIsLock(1);
+		user.setNickname("超级管理员");
+		user.setSex(2);
+		user.setEmail("tianmx@mas-china.com");
+		user.setQq(168303836);
+		user.setPhone("18612345678");
+		user.setTel("0755 12345678");
+		user.setPostDate("2014-12-18 17:36:59");
+		user.setType(999);
+		user.setLastLoginIp("127.0.0.1");
+		user.setLastLoginDate("2014-12-18 17:40:10");
+		user.setIsValidateEmail(1);
+		user.setEmailValidateCode("JOHKHIH879HGU899HKHJLKJ");
+		user.setEmailValidateDate("2014-12-18 17:40:12");
+		dao.insert(user);
+	}
 
 }
