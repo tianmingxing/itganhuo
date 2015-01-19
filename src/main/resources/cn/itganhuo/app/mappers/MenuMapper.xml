@@ -6,71 +6,60 @@
 
 	<cache />
 
-	<sql id="menu_column_List">
-		ID, PID, TEXT, STATE, CHECKED, ICONCLS, URL, SORT
+	<sql id="menuColumnList">
+		id, pid, text, state, checked, iconCls, url, sort
 	</sql>
 
-	<resultMap id="menu_result" type="Menu">
-		<id property="id" column="ID" />
-		<result property="pid" column="PID" />
-		<result property="text" column="TEXT" />
-		<result property="state" column="STATE" />
-		<result property="checked" column="CHECKED" />
-		<result property="iconCls" column="ICONCLS" />
-		<result property="attributes" column="URL" />
-		<result property="sort" column="SORT" />
-	</resultMap>
-
-	<select id="findMenuById" resultMap="menu_result" parameterType="java.lang.String">
-		SELECT
-		<include refid="menu_column_List" />
-		FROM T_MENU
-		WHERE ID = #{id}
+	<select id="findMenuById" resultType="Menu" parameterType="Integer">
+		select
+		<include refid="menuColumnList" />
+		from t_menu
+		where id = #{id}
 	</select>
 	
-	<select id="findMenuByPid" resultMap="menu_result" parameterType="java.lang.String">
-		SELECT
-		<include refid="menu_column_List" />
-		FROM T_MENU
-		WHERE PID = #{pid}
-		ORDER BY SORT
+	<select id="findMenuByPid" resultType="Menu" parameterType="Integer">
+		select
+		<include refid="menuColumnList" />
+		from t_menu
+		where pid = #{pid}
+		order by sort
 	</select>
 
-	<select id="getMenuList" resultMap="menu_result" parameterType="Map">
-		SELECT
-		<include refid="menu_column_List" />
-		FROM T_MENU
+	<select id="getMenuList" resultType="Menu" parameterType="Map">
+		select
+		<include refid="menuColumnList" />
+		from t_menu
 		<where>
 			<if test="menu != null and menu.id != null and menu.id != ''">id = #{menu.id}</if>
-			<if test="menu != null and menu.text != null and menu.text != ''">text LIKE "%"#{menu.text}"%"</if>
+			<if test="menu != null and menu.text != null and menu.text != ''">text like "%"#{menu.text}"%"</if>
 		</where>
-		ORDER BY
+		order by
 		<choose>
 			<when test="paging != null and paging.order != null and paging.order != null">${paging.sort} ${paging.order}</when>
-			<otherwise>ID DESC</otherwise>
+			<otherwise>id desc</otherwise>
 		</choose>
-		<if test="paging.page > 0 and paging.rows > 0">LIMIT #{paging.offrow}, #{paging.rows}</if>
+		<if test="paging.page > 0 and paging.rows > 0">limit #{paging.offrow}, #{paging.rows}</if>
 	</select>
 
 	<select id="countMenuList" resultType="int" parameterType="Map">
-		SELECT
-		COUNT(1)
-		FROM T_MENU
+		select
+		count(1)
+		from t_menu
 		<where>
-			<if test="menu != null and menu.text != null and menu.text != ''">text LIKE "%"#{menu.text}"%"</if>
+			<if test="menu != null and menu.text != null and menu.text != ''">text like "%"#{menu.text}"%"</if>
 		</where>
 	</select>
 
 	<insert id="addMenu" parameterType="Menu" useGeneratedKeys="true" keyProperty="ID">
-		INSERT INTO T_MENU
+		insert into t_menu
 		<trim prefix="(" suffix=")" suffixOverrides=",">
-			<if test="pid != null">PID,</if>
-			<if test="text != null">TEXT,</if>
-			<if test="state != null">STATE,</if>
-			<if test="checked != null">CHECKED,</if>
-			<if test="iconCls != null">ICONCLS,</if>
-			<if test="attributes != null">URL,</if>
-			<if test="sort != null">SORT,</if>
+			<if test="pid != null">pid,</if>
+			<if test="text != null">text,</if>
+			<if test="state != null">state,</if>
+			<if test="checked != null">checked,</if>
+			<if test="iconCls != null">iconCls,</if>
+			<if test="url != null">url,</if>
+			<if test="sort != null">sort,</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="pid != null">#{pid},</if>
@@ -78,26 +67,26 @@
 			<if test="state != null">#{state},</if>
 			<if test="checked != null">#{checked},</if>
 			<if test="iconCls != null">#{iconCls},</if>
-			<if test="attributes != null">#{attributes},</if>
+			<if test="url != null">#{url},</if>
 			<if test="sort != null">#{sort},</if>
 		</trim>
 	</insert>
 
-	<delete id="delMenu" parameterType="String">
-		DELETE FROM T_MENU WHERE ID = #{id}
+	<delete id="delMenu" parameterType="Integer">
+		delete from t_menu where id = #{id}
 	</delete>
 	
-	<update id="updateMenu" parameterType="Menu">
-		UPDATE T_MENU
+	<update id="updateMenu" parameterType="Menu" >
+		update t_menu
 		<set>
-			<if test="pid != null">PID = #{pid},</if>
-			<if test="text != null">TEXT = #{text},</if>
-			<if test="state != null">STATE = #{state},</if>
-			<if test="checked != null">CHECKED = #{checked},</if>
-			<if test="iconCls != null">ICONCLS = #{iconCls},</if>
-			<if test="attributes != null">URL = #{attributes},</if>
-			<if test="sort != null">SORT = #{sort}</if>
+			<if test="pid != null">pid = #{pid},</if>
+			<if test="text != null">text = #{text},</if>
+			<if test="state != null">state = #{state},</if>
+			<if test="checked != null">checked = #{checked},</if>
+			<if test="iconCls != null">iconCls = #{iconCls},</if>
+			<if test="url != null">url = #{url},</if>
+			<if test="sort != null">sort = #{sort}</if>
 		</set>
-		WHERE ID = #{id}
+		where id = #{id}
 	</update>
 </mapper>

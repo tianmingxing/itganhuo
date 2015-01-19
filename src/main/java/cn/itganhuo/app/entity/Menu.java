@@ -52,7 +52,7 @@ public class Menu implements Serializable {
 	/*
 	 * 菜单链接到页面的地址
 	 */
-	private String attributes;
+	private String url;
 	/*
 	 * 菜单自定义排序字段
 	 */
@@ -110,12 +110,12 @@ public class Menu implements Serializable {
 		this.iconCls = iconCls;
 	}
 
-	public String getAttributes() {
-		return attributes;
+	public String getUrl() {
+		return url;
 	}
 
-	public void setAttributes(String attributes) {
-		this.attributes = attributes;
+	public void setUrl(String url) {
+		this.url = url;
 	}
 
 	public Integer getSort() {
@@ -161,8 +161,8 @@ public class Menu implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Menu [id=" + id + ", pid=" + pid + ", text=" + text + ", state=" + state + ", checked=" + checked + ", iconCls=" + iconCls + ", attributes="
-				+ attributes + ", sort=" + sort + ", children=" + children + "]";
+		return "Menu [id=" + id + ", pid=" + pid + ", text=" + text + ", state=" + state + ", checked=" + checked + ", iconCls=" + iconCls + ", url="
+				+ url + ", sort=" + sort + ", children=" + children + "]";
 	}
 
 }

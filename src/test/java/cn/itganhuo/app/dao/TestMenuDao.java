@@ -21,12 +21,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import cn.itganhuo.app.AbstractContextControllerTests;
+import cn.itganhuo.app.entity.Menu;
 import cn.itganhuo.app.entity.Paging;
-import cn.itganhuo.app.entity.Permissions;
 import cn.itganhuo.app.entity.User;
 
 /**
- * <h2>测试PermissionsDao</h2>
+ * <h2>测试MenuDao</h2>
  * <dl>
  * <dt>功能描述</dt>
  * <dd>无</dd>
@@ -39,52 +39,70 @@ import cn.itganhuo.app.entity.User;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
-public class TestPermissionsDao extends AbstractContextControllerTests {
+public class TestMenuDao extends AbstractContextControllerTests {
 
-	private PermissionsDao permissionsDao = null;
+	private MenuDao menuDao = null;
 
 	@Autowired
-	public void setPermissionsDao(PermissionsDao permissionsDao) {
-		this.permissionsDao = permissionsDao;
+	public void setMenuDao(MenuDao menuDao) {
+		this.menuDao = menuDao;
 	}
-	
+
 	@Test
-	public void testInsert() {
-		Permissions permissions = new Permissions();
-		permissions.setPermission("删除权限");
-		permissions.setDescription("删除数据的权限");
-		permissions.setIsAvailable(1);
-		Assert.isTrue(permissionsDao.insert(permissions)==1, "添加权限数据失败");
+	public void testFindMenuById() {
+		Assert.notNull(menuDao.findMenuById(1), "根据ID查询数据没有值");
 	}
-	
+
 	@Test
-	public void testUpdateInfo() {
-		Permissions permissions = new Permissions();
-		permissions.setId(1);
-		permissions.setPermission("删除权限2");
-		permissions.setDescription("删除数据的权限2");
-		permissions.setIsAvailable(0);
-		Assert.isTrue(permissionsDao.updateInfo(permissions), "修改权限数据失败");
+	public void testFindMenuByPid() {
+		Assert.notNull(menuDao.findMenuByPid(0), "根据PID查询数据没有值");
 	}
-	
+
 	@Test
-	public void testLoadById() {
-		Assert.notNull(permissionsDao.loadById(1), "根据ID查询数据没有值");
-	}
-	
-	@Test
-	public void testGetPermissionsList() {
+	public void testGetMenuList() {
 		Map<Object, Object> condition = new HashMap<Object, Object>();
 		condition.put("paging", new Paging());
 		condition.put("user", new User());
-		Assert.notEmpty(permissionsDao.getPermissionsList(condition), "查询数据没有值");
+		Assert.notEmpty(menuDao.getMenuList(condition), "查询数据没有值");
 	}
-	
+
 	@Test
-	public void testCountPermissionsList() {
+	public void testCountMenuList() {
 		Map<Object, Object> condition = new HashMap<Object, Object>();
 		condition.put("paging", new Paging());
 		condition.put("user", new User());
-		Assert.isTrue(permissionsDao.countPermissionsList(condition) > 0, "没有统计到数据行");
+		Assert.isTrue(menuDao.countMenuList(condition) > 0, "没有统计到数据行");
+	}
+
+	@Test
+	public void testAddMenu() {
+		Menu menu = new Menu();
+		menu.setPid(1);
+		menu.setText("环境配置");
+		menu.setState("open");
+		menu.setChecked(true);
+		menu.setIconCls("/root/a.jpg");
+		menu.setUrl("www.baidu.com");
+		menu.setSort(10);
+		Assert.isTrue(menuDao.addMenu(menu) == 1, "添加菜单数据失败");
+	}
+
+	@Test
+	public void testDelMenu() {
+		Assert.isTrue(menuDao.delMenu(1), "删除菜单失败");
+	}
+
+	@Test
+	public void testUpdateMenu() {
+		Menu menu = new Menu();
+		menu.setId(1);
+		menu.setPid(1);
+		menu.setText("环境配置");
+		menu.setState("open");
+		menu.setChecked(true);
+		menu.setIconCls("/root/a.jpg");
+		menu.setUrl("www.baidu.com");
+		menu.setSort(10);
+		Assert.isTrue(menuDao.updateMenu(menu), "根据ID修改菜单失败");
 	}
 }
