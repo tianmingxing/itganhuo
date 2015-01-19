@@ -53,7 +53,7 @@
 		记录框架日志并输出到文件（开发调试时可输出到控制台）
 	 -->
 	<root>
-		<priority value="info" />
+		<priority value="INFO" />
 		<appender-ref ref="console" />
 		<appender-ref ref="thirdparty"/>
 	</root>

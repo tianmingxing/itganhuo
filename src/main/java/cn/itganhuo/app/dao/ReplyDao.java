@@ -45,4 +45,5 @@ public interface ReplyDao {
 	 * @return 返回唯一一条回复数据
 	 */
 	public Reply getReplyById(int id);
+
 }

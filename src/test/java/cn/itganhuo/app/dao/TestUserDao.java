@@ -18,7 +18,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
 
 import cn.itganhuo.app.AbstractContextControllerTests;
 import cn.itganhuo.app.entity.Paging;
@@ -53,6 +52,13 @@ public class TestUserDao extends AbstractContextControllerTests {
 		user.setId(1);
 		user.setPassword("8888");
 		Assert.isTrue(1 == dao.updateById(user), "修改用户信息不成功");
+	
+	@Test
+	public void testGetUserList() {
+		Map<Object, Object> condition = new HashMap<Object, Object>();
+		condition.put("paging", new Paging());
+		condition.put("user", new User());
+		Assert.assertTrue(dao.countUserList(condition) > 0);
 	}
 
 	@Test
@@ -135,4 +141,5 @@ public class TestUserDao extends AbstractContextControllerTests {
 		condition.put("user", new User());
 		Assert.notNull(dao.countUserList(condition), "没有统计到用户的行数");
 	}
+
 }
