@@ -33,11 +33,11 @@ public class Dictionaries implements Serializable {
 	/*
 	 * 属性名称，如果PID为0时则表示组名称
 	 */
-	private String key;
+	private String attrName;
 	/*
 	 * 属性值
 	 */
-	private String value;
+	private String attrValue;
 	/*
 	 * 对属性组的描述
 	 */
@@ -63,20 +63,20 @@ public class Dictionaries implements Serializable {
 		this.pid = pid;
 	}
 
-	public String getKey() {
-		return key;
+	public String getAttrName() {
+		return attrName;
 	}
 
-	public void setKey(String key) {
-		this.key = key;
+	public void setAttrName(String attrName) {
+		this.attrName = attrName;
 	}
 
-	public String getValue() {
-		return value;
+	public String getAttrValue() {
+		return attrValue;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void setAttrValue(String attrValue) {
+		this.attrValue = attrValue;
 	}
 
 	public String getDescription() {
@@ -122,7 +122,7 @@ public class Dictionaries implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Dictionaries [id=" + id + ", pid=" + pid + ", key=" + key + ", value=" + value + ", description=" + description + ", sort=" + sort + "]";
+		return "Dictionaries [id=" + id + ", pid=" + pid + ", attrName=" + attrName + ", attrValue=" + attrValue + ", description=" + description + ", sort=" + sort + "]";
 	}
 
 }

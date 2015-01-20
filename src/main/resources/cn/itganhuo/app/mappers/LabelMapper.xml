@@ -6,37 +6,29 @@
 
 	<cache />
 
-	<sql id="label_column_list">
-		ID, USER_ID, NAME, DESCRIPTION, POST_DATE
+	<sql id="labelColumnLlist">
+		id, userId, name, description, postDate
 	</sql>
 
-	<resultMap id="label_result" type="Label">
-		<id property="id" column="ID" />
-		<result property="userId" column="USER_ID" />
-		<result property="name" column="NAME" />
-		<result property="description" column="DESCRIPTION" />
-		<result property="postDate" column="POST_DATE" />
-	</resultMap>
-
-	<select id="getLabelByCondition" resultMap="label_result" parameterType="Label">
-		SELECT
-		<include refid="label_column_list" />
-		FROM T_LABEL
+	<select id="getLabelByCondition" resultType="Label" parameterType="Label">
+		select
+		<include refid="labelColumnLlist" />
+		from t_label
 		<where>
-			<if test="userId != null and userId != ''">USER_ID = #{userId}</if>
-			<if test="name != null and name != ''">NAME like "%"#{name}"%"</if>
-			<if test="description != null and description != ''">DESCRIPTION like "%"#{description}"%"</if>
+			<if test="userId != null and userId != ''">userId = #{userId}</if>
+			<if test="name != null and name != ''">name like "%"#{name}"%"</if>
+			<if test="description != null and description != ''">description like "%"#{description}"%"</if>
 		</where>
 	</select>
 	
 	<insert id="insert" parameterType="Label" useGeneratedKeys="true" keyProperty="ID">
-		INSERT INTO T_LABEL
+		insert into t_label
 		<trim prefix="(" suffix=")" suffixOverrides=",">
-			<if test="id != null">ID,</if>
-			<if test="userId != null">USER_ID,</if>
-			<if test="name != null">NAME,</if>
-			<if test="description != null">DESCRIPTION,</if>
-			<if test="postDate != null">POST_DATE,</if>
+			<if test="id != null">id,</if>
+			<if test="userId != null">userId,</if>
+			<if test="name != null">name,</if>
+			<if test="description != null">description,</if>
+			<if test="postDate != null">postDate,</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="id != null">#{id},</if>
@@ -47,19 +39,19 @@
 		</trim>
 	</insert>
 
-	<delete id="delById" parameterType="String">
-		DELETE FROM T_LABEL WHERE ID = #{id}
+	<delete id="delById" parameterType="Integer">
+		delete from t_label where id = #{id}
 	</delete>
 	
 	<update id="updateById" parameterType="Label">
-		UPDATE T_LABEL
+		update t_label
 		<set>
-			<if test="userId != null">USER_ID = #{userId},</if>
-			<if test="name != null">NAME = #{name},</if>
-			<if test="description != null">DESCRIPTION = #{description},</if>
-			<if test="postDate != null">POST_DATE = #{postDate},</if>
+			<if test="userId != null">userId = #{userId},</if>
+			<if test="name != null">name = #{name},</if>
+			<if test="description != null">description = #{description},</if>
+			<if test="postDate != null">postDate = #{postDate},</if>
 		</set>
-		WHERE ID = #{id}
+		where id = #{id}
 	</update>
 	
 </mapper>
