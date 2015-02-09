@@ -15,5 +15,10 @@ hs_err_pid*
 *.settings
 *.prefs
 target
+<<<<<<< HEAD
 /.project
 /.classpath
+=======
+*.classpath
+*.project
+>>>>>>> 54a2282f6666d15be661c3329f31313c64ad424b
