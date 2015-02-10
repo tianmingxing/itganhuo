@@ -12,10 +12,10 @@ package cn.itganhuo.app.common.utils;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.crypto.hash.Sha512Hash;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import cn.itganhuo.app.exception.InternalException;
 
@@ -30,7 +30,7 @@ import cn.itganhuo.app.exception.InternalException;
  */
 public class StringUtil {
 
-	private static final Logger logger = LoggerFactory.getLogger(StringUtil.class);
+	private static final Logger logger = LogManager.getLogger(StringUtil.class);
 
 	private StringUtil() {
 	}

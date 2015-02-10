@@ -14,6 +14,7 @@
 			</props>
 		</property>
 	</bean>
+	
 	<!-- 
 		正常的情况如果要发送邮件需要异步发送，否则会把大量的时间浪费发送邮件上面，此时可能会造成用户重复刷新，
 		使用Spring的ThreadPoolTaskExecutor可以方便实现多线程的程序。

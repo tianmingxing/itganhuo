@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+
+	<!-- 这个文件主要记录仍然使用Log4j2.x版本的日志，新版本的日志记录效率比1版本要高2倍。 -->
+	
+	<!-- 日志输出目的地 -->
+	<Appenders>
+		<Console name="STDOUT" target="SYSTEM_OUT">
+			<PatternLayout pattern="[%-5p]|%d|%t|%c{2}|%l|%m%n" />
+		</Console>
+
+		<!-- 按日期滚动输出日志文件 -->
+		<RollingFile name="RUN" fileName="${catalina.home}/idataLogs/run.log" filePattern="${catalina.home}/run-%d{MM-dd-yyyy}.log.gz" ignoreExceptions="false">
+			<PatternLayout>
+				<Pattern>[%-5p]|%d|%t|%c{2}|%l|%m%n</Pattern>
+			</PatternLayout>
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="250 MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="30" />
+		</RollingFile>
+		
+		<!-- 异步记录 -->
+		<Async name="Async">
+			<AppenderRef ref="RUN" />
+		</Async>
+		
+	</Appenders>
+
+	<!-- 输出其它路径日志 -->
+	<Loggers>
+		<Logger name="cn.itganhuo" level="INFO" includeLocation="true">
+			<AppenderRef ref="Async" />
+		</Logger>
+		<Root level="INFO">
+			<AppenderRef ref="STDOUT" />
+		</Root>
+	</Loggers>
+</Configuration>

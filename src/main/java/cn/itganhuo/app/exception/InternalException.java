@@ -10,8 +10,9 @@
  */
 package cn.itganhuo.app.exception;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 
 /**
  * <h2>将系统内部抛出到本类的异常记录到日志</h2>
@@ -27,12 +28,12 @@ import org.slf4j.LoggerFactory;
 public class InternalException extends RuntimeException {
 
 	private static final long serialVersionUID = 7267973861644368332L;
-	private static final Logger logger = LoggerFactory.getLogger(InternalException.class);
+	private static final Logger log = LogManager.getLogger(InternalException.class.getName());
 
 	public InternalException(String message) {
 		super(message);
-		if (logger.isErrorEnabled()) {
-			logger.error(message);
+		if (log.isErrorEnabled()) {
+			log.error(message);
 		}
 	}
 

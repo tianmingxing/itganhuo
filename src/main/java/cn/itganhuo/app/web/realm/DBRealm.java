@@ -72,6 +72,7 @@ public class DBRealm extends AuthorizingRealm {
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 		Set<String> role = new HashSet<String>();
 		Set<String> stringPermissions = new HashSet<String>();
+		// TODO 此处暂时把权限固定，后续根据需求在做。
 		if (1 == user.getType()) {
 			role.add("user");
 			stringPermissions.add("user:*");

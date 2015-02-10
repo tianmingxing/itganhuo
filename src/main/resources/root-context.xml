@@ -6,7 +6,14 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 	<!-- 读取resources.properties文件获得公共变量 -->
-	<context:property-placeholder location="classpath:resources.properties" />
+	<bean id="propertyConfigurer" class="cn.itganhuo.app.common.EncryptablePropertyPlaceholderConfigurer">  
+		<constructor-arg name="key" value="362C1E982014B30D73DFCEAE0A" />
+		<property name="locations">
+			<list>
+				<value>classpath:jdbc.properties</value>
+			</list>
+		</property>
+    </bean>
 	
 	<!-- 自动扫描特定注解类并纳入容器管理 -->
 	<context:component-scan base-package="cn.itganhuo.app.service">
@@ -15,7 +22,7 @@
 	</context:component-scan>
 	
 	<!-- 开启aop代理模式 -->
-	<aop:aspectj-autoproxy proxy-target-class="true"/>
+	<aop:aspectj-autoproxy />
 
 	<!-- 配置数据源 -->
 	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
@@ -62,7 +69,7 @@
 	</bean>
 	
 	<!-- 导入其它关联配置文件 -->
-	<import resource="javamail-context.xml"/>
-	<import resource="shiro-context.xml"/>
+	<import resource="spring-javamail.xml"/>
+	<import resource="spring-shiro.xml"/>
 	
 </beans>

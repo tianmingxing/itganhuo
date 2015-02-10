@@ -15,10 +15,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,7 +50,7 @@ import cn.itganhuo.app.service.UserService;
 @Controller
 public class CommonController {
 
-	private static final Logger logger = LoggerFactory.getLogger(CommonController.class);
+	private static final Logger logger = LogManager.getLogger(CommonController.class);
 
 	private UserService userService;
 

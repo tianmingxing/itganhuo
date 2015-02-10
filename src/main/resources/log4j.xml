@@ -2,60 +2,30 @@
 <!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "log4j.dtd">
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
 
-	<!-- 
-		日志输出目的地
-	 -->
-	<!-- 输出到控制台 -->
-	<appender name="console" class="org.apache.log4j.ConsoleAppender">
+	<!-- 这个文件主要记录仍然使用Log4j1.x版本的日志 -->
+
+	<!-- 日志输出目的地：控制台 -->
+	<appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
 		<param name="Target" value="System.out" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="[%-5p]|%d|%t|%c{2}|%l|%m%n" />
 		</layout>
 	</appender>
-	<!-- 输出到文件 -->
-	<appender name="run" class="org.apache.log4j.DailyRollingFileAppender">
-		<param name="File" value="${catalina.home}/applogs/run.log" />
-		<param name="Encoding" value="UTF-8" />
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="[%-5p]|%d|%t|%c{2}|%l|%m%n" />
-		</layout>
-	</appender>
-	<appender name="db" class="org.apache.log4j.DailyRollingFileAppender">
-		<param name="File" value="${catalina.home}/applogs/db.log" />
-		<param name="Encoding" value="UTF-8" />
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="[%-5p]|%d|%t|%c{2}|%l|%m%n" />
-		</layout>
-	</appender>
-	<appender name="thirdparty" class="org.apache.log4j.DailyRollingFileAppender">
-		<param name="File" value="${catalina.home}/applogs/thirdparty.log" />
+	
+	<!-- 日志输出目的地：文件 -->
+	<appender name="FRAME" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="${catalina.home}/itganhuoLogs/frame.log" />
 		<param name="Encoding" value="UTF-8" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="[%-5p]|%d|%t|%c{2}|%l|%m%n" />
 		</layout>
 	</appender>
 
-	<!-- 
-		指定哪个位置需要记录日记
-	 -->
-	<logger name="cn.itganhuo.app" additivity="false">
-		<level value="DEBUG" />
-		<appender-ref ref="console" />
-		<appender-ref ref="run"/>
-	</logger>
-	<logger name="cn.itganhuo.app.dao" additivity="false">
-		<level value="TRACE" />
-		<appender-ref ref="console" />
-		<appender-ref ref="db"/>
-	</logger>
-
-	<!-- 
-		记录框架日志并输出到文件（开发调试时可输出到控制台）
-	 -->
+	<!-- 记录其它框架报错日志 -->
 	<root>
 		<priority value="INFO" />
-		<appender-ref ref="console" />
-		<appender-ref ref="thirdparty"/>
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="FRAME" />
 	</root>
-	
+
 </log4j:configuration>

@@ -20,10 +20,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import cn.itganhuo.app.exception.InternalException;
 
@@ -41,7 +41,7 @@ import cn.itganhuo.app.exception.InternalException;
  */
 public class HttpUtil {
 
-	private static final Logger logger = LoggerFactory.getLogger(HttpUtil.class);
+	private static final Logger logger = LogManager.getLogger(HttpUtil.class);
 
 	private HttpUtil() {
 	}

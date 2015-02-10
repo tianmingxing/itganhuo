@@ -10,8 +10,8 @@
  */
 package cn.itganhuo.app.exception;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * <h2>将系统外部抛出到本类的异常（比如第三方接口，不属于本系统模块）记录到日志</h2>
@@ -28,12 +28,12 @@ import org.slf4j.LoggerFactory;
 public class PeripheralException extends RuntimeException {
 
 	private static final long serialVersionUID = 7267973861644368332L;
-	private static final Logger logger = LoggerFactory.getLogger(PeripheralException.class);
+	private static final Logger log = LogManager.getLogger(InternalException.class.getName());
 
 	public PeripheralException(String message) {
 		super(message);
-		if (logger.isErrorEnabled()) {
-			logger.error(message);
+		if (log.isErrorEnabled()) {
+			log.error(message);
 		}
 	}
 

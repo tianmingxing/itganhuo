@@ -13,8 +13,8 @@ package cn.itganhuo.app.common.pool;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import cn.itganhuo.app.common.utils.StringUtil;
 import cn.itganhuo.app.exception.InternalException;
@@ -33,7 +33,7 @@ import cn.itganhuo.app.exception.InternalException;
  */
 public class ConfigPool {
 
-	private static final Logger logger = LoggerFactory.getLogger(ConfigPool.class);
+	private static final Logger logger = LogManager.getLogger(ConfigPool.class);
 
 	private static String fname = ConstantPool.CONFIG_BEAN_FILE_PATH;
 	private static Configuration config = null;
