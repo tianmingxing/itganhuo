@@ -8,8 +8,8 @@
 	<!-- 开启MVC注解 -->
 	<mvc:annotation-driven />
 
-	<!-- 缺省控制器处理静态资源映射 -->
-	<mvc:default-servlet-handler />
+	<!-- 处理静态资源映射 -->
+	<mvc:resources location="/static/" mapping="/static/*" cache-period="31556926" />
 
 	<!-- 默认首页 -->
 	<mvc:view-controller path="/" view-name="redirect:/articles/1/1" />
