@@ -63,7 +63,7 @@ public class Pagination {
 	 * @return
 	 */
 	public String getTurnPage() {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		buffer.append("<div class=\"page-nav\" >\n");
 		buffer.append("<ul class=\"pagination\">\n");
 		// 回到首页
@@ -113,7 +113,7 @@ public class Pagination {
 	 * @return
 	 */
 	public String getTurnPage2() {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		buffer.append("<div class=\"pagination\" current_page=\"").append(page).append("\">\n");
 		buffer.append("<ul>\n");
 		// 回到首页

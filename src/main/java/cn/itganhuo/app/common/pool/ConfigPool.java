@@ -33,7 +33,7 @@ import cn.itganhuo.app.exception.InternalException;
  */
 public class ConfigPool {
 
-	private static final Logger logger = LogManager.getLogger(ConfigPool.class);
+	private static final Logger log = LogManager.getLogger(ConfigPool.class.getName());
 
 	private static String fname = ConstantPool.CONFIG_BEAN_FILE_PATH;
 	private static Configuration config = null;
@@ -54,10 +54,10 @@ public class ConfigPool {
 	 */
 	public static String getString(String key) {
 		if (!StringUtil.hasText(fname)) {
-			throw new InternalException(logger, "Configuration file path is incorrect.");
+			throw new InternalException(log, "Configuration file path is incorrect.");
 		}
 		if (!StringUtil.hasText(key)) {
-			throw new InternalException(logger, "The key you entered is not legitimate.");
+			throw new InternalException(log, "The key you entered is not legitimate.");
 		}
 		try {
 			if (config == null) {
@@ -68,7 +68,7 @@ public class ConfigPool {
 				}
 			}
 		} catch (ConfigurationException e) {
-			throw new InternalException(logger, "Profiles read exception.", e);
+			throw new InternalException(log, "Profiles read exception.", e);
 		}
 		return config.getString(key.trim());
 	}

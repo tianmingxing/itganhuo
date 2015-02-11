@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration>
 
-	<!-- 这个文件主要记录仍然使用Log4j2.x版本的日志，新版本的日志记录效率比1版本要高2倍。 -->
+	<!-- 这个文件主要记录使用Log4j2.x新版本的日志，新版本的日志记录效率比1版本要高2倍。 -->
 	
 	<!-- 日志输出目的地 -->
 	<Appenders>
@@ -28,7 +28,7 @@
 		
 	</Appenders>
 
-	<!-- 输出其它路径日志 -->
+	<!-- 日志输出 -->
 	<Loggers>
 		<Logger name="cn.itganhuo" level="INFO" includeLocation="true">
 			<AppenderRef ref="Async" />
