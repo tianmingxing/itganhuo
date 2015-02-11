@@ -51,7 +51,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>appServlet</servlet-name>
-		<url-pattern>/**</url-pattern>
+		<url-pattern>/</url-pattern>
 	</servlet-mapping>
     
     <!-- shiro过滤器 -->
@@ -72,6 +72,11 @@
 	<servlet>
 	    <servlet-name>DruidStatView</servlet-name>
 	    <servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class>
+	    <!-- 设置false避免别人执行Reset All操作导致所有计数器清零并重新计数 -->
+	    <init-param>
+	        <param-name>resetEnable</param-name>
+	        <param-value>false</param-value>
+	    </init-param>
 	</servlet>
 	<servlet-mapping>
 	    <servlet-name>DruidStatView</servlet-name>

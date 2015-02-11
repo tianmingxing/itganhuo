@@ -8,8 +8,9 @@
 	<!-- 开启MVC注解 -->
 	<mvc:annotation-driven />
 
-	<!-- 处理静态资源映射(由Spring MVC框架自己处理静态资源，并添加一些有用的附加值功能。) -->
-	<mvc:resources location="/static/" mapping="/static/**" cache-period="31556926" />
+	<!-- 处理静态资源映射 -->
+	<mvc:default-servlet-handler/>
+	<mvc:resources location="/WEB-INF/static/" mapping="/static/**"  />
 	
 	<!-- 默认首页 -->
 	<mvc:view-controller path="/" view-name="redirect:/articles/1/1" />
