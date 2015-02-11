@@ -10,7 +10,7 @@
 		</Console>
 
 		<!-- 按日期滚动输出日志文件 -->
-		<RollingFile name="RUN" fileName="${catalina.home}/idataLogs/run.log" filePattern="${catalina.home}/run-%d{MM-dd-yyyy}.log.gz" ignoreExceptions="false">
+		<RollingFile name="RUN" fileName="run.log" filePattern="${catalina.home}/run-%d{MM-dd-yyyy}.log.gz" ignoreExceptions="false">
 			<PatternLayout>
 				<Pattern>[%-5p]|%d|%t|%c{2}|%l|%m%n</Pattern>
 			</PatternLayout>
