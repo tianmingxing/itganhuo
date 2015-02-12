@@ -7,29 +7,29 @@
 	<cache />
 
 	<resultMap id="article_label_result" type="ArticleLabel">
-		<id property="id" column="F_ID" />
-		<result property="articleId" column="F_ARTICLE_ID" />
-		<result property="labelId" column="F_LABEL_ID" />
-		<result property="userId" column="F_USER_ID" />
+		<id property="id" column="f_id" />
+		<result property="articleId" column="f_articleId" />
+		<result property="labelId" column="f_labelId" />
+		<result property="userId" column="f_userId" />
 		<collection property="labels" ofType="Label" resultMap="label_result" />
 	</resultMap>
 	
 	<resultMap id="label_result" type="Label">
-		<id property="id" column="G_ID" />
-		<result property="userId" column="G_USER_ID" />
-		<result property="name" column="G_NAME" />
-		<result property="description" column="G_DESCRIPTION" />
-		<result property="postDate" column="G_POST_DATE" />
+		<id property="id" column="g_id" />
+		<result property="userId" column="g_userId" />
+		<result property="name" column="g_name" />
+		<result property="description" column="g_description" />
+		<result property="postDate" column="g_postDate" />
 	</resultMap>
 	
 	<!-- 保存文章和标签的多对多关系 -->
 	<insert id="insert" parameterType="ArticleLabel" useGeneratedKeys="true" keyProperty="ID">
-		INSERT INTO T_ARTICLE_LABEL
+		INSERT INTO t_article_label
 		<trim prefix="(" suffix=")" suffixOverrides=",">
-			<if test="id != null">ID,</if>
-			<if test="articleId != null">ARTICLE_ID,</if>
-			<if test="labelId != null">LABEL_ID,</if>
-			<if test="userId != null">USER_ID,</if>
+			<if test="id != null">id,</if>
+			<if test="articleId != null">articleId,</if>
+			<if test="labelId != null">labelId,</if>
+			<if test="userId != null">userId,</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="id != null">#{id},</if>
@@ -40,22 +40,21 @@
 	</insert>
 	
 	<!-- 根据文章主键到文章标签中间表中查询其对应的标签集合 -->
-	<select id="getArticleSubjectByArticleId" resultMap="article_label_result" parameterType="String">
+	<select id="getArticleLabelById" resultMap="article_label_result" parameterType="Integer">
 		SELECT 
-		    F.ID          F_ID,
-		    F.ARTICLE_ID  F_ARTICLE_ID,
-		    F.FRTICLE_ID  F_FRTICLE_ID,
-		    F.LABEL_ID    F_LABEL_ID,
-		    F.USER_ID     F_USER_ID,
-		    G.ID          G_ID,
-		    G.USER_ID     G_USER_ID,
-		    G.NAME        G_NAME,
-		    G.DESCRIPTION G_DESCRIPTION,
-		    G.POST_DATE   G_POST_DATE
+		    f.id          f_id,
+		    f.articleId  f_articleId,
+		    f.labelId    f_labelId,
+		    f.userId     f_userId,
+		    g.id          g_id,
+		    g.userId     g_userId,
+		    g.name        g_name,
+		    g.description g_description,
+		    g.postDate   g_postDate
 		FROM
-		    T_ARTICLE_LABEL F 
-		    LEFT JOIN T_LABEL G ON F.LABEL_ID = G.ID
-		WHERE F.ARTICLE_ID = #{article_id}
+		    t_article_label f 
+		LEFT JOIN t_label g ON f.labelId = g.id
+		WHERE f.articleId = #{articleId}
 	</select>
 
 </mapper>

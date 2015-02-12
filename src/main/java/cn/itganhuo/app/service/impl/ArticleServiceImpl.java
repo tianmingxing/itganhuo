@@ -10,6 +10,7 @@
  */
 package cn.itganhuo.app.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -81,7 +82,7 @@ public class ArticleServiceImpl implements ArticleService {
 	 */
 	@Override
 	public int countArticleRows() {
-		return (Integer) articleDao.countArticleRows();
+		return articleDao.countArticleRows();
 	}
 
 	/* (non-Javadoc)
@@ -105,21 +106,24 @@ public class ArticleServiceImpl implements ArticleService {
 	 */
 	@Override
 	public List<Article> getArticleByUserId(int user_id, int row_num) {
-		return articleDao.getArticleByUserId(user_id, row_num);
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("userId", user_id);
+		param.put("row_num", row_num);
+		return articleDao.getArticleByUserId(param);
 	}
 
 	/* (non-Javadoc)
 	 * @see cn.itganhuo.app.service.ArticleService#addVisitorVolumeById(int)
 	 */
 	@Override
-	public boolean addVisitorVolumeById(int id) {
+	public boolean addVisitorNumById(int id) {
 		if (id <= 0) {
 			if (logger.isWarnEnabled()) {
 				logger.warn("Incoming value: id is a null value.");
 			}
 			return false;
 		}
-		return articleDao.addVisitorVolumeById(id);
+		return articleDao.addVisitorNumById(id);
 	}
 
 	/* (non-Javadoc)
@@ -134,16 +138,16 @@ public class ArticleServiceImpl implements ArticleService {
 	 * @see cn.itganhuo.app.service.ArticleService#addUseful(int)
 	 */
 	@Override
-	public boolean addUseful(int article_id) {
-		return articleDao.addUsefulById(article_id);
+	public boolean addPraiseNum(int article_id) {
+		return articleDao.addPraiseNumById(article_id);
 	}
 
 	/* (non-Javadoc)
 	 * @see cn.itganhuo.app.service.ArticleService#addUseless(int)
 	 */
 	@Override
-	public boolean addUseless(int article_id) {
-		return articleDao.addUselessById(article_id);
+	public boolean addTrampleNum(int article_id) {
+		return articleDao.addTrampleNumById(article_id);
 	}
 
 	/* (non-Javadoc)

@@ -105,7 +105,7 @@ public interface ArticleService {
 	 *            文章id
 	 * @return 修改成功返回true，反之返回false。
 	 */
-	public boolean addVisitorVolumeById(int id);
+	public boolean addVisitorNumById(int id);
 
 	/**
 	 * 文章和标签被保存到数据后返回两者的ID，这个方法是将文章和ID绑定到。<br>
@@ -128,7 +128,7 @@ public interface ArticleService {
 	 *            文章主键
 	 * @return 返回主键
 	 */
-	public boolean addUseful(int article_id);
+	public boolean addPraiseNum(int article_id);
 
 	/**
 	 * 文章点踩
@@ -139,7 +139,7 @@ public interface ArticleService {
 	 *            文章主键
 	 * @return
 	 */
-	public boolean addUseless(int article_id);
+	public boolean addTrampleNum(int article_id);
 
 	/**
 	 * <h2>根据文章id得到相同标签下的文章（不包含自己）</h2>

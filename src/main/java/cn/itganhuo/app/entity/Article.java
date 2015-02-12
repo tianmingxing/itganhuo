@@ -66,11 +66,11 @@ public class Article implements Serializable {
 	/*
 	 * 文章被浏览次数（不去重复IP访问次数）
 	 */
-	private String visitorVolume;
+	private Integer visitorNum;
 	/*
 	 * 文章主评论数量（不统计回复数量）
 	 */
-	private String answerNumber;
+	private Integer answerNum;
 	/*
 	 * 文章发布人信息
 	 */
@@ -164,14 +164,6 @@ public class Article implements Serializable {
 		this.trampleNum = trampleNum;
 	}
 
-	public String getVisitorVolume() {
-		return visitorVolume;
-	}
-
-	public void setVisitorVolume(String visitorVolume) {
-		this.visitorVolume = visitorVolume;
-	}
-
 	public User getUser() {
 		return user;
 	}
@@ -204,15 +196,25 @@ public class Article implements Serializable {
 		this.comments = comments;
 	}
 
-	public String getAnswerNumber() {
-		return answerNumber;
+	public Integer getVisitorNum() {
+		return visitorNum;
 	}
 
-	public void setAnswerNumber(String answerNumber) {
-		this.answerNumber = answerNumber;
+	public void setVisitorNum(Integer visitorNum) {
+		this.visitorNum = visitorNum;
 	}
 
-	/* (non-Javadoc)
+	public Integer getAnswerNum() {
+		return answerNum;
+	}
+
+	public void setAnswerNum(Integer answerNum) {
+		this.answerNum = answerNum;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -223,7 +225,9 @@ public class Article implements Serializable {
 		return result;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -243,15 +247,21 @@ public class Article implements Serializable {
 		return true;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return "Article [id=" + id + ", userId=" + userId + ", title=" + title + ", content=" + content + ", ymd=" + ymd + ", hms=" + hms + ", postDate="
-				+ postDate + ", updateDate=" + updateDate + ", praiseNum=" + praiseNum + ", trampleNum=" + trampleNum + ", visitorVolume=" + visitorVolume
-				+ ", answerNumber=" + answerNumber + ", user=" + user + ", articleLabels=" + articleLabels + ", articleLines=" + articleLines + ", comments="
-				+ comments + "]";
+		return "Article [id=" + id + ", userId=" + userId + ", title=" + title
+				+ ", content=" + content + ", ymd=" + ymd + ", hms=" + hms
+				+ ", postDate=" + postDate + ", updateDate=" + updateDate
+				+ ", praiseNum=" + praiseNum + ", trampleNum=" + trampleNum
+				+ ", visitorVolume=" + visitorNum + ", answerNumber="
+				+ answerNum + ", user=" + user + ", articleLabels="
+				+ articleLabels + ", articleLines=" + articleLines
+				+ ", comments=" + comments + "]";
 	}
 
 }

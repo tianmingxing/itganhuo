@@ -61,7 +61,7 @@ public interface ArticleDao {
 	 * @author 深圳-小兴
 	 * @return 返回记录数
 	 */
-	public Object countArticleRows();
+	public int countArticleRows();
 
 	/**
 	 * 新增一篇文章
@@ -80,9 +80,11 @@ public interface ArticleDao {
 	 * @author 深圳-小兴
 	 * @param id
 	 *            用户主键
+	 *  @param row_num
+	 *            返回行数量
 	 * @return 返回文章结果集
 	 */
-	public List<Article> getArticleByUserId(int user_id, int row_num);
+	public List<Article> getArticleByUserId(Map<String, Object> param);
 
 	/**
 	 * 增加浏览次数
@@ -93,7 +95,7 @@ public interface ArticleDao {
 	 *            文章ID
 	 * @return 新增成功返回true，反之返回false。
 	 */
-	public boolean addVisitorVolumeById(int id);
+	public boolean addVisitorNumById(int id);
 
 	/**
 	 * 文章点赞
@@ -104,7 +106,7 @@ public interface ArticleDao {
 	 *            文章id
 	 * @return 新增成功返回true，反之返回false。
 	 */
-	public boolean addUsefulById(int id);
+	public boolean addPraiseNumById(int id);
 
 	/**
 	 * 文章点踩
@@ -115,7 +117,7 @@ public interface ArticleDao {
 	 *            文章id
 	 * @return 新增成功返回true，反之返回false。
 	 */
-	public boolean addUselessById(int id);
+	public boolean addTrampleNumById(int id);
 
 	/**
 	 * 查询文章详细信息，包括作者、补充、评论、评论人信息、回复、回复人信息、标签

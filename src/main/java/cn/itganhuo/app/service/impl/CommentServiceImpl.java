@@ -10,6 +10,9 @@
  */
 package cn.itganhuo.app.service.impl;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,9 +51,9 @@ public class CommentServiceImpl implements CommentService {
 	public int addComment(Comment comment) {
 		comment.setPostDate(DateUtil.getNowDateTimeStr(null));
 		if (comment.getType() == 2) {
-			articleDao.addUsefulById(comment.getArticleId());
+			articleDao.addPraiseNumById(comment.getArticleId());
 		} else if (comment.getType() == 3) {
-			articleDao.addUselessById(comment.getArticleId());
+			articleDao.addTrampleNumById(comment.getArticleId());
 		}
 		return commentDao.insert(comment);
 	}
@@ -84,7 +87,11 @@ public class CommentServiceImpl implements CommentService {
 	 */
 	@Override
 	public boolean isInvolvedComment(int articleId, int userId) {
-		Comment comment = commentDao.isInvolvedComment(1, articleId, userId);
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("type", 1);
+		param.put("articleId", articleId);
+		param.put("userId", userId);
+		Comment comment = commentDao.isInvolvedComment(param);
 		if (comment == null || comment.getId() <= 0)
 			return false;
 		else

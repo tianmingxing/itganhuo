@@ -8,164 +8,164 @@
 
 	<!-- 文章表字段 -->
 	<sql id="article_column_list">
-		A.ID             A_ID,
-		A.USER_ID        A_USER_ID,
-		A.TITLE          A_TITLE,
-		A.CONTENT        A_CONTENT,
-		A.YMD            A_YMD,
-		A.HMS            A_HMS,
-		A.UPDATE_DATE    A_UPDATE_DATE,
-		A.PRAISE_NUM     A_PRAISE_NUM,
-		A.TRAMPLE_NUM    A_TRAMPLE_NUM,
-		A.VISITORVOL_UME A_VISITORVOL_UME,
-		A.ANSWER_NUMBER A_ANSWER_NUMBER
+		a.id             a_id,
+		a.userId        a_userId,
+		a.title          a_title,
+		a.content        a_content,
+		a.ymd            a_ymd,
+		a.hms            a_hms,
+		a.updateDate    a_updateDate,
+		a.praiseNum     a_praiseNum,
+		a.trampleNum    a_trampleNum,
+		a.visitorNum a_visitorNum,
+		a.answerNum  a_answerNum
 	</sql>
 
 	<!-- 文章项表字段 -->
 	<sql id="article_line_column_list">
-		B.ID          B_ID,
-		B.USER_ID     B_USER_ID,
-		B.ARTICLE_ID  B_ARTICLE_ID,
-		B.CONTENT     B_CONTENT,
-		B.POST_DATE   B_POST_DATE,
-		B.PRAISE_NUM  B_PRAISE_NUM,
-		B.TRAMPLE_NUM B_TRAMPLE_NUM,
-		B.IS_PASS     B_IS_PASS,
-		B.DESCRIBE    B_DESCRIBE
+		b.id          b_id,
+		b.userId     b_userId,
+		b.articleId  b_articleId,
+		b.content     b_content,
+		b.postDate   b_postDate,
+		b.praiseNum  b_praiseNum,
+		b.trampleNum b_trampleNum,
+		b.isPass     b_isPass,
+		b.describe    b_describe
 	</sql>
 
 	<!-- 文章用户字段 -->
 	<sql id="article_user_column_list">
-		C.ID                  C_ID,
-		C.ACCOUNT             C_ACCOUNT,
-		C.ISLOCK              C_ISLOCK,
-		C.NICKNAME            C_NICKNAME,
-		C.SEX                 C_SEX,
-		C.EMAIL               C_EMAIL,
-		C.QQ                  C_QQ,
-		C.PHONE               C_PHONE,
-		C.TEL                 C_TEL,
-		C.POST_DATE           C_POST_DATE,
-		C.TYPE                C_TYPE,
-		C.LAST_LOGIN_IP       C_LAST_LOGIN_IP,
-		C.LAST_LOGIN_DATE     C_LAST_LOGIN_DATE,
-		C.IS_VALIDATE_EMAIL   C_IS_VALIDATE_EMAIL,
-		C.EMAIL_VALIDATE_CODE C_EMAIL_VALIDATE_CODE,
-		C.EMAIL_VALIDATE_DATE C_EMAIL_VALIDATE_DATE
+		c.id                  c_id,
+		c.account             c_account,
+		c.isLock              c_isLock,
+		c.nickname            c_nickname,
+		c.sex                 c_sex,
+		c.email               c_email,
+		c.qq                  c_qq,
+		c.phone               c_phone,
+		c.tel                 c_tel,
+		c.postDate           c_postDate,
+		c.type                c_type,
+		c.lastLoginIp       c_lastLoginIp,
+		c.lastLoginDate     c_lastLoginDate,
+		c.isValidateEmail   c_isValidateEmail,
+		c.emailValidateCode c_emailValidateCode,
+		c.emailValidateDate c_emailValidateDate
 	</sql>
 
 	<!-- 文章项用户字段 -->
 	<sql id="article_line_user_column_list">
-		C2.ID                  C2_ID,
-		C2.ACCOUNT             C2_ACCOUNT,
-		C2.ISLOCK              C2_ISLOCK,
-		C2.NICKNAME            C2_NICKNAME,
-		C2.SEX                 C2_SEX,
-		C2.EMAIL               C2_EMAIL,
-		C2.QQ                  C2_QQ,
-		C2.PHONE               C2_PHONE,
-		C2.TEL                 C2_TEL,
-		C2.POST_DATE           C2_POST_DATE,
-		C2.TYPE                C2_TYPE,
-		C2.LAST_LOGIN_IP       C2_LAST_LOGIN_IP,
-		C2.LAST_LOGIN_DATE     C2_LAST_LOGIN_DATE,
-		C2.IS_VALIDATE_EMAIL   C2_IS_VALIDATE_EMAIL,
-		C2.EMAIL_VALIDATE_CODE C2_EMAIL_VALIDATE_CODE,
-		C2.EMAIL_VALIDATE_DATE C2_EMAIL_VALIDATE_DATE
+		c2.id                  c2_id,
+		c2.account             c2_account,
+		c2.isLock              c2_isLock,
+		c2.nickname            c2_nickname,
+		c2.sex                 c2_sex,
+		c2.email               c2_email,
+		c2.qq                  c2_qq,
+		c2.phone               c2_phone,
+		c2.tel                 c2_tel,
+		c2.postDate           c2_postDate,
+		c2.type                c2_type,
+		c2.lastLoginIp       c2_lastLoginIp,
+		c2.lastLoginDate     c2_lastLoginDate,
+		c2.isValidateEmail   c2_isValidateEmail,
+		c2.emailValidateCode c2_emailValidateCode,
+		c2.emailValidateDate c2_emailValidateDate
 	</sql>
 
 	<!-- 评论表字段 -->
 	<sql id="comment_column_list">
-		D.ID             D_ID,
-		D.TYPE           D_TYPE,
-		D.ARTICLE_ID     D_ARTICLE_ID,
-		D.USER_ID        D_USER_ID,
-		D.CONTENT        D_CONTENT,
-		D.POST_DATE      D_POST_DATE,
-		D.PRAISE         D_PRAISE,
-		D.TRAMPLE        D_TRAMPLE
+		d.id             d_id,
+		d.type           d_type,
+		d.articleId     d_articleId,
+		d.userId        d_userId,
+		d.content        d_content,
+		d.postDate      d_postDate,
+		d.praise         d_praise,
+		d.trample        d_trample
 	</sql>
 
 	<!-- 评论用户字段 -->
 	<sql id="comment_user_column_list">
-		C3.ID                  C3_ID,
-		C3.ACCOUNT             C3_ACCOUNT,
-		C3.ISLOCK              C3_ISLOCK,
-		C3.NICKNAME            C3_NICKNAME,
-		C3.SEX                 C3_SEX,
-		C3.EMAIL               C3_EMAIL,
-		C3.QQ                  C3_QQ,
-		C3.PHONE               C3_PHONE,
-		C3.TEL                 C3_TEL,
-		C3.POST_DATE           C3_POST_DATE,
-		C3.TYPE                C3_TYPE,
-		C3.LAST_LOGIN_IP       C3_LAST_LOGIN_IP,
-		C3.LAST_LOGIN_DATE     C3_LAST_LOGIN_DATE,
-		C3.IS_VALIDATE_EMAIL   C3_IS_VALIDATE_EMAIL,
-		C3.EMAIL_VALIDATE_CODE C3_EMAIL_VALIDATE_CODE,
-		C3.EMAIL_VALIDATE_DATE C3_EMAIL_VALIDATE_DATE
+		c3.id                  c3_id,
+		c3.account             c3_account,
+		c3.isLock              c3_isLock,
+		c3.nickname            c3_nickname,
+		c3.sex                 c3_sex,
+		c3.email               c3_email,
+		c3.qq                  c3_qq,
+		c3.phone               c3_phone,
+		c3.tel                 c3_tel,
+		c3.postDate           c3_postDate,
+		c3.type                c3_type,
+		c3.lastLoginIp       c3_lastLoginIp,
+		c3.lastLoginDate     c3_lastLoginDate,
+		c3.isValidateEmail   c3_isValidateEmail,
+		c3.emailValidateCode c3_emailValidateCode,
+		c3.emailValidateDate c3_emailValidateDate
 	</sql>
 
 	<!-- 评论回复表字段 -->
 	<sql id="reply_column_list">
-		E.ID         E_ID,
-		E.PARENT_ID  E_PARENT_ID,
-		E.USER_ID    E_USER_ID,
-		E.COMMENT_ID E_COMMENT_ID,
-		E.CONTENT    E_CONTENT,
-		E.POST_DATE  E_POST_DATE
+		e.id         e_id,
+		e.parentId  e_parentId,
+		e.userId    e_userId,
+		e.commentId e_commentId,
+		e.content    e_content,
+		e.postDate  e_postDate
 	</sql>
 
 	<!-- 评论回复人信息表字段 -->
 	<sql id="reply_user_column_list">
-		C4.ID                  C4_ID,
-		C4.ACCOUNT             C4_ACCOUNT,
-		C4.ISLOCK              C4_ISLOCK,
-		C4.NICKNAME            C4_NICKNAME,
-		C4.SEX                 C4_SEX,
-		C4.EMAIL               C4_EMAIL,
-		C4.QQ                  C4_QQ,
-		C4.PHONE               C4_PHONE,
-		C4.TEL                 C4_TEL,
-		C4.POST_DATE           C4_POST_DATE,
-		C4.TYPE                C4_TYPE,
-		C4.LAST_LOGIN_IP       C4_LAST_LOGIN_IP,
-		C4.LAST_LOGIN_DATE     C4_LAST_LOGIN_DATE,
-		C4.IS_VALIDATE_EMAIL   C4_IS_VALIDATE_EMAIL,
-		C4.EMAIL_VALIDATE_CODE C4_EMAIL_VALIDATE_CODE,
-		C4.EMAIL_VALIDATE_DATE C4_EMAIL_VALIDATE_DATE
+		c4.id                  c4_id,
+		c4.account             c4_account,
+		c4.isLock              c4_isLock,
+		c4.nickname            c4_nickname,
+		c4.sex                 c4_sex,
+		c4.email               c4_email,
+		c4.qq                  c4_qq,
+		c4.phone               c4_phone,
+		c4.tel                 c4_tel,
+		c4.postDate           c4_postDate,
+		c4.type                c4_type,
+		c4.lastLoginIp       c4_lastLoginIp,
+		c4.lastLoginDate     c4_lastLoginDate,
+		c4.isValidateEmail   c4_isValidateEmail,
+		c4.emailValidateCode c4_emailValidateCode,
+		c4.emailValidateDate c4_emailValidateDate
 	</sql>
 
 	<!-- 文章标签中间表字段 -->
 	<sql id="article_label_column_list">
-		F.ID         F_ID,
-		F.ARTICLE_ID F_ARTICLE_ID,
-		F.LABEL_ID   F_LABEL_ID,
-		F.USER_ID    F_USER_ID
+		f.id         f_id,
+		f.articleId f_articleId,
+		f.labelId   f_labelId,
+		f.userId    f_userId
 	</sql>
 
 	<!-- 标签表字段 -->
 	<sql id="label_column_list">
-		G.ID          G_ID,
-		G.USER_ID     G_USER_ID,
-		G.NAME        G_NAME,
-		G.DESCRIPTION G_DESCRIPTION,
-		G.POST_DATE   G_POST_DATE
+		g.id          g_id,
+		g.userId     g_userId,
+		g.name        g_name,
+		g.description g_description,
+		g.postDate   g_postDate
 	</sql>
 
 	<!-- 针对查询单篇文章详情时返回的Map -->
 	<resultMap id="article_result" type="Article">
-		<id property="id" column="A_ID" />
-		<result property="userId" column="A_USER_ID" />
-		<result property="title" column="A_TITLE" />
-		<result property="content" column="A_CONTENT" />
-		<result property="ymd" column="A_YMD" />
-		<result property="hms" column="A_HMS" />
-		<result property="updateDate" column="A_UPDATE_DATE" />
-		<result property="praiseNum" column="A_PRAISE_NUM" />
-		<result property="trampleNum" column="A_TRAMPLE_NUM" />
-		<result property="visitorVolume" column="A_VISITORVOL_UME" />
-		<result property="answerNumber" column="ANSWER_NUMBER" />
+		<id property="id" column="a_id" />
+		<result property="userId" column="a_userId" />
+		<result property="title" column="a_title" />
+		<result property="content" column="a_content" />
+		<result property="ymd" column="a_ymd" />
+		<result property="hms" column="a_hms" />
+		<result property="updateDate" column="a_updateDate" />
+		<result property="praiseNum" column="a_praiseNum" />
+		<result property="trampleNum" column="a_trampleNum" />
+		<result property="visitorNum" column="a_visitorNum" />
+		<result property="answerNum" column="a_answerNum" />
 		<association property="user" javaType="User" resultMap="article_user_result" />
 		<collection property="articleLabels" ofType="ArticleLabel" resultMap="article_label_result" />
 		<collection property="articleLines" ofType="ArticleLine" resultMap="article_line_result" />
@@ -173,138 +173,138 @@
 	</resultMap>
 
 	<resultMap id="article_user_result" type="User">
-		<id property="id" column="C_ID" />
-		<result property="account" column="C_ACCOUNT" />
-		<result property="isLock" column="C_ISLOCK" />
-		<result property="nickname" column="C_NICKNAME" />
-		<result property="sex" column="C_SEX" />
-		<result property="email" column="C_EMAIL" />
-		<result property="qq" column="C_QQ" />
-		<result property="phone" column="C_PHONE" />
-		<result property="tel" column="C_TEL" />
-		<result property="postDate" column="C_POST_DATE" />
-		<result property="type" column="C_TYPE" />
-		<result property="lastLoginIp" column="C_LAST_LOGIN_IP" />
-		<result property="lastLoginDate" column="C_LAST_LOGIN_DATE" />
-		<result property="isValidateEmail" column="C_IS_VALIDATE_EMAIL" />
-		<result property="emailValidateCode" column="C_EMAIL_VALIDATE_CODE" />
-		<result property="emailValidateDate" column="C_EMAIL_VALIDATE_DATE" />
+		<id property="id" column="c_id" />
+		<result property="account" column="c_account" />
+		<result property="isLock" column="c_isLock" />
+		<result property="nickname" column="c_nickname" />
+		<result property="sex" column="c_sex" />
+		<result property="email" column="c_email" />
+		<result property="qq" column="c_qq" />
+		<result property="phone" column="c_phone" />
+		<result property="tel" column="c_tel" />
+		<result property="postDate" column="c_postDate" />
+		<result property="type" column="c_type" />
+		<result property="lastLoginIp" column="c_lastLoginIp" />
+		<result property="lastLoginDate" column="c_lastLoginDate" />
+		<result property="isValidateEmail" column="c_isValidateEmail" />
+		<result property="emailValidateCode" column="c_emailValidateCode" />
+		<result property="emailValidateDate" column="c_emailValidateDate" />
 	</resultMap>
 
 	<resultMap id="article_line_result" type="ArticleLine">
-		<id property="id" column="B_ID" />
-		<result property="userId" column="B_USER_ID" />
-		<result property="articleId" column="B_ARTICLE_ID" />
-		<result property="content" column="B_CONTENT" />
-		<result property="postDate" column="B_POST_DATE" />
-		<result property="praiseNum" column="B_PRAISE_NUM" />
-		<result property="trampleNum" column="B_TRAMPLE_NUM" />
-		<result property="isPass" column="B_IS_PASS" />
-		<result property="describe" column="B_DESCRIBE" />
+		<id property="id" column="b_id" />
+		<result property="userId" column="b_userId" />
+		<result property="articleId" column="b_articleId" />
+		<result property="content" column="b_content" />
+		<result property="postDate" column="b_postDate" />
+		<result property="praiseNum" column="b_praiseNum" />
+		<result property="trampleNum" column="b_trampleNum" />
+		<result property="isPass" column="b_isPass" />
+		<result property="describe" column="b_describe" />
 		<association property="user" javaType="User" resultMap="article_line_user_result" />
 	</resultMap>
 
 	<resultMap id="article_line_user_result" type="User">
-		<id property="id" column="C2_ID" />
-		<result property="account" column="C2_ACCOUNT" />
-		<result property="isLock" column="C2_ISLOCK" />
-		<result property="nickname" column="C2_NICKNAME" />
-		<result property="sex" column="C2_SEX" />
-		<result property="email" column="C2_EMAIL" />
-		<result property="qq" column="C2_QQ" />
-		<result property="phone" column="C2_PHONE" />
-		<result property="tel" column="C2_TEL" />
-		<result property="postDate" column="C2_POST_DATE" />
-		<result property="type" column="C2_TYPE" />
-		<result property="lastLoginIp" column="C2_LAST_LOGIN_IP" />
-		<result property="lastLoginDate" column="C2_LAST_LOGIN_DATE" />
-		<result property="isValidateEmail" column="C2_IS_VALIDATE_EMAIL" />
-		<result property="emailValidateCode" column="C2_EMAIL_VALIDATE_CODE" />
-		<result property="emailValidateDate" column="C2_EMAIL_VALIDATE_DATE" />
+		<id property="id" column="c2_id" />
+		<result property="account" column="c2_account" />
+		<result property="isLock" column="c2_isLock" />
+		<result property="nickname" column="c2_nickname" />
+		<result property="sex" column="c2_sex" />
+		<result property="email" column="c2_email" />
+		<result property="qq" column="c2_qq" />
+		<result property="phone" column="c2_phone" />
+		<result property="tel" column="c2_tel" />
+		<result property="postDate" column="c2_postDate" />
+		<result property="type" column="c2_type" />
+		<result property="lastLoginIp" column="c2_lastLoginIp" />
+		<result property="lastLoginDate" column="c2_lastLoginDate" />
+		<result property="isValidateEmail" column="c2_isValidateEmail" />
+		<result property="emailValidateCode" column="c2_emailValidateCode" />
+		<result property="emailValidateDate" column="c2_emailValidateDate" />
 	</resultMap>
 
 	<resultMap id="comment_result" type="Comment">
-		<id property="id" column="D_ID" />
-		<result property="type" column="D_TYPE" />
-		<result property="articleId" column="D_ARTICLE_ID" />
-		<result property="userId" column="D_USER_ID" />
-		<result property="content" column="D_CONTENT" />
-		<result property="postDate" column="D_POST_DATE" />
-		<result property="praiseNum" column="D_PRAISE" />
-		<result property="trampleNum" column="D_TRAMPLE" />
+		<id property="id" column="d_id" />
+		<result property="type" column="d_type" />
+		<result property="articleId" column="d_articleId" />
+		<result property="userId" column="d_userId" />
+		<result property="content" column="d_content" />
+		<result property="postDate" column="d_postDate" />
+		<result property="praiseNum" column="d_praise" />
+		<result property="trampleNum" column="d_trample" />
 		<association property="user" javaType="User" resultMap="comment_user_result" />
 		<collection property="replys" ofType="Reply" resultMap="reply_result" />
 	</resultMap>
 
 	<resultMap id="comment_user_result" type="User">
-		<id property="id" column="C3_ID" />
-		<result property="account" column="C3_ACCOUNT" />
-		<result property="isLock" column="C3_ISLOCK" />
-		<result property="nickname" column="C3_NICKNAME" />
-		<result property="sex" column="C3_SEX" />
-		<result property="email" column="C3_EMAIL" />
-		<result property="qq" column="C3_QQ" />
-		<result property="phone" column="C3_PHONE" />
-		<result property="tel" column="C3_TEL" />
-		<result property="postDate" column="C3_POST_DATE" />
-		<result property="type" column="C3_TYPE" />
-		<result property="lastLoginIp" column="C3_LAST_LOGIN_IP" />
-		<result property="lastLoginDate" column="C3_LAST_LOGIN_DATE" />
-		<result property="isValidateEmail" column="C3_IS_VALIDATE_EMAIL" />
-		<result property="emailValidateCode" column="C3_EMAIL_VALIDATE_CODE" />
-		<result property="emailValidateDate" column="C3_EMAIL_VALIDATE_DATE" />
+		<id property="id" column="c3_id" />
+		<result property="account" column="c3_account" />
+		<result property="isLock" column="c3_isLock" />
+		<result property="nickname" column="c3_nickname" />
+		<result property="sex" column="c3_sex" />
+		<result property="email" column="c3_email" />
+		<result property="qq" column="c3_qq" />
+		<result property="phone" column="c3_phone" />
+		<result property="tel" column="c3_tel" />
+		<result property="postDate" column="c3_postDate" />
+		<result property="type" column="c3_type" />
+		<result property="lastLoginIp" column="c3_lastLoginIp" />
+		<result property="lastLoginDate" column="c3_lastLoginDate" />
+		<result property="isValidateEmail" column="c3_isValidateEmail" />
+		<result property="emailValidateCode" column="c3_emailValidateCode" />
+		<result property="emailValidateDate" column="c3_emailValidateDate" />
 	</resultMap>
 
 	<resultMap id="reply_result" type="Reply">
-		<id property="id" column="E_ID" />
-		<result property="parentId" column="E_PARENT_ID" />
-		<result property="userId" column="E_USER_ID" />
-		<result property="commentId" column="E_COMMENT_ID" />
-		<result property="content" column="E_CONTENT" />
-		<result property="postDate" column="E_POST_DATE" />
+		<id property="id" column="e_id" />
+		<result property="parentId" column="e_parentId" />
+		<result property="userId" column="e_userId" />
+		<result property="commentId" column="e_commentId" />
+		<result property="content" column="e_content" />
+		<result property="postDate" column="e_postDate" />
 		<association property="user" javaType="User" resultMap="reply_user_result" />
 	</resultMap>
 
 	<resultMap id="reply_user_result" type="User">
-		<id property="id" column="C4_ID" />
-		<result property="account" column="C4_ACCOUNT" />
-		<result property="isLock" column="C4_ISLOCK" />
-		<result property="nickname" column="C4_NICKNAME" />
-		<result property="sex" column="C4_SEX" />
-		<result property="email" column="C4_EMAIL" />
-		<result property="qq" column="C4_QQ" />
-		<result property="phone" column="C4_PHONE" />
-		<result property="tel" column="C4_TEL" />
-		<result property="postDate" column="C4_POST_DATE" />
-		<result property="type" column="C4_TYPE" />
-		<result property="lastLoginIp" column="C4_LAST_LOGIN_IP" />
-		<result property="lastLoginDate" column="C4_LAST_LOGIN_DATE" />
-		<result property="isValidateEmail" column="C4_IS_VALIDATE_EMAIL" />
-		<result property="emailValidateCode" column="C4_EMAIL_VALIDATE_CODE" />
-		<result property="emailValidateDate" column="C4_EMAIL_VALIDATE_DATE" />
+		<id property="id" column="c4_id" />
+		<result property="account" column="c4_account" />
+		<result property="isLock" column="c4_isLock" />
+		<result property="nickname" column="c4_nickname" />
+		<result property="sex" column="c4_sex" />
+		<result property="email" column="c4_email" />
+		<result property="qq" column="c4_qq" />
+		<result property="phone" column="c4_phone" />
+		<result property="tel" column="c4_tel" />
+		<result property="postDate" column="c4_postDate" />
+		<result property="type" column="c4_type" />
+		<result property="lastLoginIp" column="c4_lastLoginIp" />
+		<result property="lastLoginDate" column="c4_lastLoginDate" />
+		<result property="isValidateEmail" column="c4_isValidateEmail" />
+		<result property="emailValidateCode" column="c4_emailValidateCode" />
+		<result property="emailValidateDate" column="c4_emailValidateDate" />
 	</resultMap>
 
 	<resultMap id="article_label_result" type="ArticleLabel">
-		<id property="id" column="F_ID" />
-		<result property="articleId" column="F_ARTICLE_ID" />
-		<result property="labelId" column="F_LABEL_ID" />
-		<result property="userId" column="F_USER_ID" />
+		<id property="id" column="f_id" />
+		<result property="articleId" column="f_articleId" />
+		<result property="labelId" column="f_labelId" />
+		<result property="userId" column="f_userId" />
 		<collection property="labels" ofType="Label" resultMap="label_result" />
 	</resultMap>
 
 	<resultMap id="label_result" type="Label">
-		<id property="id" column="G_ID" />
-		<result property="userId" column="G_USER_ID" />
-		<result property="name" column="G_NAME" />
-		<result property="description" column="G_DESCRIPTION" />
-		<result property="postDate" column="G_POST_DATE" />
+		<id property="id" column="g_id" />
+		<result property="userId" column="g_userId" />
+		<result property="name" column="g_name" />
+		<result property="description" column="g_description" />
+		<result property="postDate" column="g_postDate" />
 	</resultMap>
 
 	<!-- 
 		文章详情页：根据文章主键查询文章详细信息，
 		包括作者、补充、补充人信息、评论、评论人信息、回复、回复人信息、标签
 	 -->
-	<select id="getArticleDetailById" resultMap="article_result" parameterType="String">
+	<select id="getArticleDetailById" resultMap="article_result" parameterType="Integer">
 		SELECT
 		<include refid="article_column_list" />
 		,
@@ -326,18 +326,18 @@
 		,
 		<include refid="label_column_list" />
 		FROM
-		T_ARTICLE A
-		LEFT JOIN T_USER            C  ON A.USER_ID    = C.ID
-		LEFT JOIN T_ARTICLE_LINE    B  ON A.ID         = B.ARTICLE_ID
-		LEFT JOIN T_USER            C2 ON B.USER_ID    = C2.ID
-		LEFT JOIN T_COMMENT         D  ON A.ID         = D.ARTICLE_ID
-		LEFT JOIN T_USER            C3 ON D.USER_ID    = C3.ID
-		LEFT JOIN T_REPLY           E  ON D.ID         = E.COMMENT_ID
-		LEFT JOIN T_USER            C4 ON E.USER_ID    = C4.ID
-		LEFT JOIN T_ARTICLE_LABEL   F  ON A.ID         = F.ARTICLE_ID
-		LEFT JOIN T_LABEL           G  ON F.LABEL_ID   = G.ID
-		WHERE A.ID = #{ID}
-		ORDER BY D.ID, E.ID DESC
+		t_article a
+		LEFT JOIN t_user            c  ON a.userId    = c.id
+		LEFT JOIN t_article_line    b  ON a.id         = b.articleId
+		LEFT JOIN t_user            c2 ON b.userId    = c2.id
+		LEFT JOIN t_comment         d  ON a.id         = d.articleId
+		LEFT JOIN t_user            c3 ON d.userId    = c3.id
+		LEFT JOIN t_reply           e  ON d.id         = e.commentId
+		LEFT JOIN t_user            c4 ON e.userId    = c4.id
+		LEFT JOIN t_article_label   f  ON a.id         = f.articleId
+		LEFT JOIN t_label           g  ON f.labelId   = g.id
+		WHERE a.id = #{id}
+		ORDER BY d.id, e.id DESC
 	</select>
 
 	<!-- 按照条件分页查询文章列表 -->
@@ -347,10 +347,10 @@
 		,
 		<include refid="article_user_column_list" />
 		FROM
-		T_ARTICLE A
-		LEFT JOIN T_USER C ON A.USER_ID = C.ID
+		t_article a
+		LEFT JOIN t_user c ON a.userId = c.id
 		<if test="paging != null and paging.sort != null and paging.order != null">
-			ORDER BY A.${paging.sort} ${paging.order}
+			ORDER BY a.${paging.sort} ${paging.order}
 		</if>
 		<if test="page != null and paging.page > 0 and paging.rows > 0">
 			LIMIT #{paging.offrow}, #{paging.rows}
@@ -360,13 +360,13 @@
 	<!-- 查询文章总行数 -->
 	<select id="countArticleRows" resultType="int">
 		SELECT
-		count(1)
+		COUNT(1)
 		FROM
-		T_ARTICLE A
+		t_article a
 	</select>
 
 	<!-- 根据文章主键查询其作者和多个补充问题信息 -->
-	<select id="getArticleById" resultMap="article_result" parameterType="String">
+	<select id="getArticleById" resultMap="article_result" parameterType="Integer">
 		SELECT
 		<include refid="article_column_list" />
 		,
@@ -374,33 +374,33 @@
 		,
 		<include refid="article_line_column_list" />
 		FROM
-		T_ARTICLE A
-		LEFT JOIN T_USER C ON A.USER_ID = C.ID
-		LEFT JOIN T_ARTICLE_LINE B ON A.ID = B.ARTICLE_ID
-		WHERE A.ID = #{id}
+		t_article a
+		LEFT JOIN t_user c ON a.userId = c.id
+		LEFT JOIN t_article_line b ON a.id = b.articleId
+		WHERE a.id = #{id}
 	</select>
 
 	<!-- 根据用户主键查询最新发布的5篇文章 -->
-	<select id="getArticleByUserId" resultMap="article_result" parameterType="String">
+	<select id="getArticleByUserId" resultMap="article_result" parameterType="Map">
 		SELECT
 		<include refid="article_column_list" />
 		FROM
-		T_ARTICLE A
+		t_article a
 		WHERE
-		A.USER_ID = #{user_id}
-		ORDER BY A.ID DESC
-		LIMIT 0,#{row_num}
+		a.userId = #{userId}
+		ORDER BY a.id DESC
+		LIMIT 0,#{rowNum}
 	</select>
 
 	<!-- 保存一篇文章到数据库 -->
 	<insert id="insert" parameterType="Article" useGeneratedKeys="true" keyProperty="ID">
-		INSERT INTO T_ARTICLE
+		INSERT INTO t_article
 		<trim prefix="(" suffix=")" suffixOverrides=",">
-			<if test="userId != null">USER_ID,</if>
-			<if test="title != null">TITLE,</if>
-			<if test="content != null">CONTENT,</if>
-			<if test="ymd != null">YMD,</if>
-			<if test="hms != null">HMS,</if>
+			<if test="userId != null">userId,</if>
+			<if test="title != null">title,</if>
+			<if test="content != null">content,</if>
+			<if test="ymd != null">ymd,</if>
+			<if test="hms != null">hms,</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="userId != null">#{userId},</if>
@@ -412,46 +412,46 @@
 	</insert>
 
 	<!-- 修改文章访问量 -->
-	<update id="addVisitorVolumeById" parameterType="java.lang.String">
+	<update id="addVisitorNumById" parameterType="Integer">
 		UPDATE
-		T_ARTICLE A
-		SET A.VISITOR_VOLUME = A.VISITOR_VOLUME + 1
-		WHERE A.ID = #{id}
+		t_article a
+		SET a.visitorNum = a.visitorNum + 1
+		WHERE a.id = #{id}
 	</update>
 
 	<!-- 修改文章赞 -->
-	<update id="addPraiseNumById" parameterType="java.lang.String">
-		UPDATE T_ARTICLE A
+	<update id="addPraiseNumById" parameterType="Integer">
+		UPDATE t_article a
 		SET
-		A.PRAISE_NUM = A.PRAISE_NUM + 1
-		WHERE A.ID = #{id}
+		a.praiseNum = a.praiseNum + 1
+		WHERE a.id = #{id}
 	</update>
 
 	<!-- 修改文章踩 -->
-	<update id="addTrampleNumById" parameterType="java.lang.String">
-		UPDATE T_ARTICLE A
+	<update id="addTrampleNumById" parameterType="Integer">
+		UPDATE t_article a
 		SET
-		A.TRAMPLE_NUM = A.TRAMPLE_NUM + 1
-		WHERE A.ID = #{id}
+		a.trampleNum = a.trampleNum + 1
+		WHERE a.id = #{id}
 	</update>
 	
-	<select id="getArticleBySubject" parameterType="java.lang.String" resultType="Article">
+	<select id="getArticleByLabel" parameterType="Integer" resultType="Article">
 		SELECT 
 		  * 
 		FROM
-		  T_ARTICLE 
-		WHERE ID IN 
+		  t_article 
+		WHERE id IN 
 		  (SELECT 
-		    ARTICLE_ID 
+		    articleId 
 		  FROM
-		    T_ARTICLE_LABEL 
-		  WHERE LABEL_ID IN 
+		    t_article_label 
+		  WHERE labelId IN 
 		    (SELECT 
-		      LABEL_ID 
+		      labelId 
 		    FROM
-		      T_ARTICLE_LABEL 
-		    WHERE ARTICLE_ID = #{id}))
-		AND ID != #{id} 
+		      t_article_label 
+		    WHERE articleId = #{id}))
+		AND id != #{id} 
 	</select>
 	
 </mapper>

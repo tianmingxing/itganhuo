@@ -57,12 +57,12 @@ public class TestTemplateDao extends AbstractContextControllerTests {
 
 	@Test
 	public void testLoadByName() {
-		Assert.notNull(templateDao.loadByName("用户邮箱地址认证"), "根据模板名称查询不到对应的信息");
+		Assert.notNull(templateDao.loadByName("用户邮箱地址认证通知"), "根据模板名称查询不到对应的信息");
 	}
 
 	@Test
 	public void testLoadById() {
-		Assert.notNull(templateDao.loadById(3), "根据模板ID查询不到对应的信息");
+		Assert.notNull(templateDao.loadById(1), "根据模板ID查询不到对应的信息");
 	}
 
 	@Test

@@ -30,7 +30,7 @@
 
 	<!-- 日志输出 -->
 	<Loggers>
-		<Logger name="cn.itganhuo" level="INFO" includeLocation="true">
+		<Logger name="cn.itganhuo" level="debug" includeLocation="true">
 			<AppenderRef ref="Async" />
 		</Logger>
 		<Root level="INFO">

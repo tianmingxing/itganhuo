@@ -10,6 +10,8 @@
  */
 package cn.itganhuo.app.dao;
 
+import java.util.Map;
+
 import org.springframework.stereotype.Repository;
 
 import cn.itganhuo.app.entity.Comment;
@@ -18,7 +20,7 @@ import cn.itganhuo.app.entity.Comment;
  * 评论表数据层接口
  * 
  * @version 0.0.1-SNAPSHOT
- * @author 深圳-小兴
+ * @author 深圳-夕落，深圳-小兴
  */
 @Repository
 public interface CommentDao {
@@ -79,6 +81,6 @@ public interface CommentDao {
 	 *            用户ID
 	 * @return 一条评论数据
 	 */
-	public Comment isInvolvedComment(int type, int articleId, int userId);
+	public Comment isInvolvedComment(Map<String, Object> param);
 
 }

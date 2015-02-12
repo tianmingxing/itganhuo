@@ -157,7 +157,7 @@ public class ArticleController {
 	@RequestMapping(value = "/article/{id}", method = RequestMethod.GET)
 	public ModelAndView getArticleById(@PathVariable(value = "id") Integer id) {
 		// 统计并更新文章访问人数
-		articleService.addVisitorVolumeById(id);
+		articleService.addVisitorNumById(id);
 
 		// 查询文章详细信息，包括作者、补充、补充人信息、评论、评论人信息、回复、回复人信息、标签
 		Article article_detail = articleService.getArticleDetailById(id);
@@ -251,7 +251,7 @@ public class ArticleController {
 				comment_model.setPostDate(DateUtil.getNowDateTimeStr(null));
 				commentService.addComment(comment_model);
 				// 更新文章被赞次数
-				articleService.addUseful(article_id);
+				articleService.addPraiseNum(article_id);
 			} else {
 				respMsg.setStatus("1001");
 				respMsg.setMessage(ConfigPool.getString("respMsg.comment.AddUsefulOrUseless.RepetitiveOperation"));
@@ -301,7 +301,7 @@ public class ArticleController {
 				comment_model.setPostDate(DateUtil.getNowDateTimeStr(null));
 				commentService.addComment(comment_model);
 				// 更新文章被踩次数
-				articleService.addUseless(article_id);
+				articleService.addTrampleNum(article_id);
 			} else {
 				respMsg.setStatus("1001");
 				respMsg.setMessage(ConfigPool.getString("respMsg.comment.AddUsefulOrUseless.RepetitiveOperation"));

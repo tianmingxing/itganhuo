@@ -57,7 +57,7 @@
 		<set>
 			<if test="permission != null">permission = #{permission},</if>
 			<if test="description != null">description = #{description},</if>
-			<if test="available != null">isAvailable = #{isAvailable}</if>
+			<if test="isAvailable != null">isAvailable = #{isAvailable}</if>
 		</set>
 		where id = #{id}
 	</update>
