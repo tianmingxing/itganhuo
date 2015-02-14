@@ -45,29 +45,14 @@ public class MenuServiceImpl implements MenuService {
 	 * 
 	 * @see cn.itganhuo.service.AdminService#getMenuTreeJson()
 	 */
-	public List<Menu> getMenuTree() {
-		List<Menu> list1 = menuDao.findMenuByPid(0);
-		if (list1 != null && list1.size() > 0) {
-			for (int i = 0; i < list1.size(); i++) {
-				int id = list1.get(i).getId();
-				if (id >= 0) {
-					List<Menu> list2 = menuDao.findMenuByPid(id);
-					if (list2 != null && list2.size() > 0) {
-						list1.get(i).setChildren(list2);
-						for (int j = 0; j < list2.size(); j++) {
-							int id2 = list2.get(j).getId();
-							if (id2 >= 0) {
-								List<Menu> list3 = menuDao.findMenuByPid(id2);
-								if (list3 != null && list3.size() > 0) {
-									list2.get(j).setChildren(list3);
-								}
-							}
-						}
-					}
-				}
+	public List<Menu> getMenuTree(int pid) {
+		List<Menu> menus = menuDao.findMenuByPid(pid);
+		if (menus != null && menus.size() > 0) {
+			for (int i = 0; i < menus.size(); i++) {
+				menus.get(i).setChildren(this.getMenuTree(menus.get(i).getId()));
 			}
 		}
-		return list1;
+		return menus;
 	}
 
 	/*

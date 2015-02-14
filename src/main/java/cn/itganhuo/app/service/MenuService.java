@@ -32,14 +32,14 @@ public interface MenuService {
 	/**
 	 * 获取菜单数据并组装到JsonTree对象中，让控制层返回json。
 	 * <ol>
-	 * <li>目前写死了最多查询三级关系</li>
+	 * <li>参数传根节点的PID也就是0即可，目前已经实现无限级查询tree。</li>
 	 * </ol>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
 	 * @author 深圳-小兴
 	 * @return 返回菜单模型
 	 */
-	public List<Menu> getMenuTree();
+	public List<Menu> getMenuTree(int pid);
 
 	/**
 	 * 为后台菜单管理查询一个列表
