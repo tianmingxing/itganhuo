@@ -137,7 +137,7 @@ public class AdminController {
 	@RequestMapping(value = "/getMenuTreeJson")
 	@ResponseBody
 	public List<Menu> getMenuTreeJson() {
-		return menuService.getMenuTree();
+		return menuService.getMenuTree(0);
 	}
 
 	/**
