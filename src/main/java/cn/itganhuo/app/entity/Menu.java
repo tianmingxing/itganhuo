@@ -24,6 +24,23 @@ import java.util.List;
  */
 public class Menu implements Serializable {
 
+	public Menu() {
+		
+	}
+	
+	public Menu(Integer id, Integer pid, String text, String state,
+			Boolean checked, String iconCls, String url, Integer sort) {
+		super();
+		this.id = id;
+		this.pid = pid;
+		this.text = text;
+		this.state = state;
+		this.checked = checked;
+		this.iconCls = iconCls;
+		this.url = url;
+		this.sort = sort;
+	}
+
 	private static final long serialVersionUID = -2634219513448488376L;
 	/*
 	 * ID
