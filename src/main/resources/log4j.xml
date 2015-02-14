@@ -14,7 +14,7 @@
 	
 	<!-- 日志输出目的地：文件 -->
 	<appender name="plugin" class="org.apache.log4j.DailyRollingFileAppender">
-		<param name="File" value="${catalina.home}/itganhuoLogs/plugin.log" />
+		<param name="File" value="logs/plugin.log" />
 		<param name="Encoding" value="UTF-8" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="[%-5p]|%d|%t|%c{2}|%l|%m%n" />
