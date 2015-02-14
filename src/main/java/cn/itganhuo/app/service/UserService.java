@@ -21,7 +21,7 @@ import cn.itganhuo.app.entity.User;
  * 用户业务处理接口
  * 
  * @version 0.0.1-SNAPSHOT
- * @author 深圳-小兴
+ * @author 深圳-小兴，天津-天津-小朱
  */
 public interface UserService {
 
@@ -53,7 +53,7 @@ public interface UserService {
 	 * 根据账户查找用户信息
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 朱塞佩
+	 * @author 天津-小朱
 	 * @param account 账号
 	 * @return 用户
 	 */
@@ -74,7 +74,7 @@ public interface UserService {
 	 * 修改用户信息
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 朱塞佩
+	 * @author 天津-小朱
 	 * @param user
 	 * @return
 	 */
@@ -84,7 +84,7 @@ public interface UserService {
 	 * 修改用户密码
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 朱塞佩
+	 * @author 天津-小朱
 	 * @param user
 	 * @return
 	 */

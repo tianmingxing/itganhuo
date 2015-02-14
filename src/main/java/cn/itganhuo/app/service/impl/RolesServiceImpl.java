@@ -37,12 +37,8 @@ import cn.itganhuo.app.service.RolesService;
 @Service
 public class RolesServiceImpl implements RolesService {
 
-	private RolesDao rolesDao;
-
 	@Autowired
-	public void setRolesDao(RolesDao rolesDao) {
-		this.rolesDao = rolesDao;
-	}
+	private RolesDao rolesDao;
 
 	public int addRoless(Roles roles) {
 		return rolesDao.insert(roles);

@@ -35,7 +35,6 @@ public class ConfigPool {
 
 	private static final Logger log = LogManager.getLogger(ConfigPool.class.getName());
 
-	private static String fname = ConstantPool.CONFIG_BEAN_FILE_PATH;
 	private static Configuration config = null;
 
 	private ConfigPool() {
@@ -53,7 +52,7 @@ public class ConfigPool {
 	 * @return 返回值
 	 */
 	public static String getString(String key) {
-		if (!StringUtil.hasText(fname)) {
+		if (!StringUtil.hasText(ConstantPool.CONFIG_BEAN_FILE_PATH)) {
 			throw new InternalException(log, "Configuration file path is incorrect.");
 		}
 		if (!StringUtil.hasText(key)) {
@@ -63,7 +62,7 @@ public class ConfigPool {
 			if (config == null) {
 				synchronized (ConfigPool.class) {
 					if (config == null) {
-						config = new PropertiesConfiguration(fname);
+						config = new PropertiesConfiguration(ConstantPool.REAL_PATH + "/" + ConstantPool.CONFIG_BEAN_FILE_PATH);
 					}
 				}
 			}

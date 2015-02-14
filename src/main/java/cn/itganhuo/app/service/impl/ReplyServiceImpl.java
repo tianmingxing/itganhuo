@@ -32,12 +32,8 @@ import cn.itganhuo.app.service.ReplyService;
 @Service
 public class ReplyServiceImpl implements ReplyService {
 
-	private ReplyDao replyDao;
-
 	@Autowired
-	public void setReplyDao(ReplyDao replyDao) {
-		this.replyDao = replyDao;
-	}
+	private ReplyDao replyDao;
 
 	/* (non-Javadoc)
 	 * @see cn.itganhuo.app.service.ReplyService#addReply(cn.itganhuo.app.entity.Reply)

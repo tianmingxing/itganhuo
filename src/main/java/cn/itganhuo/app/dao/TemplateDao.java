@@ -26,7 +26,7 @@ import cn.itganhuo.app.entity.Template;
  * </dl>
  * 
  * @version 0.0.1-SNAPSHOT
- * @author 天津-朱塞佩，深圳-小兴
+ * @author 天津-小朱，深圳-小兴
  */
 @Repository
 public interface TemplateDao {
@@ -35,7 +35,7 @@ public interface TemplateDao {
 	 * 插入一条模板
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 朱塞佩
+	 * @author 小朱
 	 * @param template
 	 *            模板
 	 * @return 返回主键
@@ -46,7 +46,7 @@ public interface TemplateDao {
 	 * 根据模板名称返回相应模板
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 朱塞佩
+	 * @author 小朱
 	 * @param name
 	 *            模板名称
 	 * @return 返回一条模板记录
@@ -74,7 +74,7 @@ public interface TemplateDao {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 朱塞佩
+	 * @author 小朱
 	 * @return
 	 */
 	public List<Template> loadAll();

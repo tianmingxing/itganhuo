@@ -27,7 +27,7 @@ import cn.itganhuo.app.entity.Roles;
  * </dl>
  * 
  * @version 0.0.1-SNAPSHOT
- * @author 天津-朱塞佩
+ * @author 天津-小朱
  */
 @Repository
 public interface RolesDao {
@@ -42,7 +42,7 @@ public interface RolesDao {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @param record
 	 * @return
 	 */
@@ -59,7 +59,7 @@ public interface RolesDao {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @param record
 	 * @return
 	 */
@@ -76,7 +76,7 @@ public interface RolesDao {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @param id
 	 * @return
 	 */
@@ -93,7 +93,7 @@ public interface RolesDao {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @param condition
 	 * @return
 	 */
@@ -110,7 +110,7 @@ public interface RolesDao {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @param condition
 	 * @return
 	 */

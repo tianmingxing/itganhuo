@@ -26,7 +26,6 @@ import org.springframework.stereotype.Service;
 import cn.itganhuo.app.common.utils.StringUtil;
 import cn.itganhuo.app.dao.UserDao;
 import cn.itganhuo.app.entity.User;
-import cn.itganhuo.app.exception.EmailUnauthorizedException;
 import cn.itganhuo.app.service.UserService;
 
 /**
@@ -38,12 +37,8 @@ import cn.itganhuo.app.service.UserService;
 @Service
 public class UserServiceImpl implements UserService {
 
-	private UserDao userDao = null;
-
 	@Autowired
-	public void setUserDao(UserDao userDao) {
-		this.userDao = userDao;
-	}
+	private UserDao userDao;
 
 	/*
 	 * (non-Javadoc)
@@ -58,9 +53,6 @@ public class UserServiceImpl implements UserService {
 		}
 		if (0 != d_user.getIsLock()) {
 			throw new LockedAccountException();
-		}
-		if (1 != d_user.getIsValidateEmail()) {
-			throw new EmailUnauthorizedException();
 		}
 		return d_user;
 	}

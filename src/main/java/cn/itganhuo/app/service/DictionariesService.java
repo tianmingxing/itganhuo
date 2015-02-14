@@ -25,7 +25,7 @@ import cn.itganhuo.app.entity.Dictionaries;
  * </dl>
  * 
  * @version 0.0.1-SNAPSHOT
- * @author 天津-朱塞佩
+ * @author 天津-小朱
  */
 public interface DictionariesService {
 
@@ -39,7 +39,7 @@ public interface DictionariesService {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @param dictionaries
 	 *            字典数据
 	 * @return 返回主键
@@ -56,7 +56,7 @@ public interface DictionariesService {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @param dictionaries
 	 *            字典数据
 	 * @return 修改成功返回ture，否则返回false。
@@ -73,7 +73,7 @@ public interface DictionariesService {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @param id
 	 *            字典ID
 	 * @return 修改成功返回ture，否则返回false。
@@ -90,7 +90,7 @@ public interface DictionariesService {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @param id
 	 *            字典ID
 	 * @return 一条数据字典
@@ -107,7 +107,7 @@ public interface DictionariesService {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @param condition
 	 *            查询条件
 	 * @return 数据集合

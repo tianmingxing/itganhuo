@@ -31,7 +31,7 @@ import cn.itganhuo.app.service.TemplateService;
  * </dl>
  * 
  * @version 0.0.1-SNAPSHOT
- * @author 天津-朱塞佩
+ * @author 天津-小朱
  */
 @Controller
 @RequestMapping("/emailTemplate")
@@ -39,19 +39,15 @@ public class TemplateController {
 
 	private static final Logger logger = LoggerFactory.getLogger(TemplateController.class);
 
-	private TemplateService templateService;
-
 	@Autowired
-	public void setTemplateService(TemplateService templateService) {
-		this.templateService = templateService;
-	}
+	private TemplateService templateService;
 
 	/**
 	 * 返回email模板集合
 	 * 
 	 * @param model
 	 * @return
-	 * @author 朱塞佩
+	 * @author 小朱
 	 */
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public String listEmailTemplate(Model model) {
@@ -64,7 +60,7 @@ public class TemplateController {
 	 * 
 	 * @param model
 	 * @return
-	 * @author 朱塞佩
+	 * @author 小朱
 	 */
 	@RequestMapping(value = "/insert", method = RequestMethod.GET)
 	public String insertEmailTemplate(Model model) {
@@ -78,7 +74,7 @@ public class TemplateController {
 	 * 
 	 * @param template
 	 * @return
-	 * @author 朱塞佩
+	 * @author 小朱
 	 */
 	@RequestMapping(value = "/insert", method = RequestMethod.POST)
 	public String insertEmailTemplate(Template template) {

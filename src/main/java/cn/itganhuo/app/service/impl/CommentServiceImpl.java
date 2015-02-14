@@ -31,18 +31,10 @@ import cn.itganhuo.app.service.CommentService;
 @Service
 public class CommentServiceImpl implements CommentService {
 
-	private CommentDao commentDao = null;
-	private ArticleDao articleDao = null;
-
 	@Autowired
-	public void setCommentDao(CommentDao commentDao) {
-		this.commentDao = commentDao;
-	}
-
+	private CommentDao commentDao;
 	@Autowired
-	public void setArticleDao(ArticleDao articleDao) {
-		this.articleDao = articleDao;
-	}
+	private ArticleDao articleDao;
 
 	/* (non-Javadoc)
 	 * @see cn.itganhuo.app.service.CommentService#addComment(cn.itganhuo.app.entity.Comment)

@@ -32,17 +32,13 @@ import cn.itganhuo.app.service.PermissionsService;
  * </dl>
  * 
  * @version 0.0.1-SNAPSHOT
- * @author 天津-朱塞佩
+ * @author 天津-小朱
  */
 @Service
 public class PermissionsServiceImpl implements PermissionsService {
 
-	private PermissionsDao permissionsDao;
-
 	@Autowired
-	public void setPermissionsDao(PermissionsDao permissionsDao) {
-		this.permissionsDao = permissionsDao;
-	}
+	private PermissionsDao permissionsDao;
 
 	public int addpermissions(Permissions permissions) {
 		return permissionsDao.insert(permissions);

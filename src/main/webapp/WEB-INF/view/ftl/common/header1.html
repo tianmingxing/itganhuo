@@ -1,0 +1,30 @@
+<!--[if lt IE 9]>
+    <div class="error chromeframe">您的浏览器版本<strong>太旧了</strong>，为了正常地访问网站，请升级您的浏览器 <a target="_blank" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+<div class="global-nav">
+    <nav class="global-nav container">
+        <ul class="site-nav hidden-xs">
+            <li class="current"><a href="<%=request.getContextPath() %>/">分享</a></li>
+        </ul>
+        <shiro:guest>
+        	<ul class="user-nav">
+            	<li>
+                	<a id="login-link" href="<%=request.getContextPath() %>/user/signin">登录</a>
+            	</li>
+            	<li>
+                	<a href="<%=request.getContextPath() %>/user/register">注册</a>
+            	</li>
+            </ul>
+        </shiro:guest>
+        <shiro:user>
+	        <ul class="user-nav">
+	            <li class="has-dropdown">
+	                <a class="hidden-xs" href="<%=request.getContextPath() %>/logout">退出</a>
+	            </li>
+	            <li class="has-dropdown">
+	                <a href="<%=request.getContextPath() %>/user/<shiro:principal/>" class="hidden-xs"><shiro:principal/><i class="i-arrow-s"></i></a>
+	            </li>
+	        </ul>
+        </shiro:user>
+    </nav>
+</div>

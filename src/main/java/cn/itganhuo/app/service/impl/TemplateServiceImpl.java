@@ -35,26 +35,17 @@ import cn.itganhuo.app.service.UserService;
  * </dl>
  * 
  * @version 0.0.1-SNAPSHOT
- * @author 天津-朱塞佩
+ * @author 天津-小朱
  */
 @Service
 public class TemplateServiceImpl implements TemplateService {
 
+	@Autowired
 	private TemplateDao templateDao;
+	@Autowired
 	private UserService userService;
 
-	@Autowired
-	public void setUserService(UserService userService) {
-		this.userService = userService;
-	}
-
-	@Autowired
-	public void setTemplateDao(TemplateDao templateDao) {
-		this.templateDao = templateDao;
-	}
-
 	public int insert(Template template) {
-		// template.setId(UUID.randomUUID().toString());
 		return templateDao.insert(template);
 	}
 
@@ -80,7 +71,7 @@ public class TemplateServiceImpl implements TemplateService {
 	 * 
 	 * @see cn.itganhuo.service.EmailTemplateService#generateAuthURL(java.lang.String )
 	 */
-	@Transactional
+//	@Transactional
 	public String generateAuthURL(String account) {
 		StringBuffer buffer = new StringBuffer(ConfigPool.getString("requestGetContextPath")).append("/auth_email/");
 		User um = userService.loadByAccount(account);

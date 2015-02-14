@@ -31,18 +31,10 @@ public class ArticleServiceImpl implements ArticleService {
 
 	private static final Logger logger = LoggerFactory.getLogger(ArticleServiceImpl.class);
 
+	@Autowired
 	private ArticleDao articleDao;
+	@Autowired
 	private ArticleLabelDao articleLabelDao;
-
-	@Autowired
-	public void setArticleLabelDao(ArticleLabelDao articleLabelDao) {
-		this.articleLabelDao = articleLabelDao;
-	}
-
-	@Autowired
-	public void setArticleDao(ArticleDao articleDao) {
-		this.articleDao = articleDao;
-	}
 
 	/* (non-Javadoc)
 	 * @see cn.itganhuo.app.service.ArticleService#findArticleByCondition(java.util.Map)

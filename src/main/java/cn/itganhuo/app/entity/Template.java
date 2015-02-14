@@ -16,7 +16,7 @@ import java.io.Serializable;
  * 邮件&短信&站内信模板数据封装类
  * 
  * @version 0.0.1-SNAPSHOT
- * @author 天津-朱塞佩
+ * @author 天津-小朱
  */
 public class Template implements Serializable {
 

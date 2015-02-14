@@ -37,12 +37,8 @@ import cn.itganhuo.app.service.MenuService;
 @Service
 public class MenuServiceImpl implements MenuService {
 
-	private MenuDao menuDao;
-
 	@Autowired
-	public void setMenuDao(MenuDao menuDao) {
-		this.menuDao = menuDao;
-	}
+	private MenuDao menuDao;
 
 	/*
 	 * (non-Javadoc)

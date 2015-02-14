@@ -137,7 +137,7 @@ public interface ArticleDao {
 	 * 根据文章id查询相同标签下相关的文章
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @param id
 	 *            文章ID
 	 * @return 返回文章结果集

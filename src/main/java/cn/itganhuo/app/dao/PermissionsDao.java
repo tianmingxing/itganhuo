@@ -27,7 +27,7 @@ import cn.itganhuo.app.entity.Permissions;
  * </dl>
  * 
  * @version 0.0.1-SNAPSHOT
- * @author 天津-朱塞佩
+ * @author 天津-小朱
  */
 @Repository
 public interface PermissionsDao {
@@ -42,7 +42,7 @@ public interface PermissionsDao {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @param record
 	 * @return
 	 */
@@ -58,7 +58,7 @@ public interface PermissionsDao {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @param record
 	 * @return
 	 */
@@ -74,7 +74,7 @@ public interface PermissionsDao {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @param id
 	 * @return
 	 */
@@ -90,7 +90,7 @@ public interface PermissionsDao {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @param condition
 	 * @return
 	 */
@@ -106,7 +106,7 @@ public interface PermissionsDao {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @param condition
 	 * @return
 	 */

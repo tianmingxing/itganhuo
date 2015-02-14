@@ -25,7 +25,7 @@ import java.util.Properties;
  * </dl>
  * 
  * @version 0.0.1-SNAPSHOT
- * @author 天津-朱塞佩
+ * @author 天津-小朱
  */
 public class PropertiesUtil {
 	private static PropertiesUtil util = null;
@@ -44,7 +44,7 @@ public class PropertiesUtil {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @return 如果实例存在则直接返回缓存了的实例
 	 */
 	public static PropertiesUtil getInstance() {
@@ -69,7 +69,7 @@ public class PropertiesUtil {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @param name properties文件名称，不用带后缀。
 	 * @return 返回Properties对象
 	 */

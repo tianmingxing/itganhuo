@@ -25,7 +25,7 @@ import cn.itganhuo.app.entity.Roles;
  * </dl>
  * 
  * @version 0.0.1-SNAPSHOT
- * @author 天津-朱塞佩
+ * @author 天津-小朱
  */
 public interface RolesService {
 
@@ -39,7 +39,7 @@ public interface RolesService {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @param roles
 	 *            角色数据
 	 * @return 返回主键
@@ -56,7 +56,7 @@ public interface RolesService {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @param roles
 	 *            要修改的角色数据
 	 * @return 修改成功返回true，否则返回false。
@@ -73,7 +73,7 @@ public interface RolesService {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @param id
 	 *            主键ID
 	 * @return 删除成功返回true，否则返回false。
@@ -90,7 +90,7 @@ public interface RolesService {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @param id
 	 *            角色ID
 	 * @return 一条角色数据
@@ -107,7 +107,7 @@ public interface RolesService {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @param condition
 	 *            查询条件
 	 * @return 角色列表

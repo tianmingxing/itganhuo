@@ -35,12 +35,8 @@ import cn.itganhuo.app.service.LabelService;
 @Service
 public class LabelServiceImpl implements LabelService {
 
-	private LabelDao labelDao = null;
-
 	@Autowired
-	public void setLabelDao(LabelDao labelDao) {
-		this.labelDao = labelDao;
-	}
+	private LabelDao labelDao;
 
 	/*
 	 * (non-Javadoc)

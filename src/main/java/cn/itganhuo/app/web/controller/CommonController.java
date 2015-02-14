@@ -52,12 +52,8 @@ public class CommonController {
 
 	private static final Logger logger = LogManager.getLogger(CommonController.class);
 
-	private UserService userService;
-
 	@Autowired
-	public void setUserService(UserService userService) {
-		this.userService = userService;
-	}
+	private UserService userService;
 
 	/**
 	 * 返回头部公共页面

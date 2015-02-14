@@ -24,7 +24,7 @@ import cn.itganhuo.app.entity.Template;
  * </dl>
  * 
  * @version 0.0.1-SNAPSHOT
- * @author 天津-朱塞佩，深圳-小兴
+ * @author 天津-小朱，深圳-小兴
  */
 public interface TemplateService {
 
@@ -38,7 +38,7 @@ public interface TemplateService {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @param template
 	 *            模板数据
 	 * @return 返回主键
@@ -55,7 +55,7 @@ public interface TemplateService {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @param name
 	 *            模板名称
 	 * @return 一条模板记录
@@ -72,7 +72,7 @@ public interface TemplateService {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @param id
 	 *            模板ID
 	 * @return 一条模板记录
@@ -89,7 +89,7 @@ public interface TemplateService {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @return 返回模板列表
 	 */
 	public List<Template> loadAll();

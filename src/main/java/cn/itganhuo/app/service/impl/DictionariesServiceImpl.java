@@ -32,17 +32,13 @@ import cn.itganhuo.app.service.DictionariesService;
  * </dl>
  * 
  * @version 0.0.1-SNAPSHOT
- * @author 天津-朱塞佩
+ * @author 天津-小朱
  */
 @Service
 public class DictionariesServiceImpl implements DictionariesService {
 
-	private DictionariesDao dictionariesDao;
-
 	@Autowired
-	public void setDictionariesDao(DictionariesDao dictionariesDao) {
-		this.dictionariesDao = dictionariesDao;
-	}
+	private DictionariesDao dictionariesDao;
 
 	public int addDictionaries(Dictionaries dictionaries) {
 		return dictionariesDao.insert(dictionaries);

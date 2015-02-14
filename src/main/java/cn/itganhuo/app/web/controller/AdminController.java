@@ -56,36 +56,16 @@ import cn.itganhuo.app.service.UserService;
 @RequiresAuthentication
 public class AdminController {
 
+	@Autowired
 	private MenuService menuService;
+	@Autowired
 	private DictionariesService dictionariesService;
+	@Autowired
 	private UserService userService;
+	@Autowired
 	private PermissionsService permissionsService;
+	@Autowired
 	private RolesService rolesService;
-
-	@Autowired
-	public void setAdminService(MenuService menuService) {
-		this.menuService = menuService;
-	}
-
-	@Autowired
-	public void setDictionariesService(DictionariesService dictionariesService) {
-		this.dictionariesService = dictionariesService;
-	}
-
-	@Autowired
-	public void setUserService(UserService userService) {
-		this.userService = userService;
-	}
-
-	@Autowired
-	public void setPermissionsService(PermissionsService permissionsService) {
-		this.permissionsService = permissionsService;
-	}
-
-	@Autowired
-	public void setRolesService(RolesService rolesService) {
-		this.rolesService = rolesService;
-	}
 
 	/**
 	 * <h2>进入后台管理主页面</h2>
@@ -287,7 +267,7 @@ public class AdminController {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @param dictionaries
 	 * @param page
 	 * @return
@@ -311,7 +291,7 @@ public class AdminController {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @param dictionaries
 	 * @return
 	 */
@@ -336,7 +316,7 @@ public class AdminController {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @param dictionaries
 	 * @return
 	 */
@@ -361,7 +341,7 @@ public class AdminController {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @param dictionaries
 	 * @return
 	 */
@@ -386,7 +366,7 @@ public class AdminController {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @return
 	 */
 	@RequestMapping(value = "/dictionaries_list", method = RequestMethod.GET)
@@ -404,7 +384,7 @@ public class AdminController {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @return
 	 */
 	@RequestMapping(value = "user_list", method = RequestMethod.GET)
@@ -422,7 +402,7 @@ public class AdminController {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @param user
 	 * @param page
 	 * @return
@@ -446,7 +426,7 @@ public class AdminController {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @param permissions
 	 * @param page
 	 * @return
@@ -470,7 +450,7 @@ public class AdminController {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @param permissions
 	 * @return
 	 */
@@ -495,7 +475,7 @@ public class AdminController {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @param permissions
 	 * @return
 	 */
@@ -520,7 +500,7 @@ public class AdminController {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @param permissions
 	 * @return
 	 */
@@ -545,7 +525,7 @@ public class AdminController {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @return
 	 */
 	@RequestMapping(value = "/permissions_list", method = RequestMethod.GET)
@@ -563,7 +543,7 @@ public class AdminController {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @param roles
 	 * @param page
 	 * @return
@@ -587,7 +567,7 @@ public class AdminController {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @param roles
 	 * @return
 	 */
@@ -612,7 +592,7 @@ public class AdminController {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @param roles
 	 * @return
 	 */
@@ -637,7 +617,7 @@ public class AdminController {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @param roles
 	 * @return
 	 */
@@ -661,7 +641,7 @@ public class AdminController {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @return
 	 */
 	@RequestMapping(value = "/roles_list", method = RequestMethod.GET)

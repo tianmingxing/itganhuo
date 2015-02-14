@@ -85,42 +85,19 @@ public class UserController {
 
 	private static final Logger logger = LogManager.getLogger(UserController.class);
 
+	@Autowired
 	private UserService userService;
+	@Autowired
 	private MailService mailService;
+	@Autowired
 	private ArticleService articleService;
+	@Autowired
 	private CommentService commentService;
+	@Autowired
 	private TemplateService templateService;
+	@Autowired
 	private LabelService labelService;
 
-	@Autowired
-	public void setCommentService(CommentService commentService) {
-		this.commentService = commentService;
-	}
-
-	@Autowired
-	public void setUserService(UserService userService) {
-		this.userService = userService;
-	}
-
-	@Autowired
-	public void setMailService(MailService mailService) {
-		this.mailService = mailService;
-	}
-
-	@Autowired
-	public void setTemplateService(TemplateService templateService) {
-		this.templateService = templateService;
-	}
-
-	@Autowired
-	public void setArticleService(ArticleService articleService) {
-		this.articleService = articleService;
-	}
-
-	@Autowired
-	public void setLabelService(LabelService labelService) {
-		this.labelService = labelService;
-	}
 
 	/**
 	 * 进入登录页面
@@ -307,7 +284,7 @@ public class UserController {
 	 * 进入修改信息页面从session中获取到账户名并找到对应的用户
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 朱塞佩
+	 * @author 小朱
 	 * @param model
 	 * @param session
 	 * @return 跳转到用户信息修改页面
@@ -328,7 +305,7 @@ public class UserController {
 	 * 修改用户信息 修改用户的基本信息，成功返回主页，失败重新进入修改
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 朱塞佩
+	 * @author 小朱
 	 * @param user
 	 * @return
 	 */
@@ -345,7 +322,7 @@ public class UserController {
 	 * 根据账户得到用户信息，跳转到修改密码页面 从session中获取到账户名，找到对应的用户
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 朱塞佩
+	 * @author 小朱
 	 * @param model
 	 * @param session
 	 * @return 跳转到用户修改密码页面
@@ -366,7 +343,7 @@ public class UserController {
 	 * 检测用户密码与输入的原始密码是否匹配
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 朱塞佩
+	 * @author 小朱
 	 * @param request
 	 * @param response
 	 * @return 返回1000表示输入的新密码和旧密码相同
@@ -403,7 +380,7 @@ public class UserController {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @param user 用户数据
 	 * @return 密码修改成功后返回到用户中心
 	 */
@@ -431,7 +408,7 @@ public class UserController {
 	 * 修改头像功能，跳转到修改头像页面
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 朱塞佩
+	 * @author 小朱
 	 * @return 转发到用户修改头像页面
 	 */
 	@RequestMapping(value = "/upload", method = RequestMethod.GET)
@@ -442,7 +419,7 @@ public class UserController {
 	/**
 	 * 完成修改头像功能，把用户的头像存到项目下photo文件夹中
 	 * 
-	 * @author 朱塞佩
+	 * @author 小朱
 	 * @version 0.0.1-SNAPSHOT
 	 * @param request
 	 * @return

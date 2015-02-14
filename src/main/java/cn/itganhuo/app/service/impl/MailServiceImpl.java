@@ -37,24 +37,16 @@ import cn.itganhuo.app.service.MailService;
  * </dl>
  * 
  * @version 0.0.1-SNAPSHOT
- * @author 天津-朱塞佩
+ * @author 天津-小朱
  */
 @Service
 public class MailServiceImpl implements MailService {
 
+	@Autowired
 	JavaMailSender mailSender;
 
+	@Autowired
 	TaskExecutor executor;
-
-	@Autowired
-	public void setMailSender(JavaMailSender mailSender) {
-		this.mailSender = mailSender;
-	}
-
-	@Autowired
-	public void setTs(TaskExecutor executor) {
-		this.executor = executor;
-	}
 
 	/**
 	 * 将用户修改的原始密码发送到其邮箱中,如果其邮箱没有修改，那么则默认发送到注册的帐户的邮箱中发件人的名称和

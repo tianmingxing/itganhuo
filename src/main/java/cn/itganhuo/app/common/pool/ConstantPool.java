@@ -38,7 +38,7 @@ public class ConstantPool {
 	/**
 	 * 系统配置文件所在相对路径
 	 */
-	public static final String CONFIG_BEAN_FILE_PATH = "resources/config-pool.properties";
+	public static final String CONFIG_BEAN_FILE_PATH = "config-pool.properties";
 	
 	/**
 	 * 当前项目部署的真实路径（绝对地址）

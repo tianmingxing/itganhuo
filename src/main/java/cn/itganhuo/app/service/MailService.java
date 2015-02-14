@@ -23,7 +23,7 @@ import cn.itganhuo.app.entity.User;
  * </dl>
  * 
  * @version 0.0.1-SNAPSHOT
- * @author 天津-朱塞佩
+ * @author 天津-小朱
  */
 public interface MailService {
 
@@ -37,7 +37,7 @@ public interface MailService {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @param user
 	 * @param template
 	 */

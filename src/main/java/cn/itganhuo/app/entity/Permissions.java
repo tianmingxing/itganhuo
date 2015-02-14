@@ -16,7 +16,7 @@ import java.io.Serializable;
  * 用户权限表数据封装类
  * 
  * @version 0.0.1-SNAPSHOT
- * @author 天津-朱塞佩
+ * @author 天津-小朱
  */
 public class Permissions implements Serializable {
 

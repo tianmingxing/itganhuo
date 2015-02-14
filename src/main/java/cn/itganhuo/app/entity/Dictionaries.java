@@ -17,7 +17,7 @@ import java.io.Serializable;
  * 保存一些高度重复的属性值到数据库
  * 
  * @version 0.0.1-SNAPSHOT
- * @author 深圳-天津-朱塞佩
+ * @author 深圳-天津-小朱
  */
 public class Dictionaries implements Serializable {
 

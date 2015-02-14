@@ -25,7 +25,7 @@ import cn.itganhuo.app.entity.Permissions;
  * </dl>
  * 
  * @version 0.0.1-SNAPSHOT
- * @author 天津-朱塞佩
+ * @author 天津-小朱
  */
 public interface PermissionsService {
 
@@ -39,7 +39,7 @@ public interface PermissionsService {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @param permissions
 	 *            权限数据
 	 * @return 返回主键
@@ -56,7 +56,7 @@ public interface PermissionsService {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @param permissions
 	 *            要修改的数据，里面包含被修改数据ID。
 	 * @return 修改成功返回true，否则返回false。
@@ -73,7 +73,7 @@ public interface PermissionsService {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @param id
 	 *            权限数据ID
 	 * @return 删除成功返回true，否则返回false。
@@ -90,7 +90,7 @@ public interface PermissionsService {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @param id
 	 *            权限数据ID
 	 * @return 一条权限数据
@@ -107,7 +107,7 @@ public interface PermissionsService {
 	 * </dl>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @param condition
 	 *            查询条件
 	 * @return 数据集合

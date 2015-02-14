@@ -63,24 +63,12 @@ public class ArticleController {
 
 	private static final Logger logger = LoggerFactory.getLogger(ArticleController.class);
 
+	@Autowired
 	private ArticleService articleService;
+	@Autowired
 	private CommentService commentService;
+	@Autowired
 	private ReplyService replyService;
-
-	@Autowired
-	public void setReplyService(ReplyService replyService) {
-		this.replyService = replyService;
-	}
-
-	@Autowired
-	public void setArticleService(ArticleService articleService) {
-		this.articleService = articleService;
-	}
-
-	@Autowired
-	public void setCommentService(CommentService commentService) {
-		this.commentService = commentService;
-	}
 
 	/**
 	 * <h2>文章列表页</h2>

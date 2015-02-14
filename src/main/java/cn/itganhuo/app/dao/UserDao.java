@@ -89,7 +89,7 @@ public interface UserDao {
 	 * @param record
 	 *            用户
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @return 返回1表示成功
 	 */
 	public int updateInfoByAccount(User user);
@@ -100,7 +100,7 @@ public interface UserDao {
 	 * @param record
 	 *            用户
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-朱塞佩
+	 * @author 天津-小朱
 	 * @return 返回true表示成功
 	 */
 	public boolean updatePasswordByAccount(User user);
