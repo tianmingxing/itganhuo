@@ -23,7 +23,7 @@
 
 	<!-- 记录其它框架报错日志 -->
 	<root>
-		<priority value="debug" />
+		<priority value="info" />
 		<appender-ref ref="console" />
 		<appender-ref ref="plugin" />
 	</root>

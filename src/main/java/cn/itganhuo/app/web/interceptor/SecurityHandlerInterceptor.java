@@ -21,11 +21,12 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import cn.itganhuo.app.common.pool.ConstantPool;
 import cn.itganhuo.app.common.utils.HttpUtil;
 import cn.itganhuo.app.common.utils.StringUtil;
 
@@ -49,7 +50,7 @@ import cn.itganhuo.app.common.utils.StringUtil;
  */
 public class SecurityHandlerInterceptor implements HandlerInterceptor {
 
-	private static final Logger logger = LoggerFactory.getLogger(SecurityHandlerInterceptor.class);
+	private static final Logger log = LogManager.getLogger(SecurityHandlerInterceptor.class.getName());
 
 	/*
 	 * (non-Javadoc)
@@ -58,9 +59,7 @@ public class SecurityHandlerInterceptor implements HandlerInterceptor {
 	 * java.lang.Object)
 	 */
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		if (logger.isInfoEnabled()) {
-			logger.info("request_path => " + request.getRequestURI() + " | parameter => " + request.getQueryString());
-		}
+		log.debug("request_path => " + request.getRequestURI() + " | parameter => " + request.getQueryString());
 
 		/*
 		 * 1、防御重复提交
@@ -75,6 +74,11 @@ public class SecurityHandlerInterceptor implements HandlerInterceptor {
 			}
 		} else {
 			HttpUtil.setValue(request.getSession(), "session_token", UUID.randomUUID().toString());
+		}
+		
+		//获取请求项目地址
+		if (!StringUtil.hasText(ConstantPool.REQ_CONTEXT_PATH.get())) {
+			ConstantPool.REQ_CONTEXT_PATH.set(request.getContextPath());
 		}
 		
 		return true;

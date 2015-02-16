@@ -20,8 +20,8 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import cn.itganhuo.app.common.pool.ConstantPool;
 
@@ -39,7 +39,7 @@ import cn.itganhuo.app.common.pool.ConstantPool;
  */
 public class ContextListener implements ServletContextListener {
 
-	private static final Logger logger = LoggerFactory.getLogger(ContextListener.class);
+	private static final Logger log = LogManager.getLogger(ContextListener.class.getName());
 
 	private ServletContext servletContext;
 
@@ -71,16 +71,12 @@ public class ContextListener implements ServletContextListener {
 	 * @see javax.servlet.ServletContextListener#contextInitialized(javax.servlet .ServletContextEvent)
 	 */
 	public void contextInitialized(ServletContextEvent servletContextEvent) {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Custom listener execution start.");
-		}
+		log.debug("Custom listener execution start.");
 
 		servletContext = servletContextEvent.getServletContext();
 		this.getRealPath();
 
-		if (logger.isDebugEnabled()) {
-			logger.debug("End Custom listener execution.");
-		}
+		log.debug("End Custom listener execution.");
 	}
 
 	/**
@@ -91,7 +87,7 @@ public class ContextListener implements ServletContextListener {
 		if (!real_path.endsWith("/")) {
 			real_path = real_path.concat("/");
 		}
-		ConstantPool.REAL_PATH = real_path;
+		ConstantPool.REAL_PATH.set(real_path);
 	}
 
 }

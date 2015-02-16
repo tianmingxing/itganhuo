@@ -20,8 +20,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +35,7 @@ import cn.itganhuo.app.service.ArticleService;
 @Service
 public class ArticleServiceImpl implements ArticleService {
 
-	private static final Logger logger = LoggerFactory.getLogger(ArticleServiceImpl.class);
+	private static final Logger log = LogManager.getLogger(ArticleServiceImpl.class.getName());
 
 	@Autowired
 	private ArticleDao articleDao;
@@ -89,9 +89,7 @@ public class ArticleServiceImpl implements ArticleService {
 	@Override
 	public int addArticle(Article article) {
 		if (article == null) {
-			if (logger.isWarnEnabled()) {
-				logger.warn("Incoming value: article is a null value.");
-			}
+			log.warn("Incoming value: article is a null value.");
 			return 0;
 		}
 		article.setYmd(DateUtil.getNowDateTimeStr("yyyy-MM-dd"));
@@ -116,9 +114,7 @@ public class ArticleServiceImpl implements ArticleService {
 	@Override
 	public boolean addVisitorNumById(int id) {
 		if (id <= 0) {
-			if (logger.isWarnEnabled()) {
-				logger.warn("Incoming value: id is a null value.");
-			}
+			log.warn("Incoming value: id is a null value.");
 			return false;
 		}
 		return articleDao.addVisitorNumById(id);

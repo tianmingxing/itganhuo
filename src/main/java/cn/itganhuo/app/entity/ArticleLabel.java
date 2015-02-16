@@ -48,7 +48,7 @@ public class ArticleLabel implements Serializable {
 	/*
 	 * 对应多个标签
 	 */
-	private List<Label> labels;
+	private Label label;
 
 	public Integer getId() {
 		return id;
@@ -82,12 +82,12 @@ public class ArticleLabel implements Serializable {
 		this.userId = userId;
 	}
 
-	public List<Label> getLabel() {
-		return labels;
+	public Label getLabel() {
+		return label;
 	}
 
-	public void setLabel(List<Label> labels) {
-		this.labels = labels;
+	public void setLabel(Label label) {
+		this.label = label;
 	}
 
 	@Override
@@ -120,7 +120,7 @@ public class ArticleLabel implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		return "ArticleLabel [id=" + id + ", articleId=" + articleId + ", labelId=" + labelId + ", userId=" + userId + ", labels=" + labels + "]";
+		return "ArticleLabel [id=" + id + ", articleId=" + articleId + ", labelId=" + labelId + ", userId=" + userId + ", label=" + label + "]";
 	}
 
 }

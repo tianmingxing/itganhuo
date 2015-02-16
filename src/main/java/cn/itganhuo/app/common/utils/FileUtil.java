@@ -29,8 +29,8 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Properties;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * 对文件操作的工具方法类
@@ -40,7 +40,7 @@ import org.slf4j.LoggerFactory;
  */
 public class FileUtil {
 
-	private static final Logger logger = LoggerFactory.getLogger(FileUtil.class);
+	private static final Logger log = LogManager.getLogger(FileUtil.class.getName());
 	public static File file = null;
 
 	public FileUtil() {
@@ -378,9 +378,9 @@ public class FileUtil {
 			}
 
 		} catch (FileNotFoundException filenotfoundexception) {
-			logger.error(new StringBuffer().append("FileUtil.moveImg FileNotFoundException:").append(filenotfoundexception).toString());
+			log.error(new StringBuffer().append("FileUtil.moveImg FileNotFoundException:").append(filenotfoundexception).toString());
 		} catch (IOException ioexception) {
-			logger.error(new StringBuffer().append("FileUtil.moveImg IOException:").append(ioexception).toString());
+			log.error(new StringBuffer().append("FileUtil.moveImg IOException:").append(ioexception).toString());
 		} catch (Exception exception) {
 			exception.printStackTrace();
 		} finally {

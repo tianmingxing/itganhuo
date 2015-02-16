@@ -19,6 +19,8 @@ package cn.itganhuo.app.web.realm;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -30,8 +32,6 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.apache.shiro.util.ByteSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import cn.itganhuo.app.common.utils.StringUtil;
@@ -52,7 +52,7 @@ import cn.itganhuo.app.service.UserService;
  */
 public class DBRealm extends AuthorizingRealm {
 
-	private static final Logger logger = LoggerFactory.getLogger(DBRealm.class);
+	private static final Logger log = LogManager.getLogger(DBRealm.class.getName());
 
 	private UserService userService = null;
 
@@ -69,9 +69,7 @@ public class DBRealm extends AuthorizingRealm {
 	 */
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Start reading user permissions.");
-		}
+		log.debug("Start reading user permissions.");
 
 		String account = (String) getAvailablePrincipal(principals);
 		User user = userService.login(account);
@@ -99,9 +97,7 @@ public class DBRealm extends AuthorizingRealm {
 	 */
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Began to validate user credentials.");
-		}
+		log.debug("Began to validate user credentials.");
 
 		UsernamePasswordToken uptoken = (UsernamePasswordToken) token;
 		User user = userService.login(uptoken.getUsername());
@@ -127,9 +123,7 @@ public class DBRealm extends AuthorizingRealm {
 	 *            用户账号
 	 */
 	public void clearUserCache(String user_id) {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Began to clear the user cache.");
-		}
+		log.debug("Began to clear the user cache.");
 
 		SimplePrincipalCollection spc = new SimplePrincipalCollection();
 		spc.add(user_id, getName());

@@ -56,7 +56,7 @@ import cn.itganhuo.app.service.UserService;
 @Controller
 public class CommonController {
 
-	private static final Logger logger = LogManager.getLogger(CommonController.class);
+	private static final Logger log = LogManager.getLogger(CommonController.class);
 
 	@Autowired
 	private UserService userService;
@@ -175,7 +175,7 @@ public class CommonController {
 							respMsg.setMessage(ConfigPool.getString("respMsg.email.LinkSddressFailure"));
 						}
 					} catch (ParseException e) {
-						throw new InternalException(logger, "Date conversion error, the date may be the source character is not legitimate.", e);
+						throw new InternalException(log, "Date conversion error, the date may be the source character is not legitimate.", e);
 					}
 				} else {
 					respMsg.setStatus("1002");

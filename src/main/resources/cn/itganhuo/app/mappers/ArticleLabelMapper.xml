@@ -11,7 +11,7 @@
 		<result property="articleId" column="f_articleId" />
 		<result property="labelId" column="f_labelId" />
 		<result property="userId" column="f_userId" />
-		<collection property="labels" ofType="Label" resultMap="label_result" />
+		<association property="label" javaType="Label" resultMap="label_result" />
 	</resultMap>
 	
 	<resultMap id="label_result" type="Label">

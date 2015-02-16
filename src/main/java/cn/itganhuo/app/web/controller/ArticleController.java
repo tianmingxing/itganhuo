@@ -22,11 +22,11 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -67,7 +67,7 @@ import cn.itganhuo.app.service.ReplyService;
 @Controller
 public class ArticleController {
 
-	private static final Logger logger = LoggerFactory.getLogger(ArticleController.class);
+	private static final Logger log = LogManager.getLogger(ArticleController.class.getName());
 
 	@Autowired
 	private ArticleService articleService;
@@ -99,37 +99,38 @@ public class ArticleController {
 		String request_get_context_path = request.getContextPath();
 
 		// 组织分页参数
-		Paging page = new Paging();
+		Paging paging = new Paging();
 		if (!search_type.matches("^[123]?$")) {
 			search_type = "1";
 		}
 		if ("1".equalsIgnoreCase(search_type)) { // 最新查询
-			page.setSort("ID");
-			page.setOrder("DESC");
+			paging.setSort("id");
+			paging.setOrder("DESC");
 		} else if ("2".equalsIgnoreCase(search_type)) { // 热门查询
-			page.setSort("VISITORVOL_UME");
-			page.setOrder("DESC");
+			paging.setSort("visitorNum");
+			paging.setOrder("DESC");
 		} else if ("3".equalsIgnoreCase(search_type)) { // 冷门查询
-			page.setSort("VISITOR_VOLUME");
-			page.setOrder("ASC");
+			paging.setSort("visitorNum");
+			paging.setOrder("ASC");
 		}
 		if (now_page.matches("^([1-9]|[1-9][0-9]+)+$")) {
-			page.setPage(StringUtil.getInt(now_page, 1));
+			paging.setPage(StringUtil.getInt(now_page, 1));
 		}
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("article", article);
-		map.put("page", page);
-
+		map.put("paging", paging);
+		
 		// 根据条件查询文章列表
 		List<Article> articles = articleService.findArticleByCondition(map);
 		int total = articleService.countArticleRows();
 		Pagination pagination = new Pagination(StringUtil.getInt(now_page, 1), 10, 5, total, request_get_context_path.concat("/articles"), search_type);
-
+		
 		// 返回数据
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("articles", articles);
 		mav.addObject("pagination", pagination);
 		mav.addObject("search_type", search_type);
+		mav.addObject("path", ConstantPool.REQ_CONTEXT_PATH.get());
 		mav.setViewName("article_list");
 		return mav;
 	}
@@ -167,6 +168,7 @@ public class ArticleController {
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("article", article_detail);
 		mav.addObject("user", user);
+		mav.addObject("path", ConstantPool.REQ_CONTEXT_PATH.get());
 		mav.addObject("related_article", related_article);
 		mav.setViewName("article_detail");
 		return mav;

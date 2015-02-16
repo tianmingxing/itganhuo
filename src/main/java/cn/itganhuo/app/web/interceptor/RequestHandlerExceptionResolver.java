@@ -22,8 +22,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -42,7 +42,7 @@ import org.springframework.web.servlet.ModelAndView;
  */
 public class RequestHandlerExceptionResolver implements HandlerExceptionResolver {
 
-	private static final Logger logger = LoggerFactory.getLogger(RequestHandlerExceptionResolver.class);
+	private static final Logger log = LogManager.getLogger(RequestHandlerExceptionResolver.class.getName());
 
 	/*
 	 * (non-Javadoc)
@@ -51,9 +51,7 @@ public class RequestHandlerExceptionResolver implements HandlerExceptionResolver
 	 * javax.servlet.http.HttpServletResponse, java.lang.Object, java.lang.Exception)
 	 */
 	public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
-		if (logger.isErrorEnabled()) {
-			logger.error("Page request was blocked into the wrong.", ex);
-		}
+		log.error("Page request was blocked into the wrong.", ex);
 		Map<String, Object> map = new HashMap<String, Object>();
 		StackTraceElement astacktraceelement[] = ex.getStackTrace();
 		StringBuffer str_buffer = new StringBuffer();

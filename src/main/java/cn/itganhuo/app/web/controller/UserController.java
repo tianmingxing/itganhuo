@@ -89,7 +89,7 @@ import cn.itganhuo.app.service.UserService;
 @RequestMapping("/user")
 public class UserController {
 
-	private static final Logger logger = LogManager.getLogger(UserController.class);
+	private static final Logger log = LogManager.getLogger(UserController.class.getName());
 
 	@Autowired
 	private UserService userService;
@@ -449,15 +449,11 @@ public class UserController {
 				file.createNewFile();
 			FileUtils.copyInputStreamToFile(request.getInputStream(), file);
 			msg = "success";
-			if (logger.isDebugEnabled()) {
-				logger.debug(user.getAccount() + "Path modified image=" + path);
-			}
+			log.debug(user.getAccount() + "Path modified image=" + path);
 		} catch (IOException e) {
-			throw new InternalException(logger, e);
+			throw new InternalException(log, e);
 		}
-		if (logger.isDebugEnabled()) {
-			logger.debug(msg + "," + user.getAccount());
-		}
+		log.debug(msg + "," + user.getAccount());
 		return msg + "," + user.getAccount();
 	}
 
@@ -533,23 +529,17 @@ public class UserController {
 						articleService.saveArticleLabel(asm);
 					}
 				} else {
-					if (logger.isWarnEnabled()) {
-						logger.warn("The article label format is not correct.");
-					}
+					log.warn("The article label format is not correct.");
 					respMsg.setStatus("2001");
 					respMsg.setMessage(ConfigPool.getString("respMsg.article.ArticlesLabelsCanotEmpty"));
 				}
 			} else {
-				if (logger.isWarnEnabled()) {
-					logger.warn("The article label can't be empty.");
-				}
+				log.warn("The article label can't be empty.");
 				respMsg.setStatus("2000");
 				respMsg.setMessage(ConfigPool.getString("respMsg.article.ArticlesLabelsCanotEmpty"));
 			}
 		} else {
-			if (logger.isWarnEnabled()) {
-				logger.warn("Article is a null value.");
-			}
+			log.warn("Article is a null value.");
 			respMsg.setStatus("1000");
 			respMsg.setMessage(ConfigPool.getString("respMsg.article.ArticlesCanotEmpty"));
 		}
@@ -600,12 +590,10 @@ public class UserController {
 				List<Label> list = labelService.getLabelByCondition(label);
 				auto = this.label2AutoComplete(list);
 			} catch (UnsupportedEncodingException e) {
-				throw new InternalException(logger, e);
+				throw new InternalException(log, e);
 			}
 		} else {
-			if (logger.isWarnEnabled()) {
-				logger.warn("Query parameters are not allowed to empty.");
-			}
+			log.warn("Query parameters are not allowed to empty.");
 		}
 		return auto;
 	}

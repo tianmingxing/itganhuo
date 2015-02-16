@@ -16,8 +16,8 @@
  */
 package cn.itganhuo.app.web.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,7 +43,7 @@ import cn.itganhuo.app.service.TemplateService;
 @RequestMapping("/emailTemplate")
 public class TemplateController {
 
-	private static final Logger logger = LoggerFactory.getLogger(TemplateController.class);
+	private static final Logger log = LogManager.getLogger(TemplateController.class.getName());
 
 	@Autowired
 	private TemplateService templateService;
@@ -85,8 +85,8 @@ public class TemplateController {
 	@RequestMapping(value = "/insert", method = RequestMethod.POST)
 	public String insertEmailTemplate(Template template) {
 		if (templateService.insert(template) != 0) {
-			if (logger.isInfoEnabled()) {
-				logger.info("插入email信息" + template.getName() + "成功");
+			if (log.isInfoEnabled()) {
+				log.debug("插入email信息" + template.getName() + "成功");
 			}
 			return "redirect:list";
 		} else

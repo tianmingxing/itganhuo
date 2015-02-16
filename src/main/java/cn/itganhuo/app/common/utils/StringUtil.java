@@ -36,7 +36,7 @@ import cn.itganhuo.app.exception.InternalException;
  */
 public class StringUtil {
 
-	private static final Logger logger = LogManager.getLogger(StringUtil.class);
+	private static final Logger logger = LogManager.getLogger(StringUtil.class.getName());
 
 	private StringUtil() {
 	}

@@ -20,9 +20,9 @@
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
 	</context:component-scan>
 
-	<!-- Freemarker配置
+	<!-- Freemarker配置 -->
 	<bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
-		<property name="templateLoaderPath" value="/WEB-INF/ftl/" />
+		<property name="templateLoaderPath" value="/WEB-INF/view/html/" />
 		<property name="freemarkerVariables">
 			<map>
 				<entry key="xml_escape" value-ref="fmXmlEscape" />
@@ -45,29 +45,29 @@
 		</property>
 	</bean>
 	<bean id="fmXmlEscape" class="freemarker.template.utility.XmlEscape" />
-	 -->
+	
 
 	<!--通用视图解析器 -->
 	<bean id="viewResolverCommon" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
 		<property name="prefix" value="/WEB-INF/view/jsp/" />
 		<property name="suffix" value=".jsp" />
-		<property name="order" value="0" />
+		<property name="order" value="1" />
 	</bean>
 	
-	<!-- freeMarker视图解析器
+	<!-- freeMarker视图解析器 -->
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
 		<property name="viewClass" value="org.springframework.web.servlet.view.freemarker.FreeMarkerView" />
 		<property name="cache" value="true" />
-		<property name="suffix" value=".ftl" />
+		<property name="suffix" value=".html" />
 		<property name="contentType" value="text/html;charset=UTF-8" />
 		<property name="requestContextAttribute" value="request" />
 		<property name="exposeRequestAttributes" value="true" />
 		<property name="exposeSessionAttributes" value="true" />
 		<property name="exposeSpringMacroHelpers" value="true" />
-		<property name="order" value="1" />
+		<property name="order" value="0" />
 	</bean>
-	 -->
+	
 	
 	<!-- 错误拦截视图 -->
 	<bean class="cn.itganhuo.app.web.interceptor.RequestHandlerExceptionResolver" />

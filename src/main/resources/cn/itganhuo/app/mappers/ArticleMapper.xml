@@ -289,7 +289,7 @@
 		<result property="articleId" column="f_articleId" />
 		<result property="labelId" column="f_labelId" />
 		<result property="userId" column="f_userId" />
-		<collection property="labels" ofType="Label" resultMap="label_result" />
+		<association property="label" javaType="Label" resultMap="label_result" />
 	</resultMap>
 
 	<resultMap id="label_result" type="Label">
@@ -341,7 +341,7 @@
 	</select>
 
 	<!-- 按照条件分页查询文章列表 -->
-	<select id="findArticleByCondition" resultMap="article_result">
+	<select id="findArticleByCondition" resultMap="article_result" parameterType="Map">
 		SELECT
 		<include refid="article_column_list" />
 		,
@@ -352,7 +352,7 @@
 		<if test="paging != null and paging.sort != null and paging.order != null">
 			ORDER BY a.${paging.sort} ${paging.order}
 		</if>
-		<if test="page != null and paging.page > 0 and paging.rows > 0">
+		<if test="paging != null and paging.page > 0 and paging.rows > 0">
 			LIMIT #{paging.offrow}, #{paging.rows}
 		</if>
 	</select>
