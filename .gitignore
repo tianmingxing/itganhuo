@@ -21,5 +21,3 @@ target
 *.gz
 
 /logs
-/src/main/resources/jdbc.properties
-/src/main/resources/jdbc.properties
