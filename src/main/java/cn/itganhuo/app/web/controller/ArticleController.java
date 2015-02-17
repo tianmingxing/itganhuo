@@ -130,7 +130,7 @@ public class ArticleController {
 		mav.addObject("articles", articles);
 		mav.addObject("pagination", pagination);
 		mav.addObject("search_type", search_type);
-		mav.addObject("path", ConstantPool.REQ_CONTEXT_PATH.get());
+		mav.addObject("path", request.getContextPath());
 		mav.setViewName("article_list");
 		return mav;
 	}
@@ -150,7 +150,7 @@ public class ArticleController {
 	 * @return 转发到文章详情页
 	 */
 	@RequestMapping(value = "/article/{id}", method = RequestMethod.GET)
-	public ModelAndView getArticleById(@PathVariable(value = "id") Integer id) {
+	public ModelAndView getArticleById(@PathVariable(value = "id") Integer id, HttpServletRequest request) {
 		// 统计并更新文章访问人数
 		articleService.addVisitorNumById(id);
 
@@ -168,7 +168,7 @@ public class ArticleController {
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("article", article_detail);
 		mav.addObject("user", user);
-		mav.addObject("path", ConstantPool.REQ_CONTEXT_PATH.get());
+		mav.addObject("path", request.getContextPath());
 		mav.addObject("related_article", related_article);
 		mav.setViewName("article_detail");
 		return mav;

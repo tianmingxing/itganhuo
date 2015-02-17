@@ -13,8 +13,8 @@ String path = request.getContextPath();
 <meta content="_csrf" name="csrf-param">
 <meta content="gqpb25GFirs5rHHq/KylANDoUyNTk46Ey0Dng=" name="csrf-token">
 <link rel="icon" href="#">
-<link href="<%=path %>/css/min.css" rel="stylesheet" type="text/css" media="all">
-<script type="text/javascript" src="<%=path %>/js/analytics.js"></script>
+<link href="<%=path %>/static/css/min.css" rel="stylesheet" type="text/css" media="all">
+<script type="text/javascript" src="<%=path %>/static/js/analytics.js"></script>
 <title>IT干货技术分享网-注册</title>
 </head>
 <body>

@@ -3,7 +3,7 @@
 <div class='navbar'>
   <div class='navbar-inner'>
     <div class='container'>
-		<a class='brand' href='<%=request.getContextPath() %>/'><img src="<%=request.getContextPath() %>/imgs/logo.png" title="IT干货技术分享网站" width="127px" height="25px"/></a>
+		<a class='brand' href='<%=request.getContextPath() %>/'><img src="<%=request.getContextPath() %>/static/imgs/logo.png" title="IT干货技术分享网站" width="127px" height="25px"/></a>
 		<shiro:guest>
 			<ul class='nav pull-right'>
 				<li><a href='<%=request.getContextPath() %>/user/signin'>登录</a></li>

@@ -2,10 +2,17 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8" />
+<title>${article.title}-IT干货技术分享网</title>
 <link rel="stylesheet" href="${path}/static/css/style.css" />
 <link rel="stylesheet" href="${path}/static/css/responsive.css" />
-<script type="text/javascript" src="${path}/static/js/jquery-1.8.3.min.js"></script>
-<title>${article.title}-IT干货技术分享网</title>
+<script type="text/javascript" src="${path}/static/js/plugin/jquery-1.8.3.min.js"></script>
+<script type="text/javascript">
+//当图片丢失时显示默认图片
+function showErrImg(obj) {
+    var errorimg = "${path}/static/imgs/default_image.jpg";
+    obj.src = errorimg;
+}
+</script>
 </head>
 <body id="body">
 
@@ -21,8 +28,8 @@
             <div id="question">
                 <article class="q-post" >
                     <div class="post-cell">
-                        <a href="javascript:addUseful('${article.id}','article');" class="post-big-vote"><span id="${article.id}_zan_article">${article.useful}</span>赞</a>
-                        <a href="javascript:addUseless('${article.id}','article');" class="post-big-hate" data-toggle="tooltip" data-placement="right" rel="tooltip" title="谨慎使用"><span id="${article.id}_cai_article">${article.useless}</span>踩</a>
+                        <a href="javascript:addUseful('${article.id}','article');" class="post-big-vote"><span id="${article.id}_zan_article">${article.praiseNum}</span>赞</a>
+                        <a href="javascript:addUseless('${article.id}','article');" class="post-big-hate" data-toggle="tooltip" data-placement="right" rel="tooltip" title="谨慎使用"><span id="${article.id}_cai_article">${article.trampleNum}</span>踩</a>
                         <a href="###" class="post-fav" data-toggle="tooltip" data-placement="right" rel="tooltip" title="关注并收藏">收藏</a>
                     </div>
                     <div class="fmt post-content">
@@ -36,7 +43,7 @@
                                     <a href="${path}/user/${article.user.account}" tabindex="-1"><img class="avatar-32" src="${path}/photo/${article.user.account}.jpg" alt="${article.user.account}" onerror="showErrImg(this);"/></a>
                                 </td>
                                 <td class="post-author">
-                                    <h4><a href="${path}/user/${article.user.account}">${article.user.account}</a><strong>6</strong></h4>${article.post_date}<br />
+                                    <h4><a href="${path}/user/${article.user.account}">${article.user.account}</a><strong>6</strong></h4>${article.postDate}<br />
                                 </td>
                             </tr>
                         </table>
@@ -51,11 +58,10 @@
                     <i></i>
                     <a class="by-created" href="#">时间先后</a>
                 </div>
-                <h2 class="a-title"> ${article.comments.size()} 个回答</h2>
+                <h2 class="a-title"> ${article.comments?size} 个回答</h2>
                
-	            <c:choose>
-		            <c:when test="${article.comments.size() > 0 and article.comments[0].id != ''}">
-		              <c:forEach items="${article.comments }" var="comment">
+	            <#if article.comments?size>
+	            	<#list article.comments as comment>
 		                <article class="a-post accepted" >
 		                    <div class="post-cell">
 		                        <a href="javascript:addUseful('${comment.id}','comment');" class="post-big-vote"><span id="${comment.id}_zan_comment">${comment.praise }</span>赞</a>
@@ -75,10 +81,10 @@
 		                        <table class="post-parter">
 		                            <tr>
 		                                <td>
-		                                    <img class="avatar-32" src="${pageContext.request.contextPath}/photo/${comment.user.account}.jpg" alt="图片" onerror="showErrImg(this);" />
+		                                    <img class="avatar-32" src="${path}/static/photo/${comment.user.account}.jpg" alt="头像" onerror="showErrImg(this);" />
 		                                </td>
 		                                <td class="post-author">
-		                                    <h4><a href="${path}/user/${comment.user.account}">${comment.user.account}</a><strong>0</strong></h4>${comment.post_date }
+		                                    <h4><a href="${path}/user/${comment.user.account}">${comment.user.account}</a><strong>0</strong></h4>${comment.postDate }
 		                                </td>
 		                            </tr>
 		                        </table>
@@ -88,61 +94,56 @@
 		                            </li>
 		                            <li id="j_reply_li_${comment.id}" style="display: none">
 		                            	<input type="text" id="j_reply_${comment.id}" style="width: 90%">&nbsp;
-		                            	<c:if test="${user_model == null || user_model.id == '' }">
+		                            	<#if user_model == null || user_model.id == ''>
 		                            		<input type="button" value="提交" onclick="javascript:window.location.href='${path}/user/signin';">
-		                            	</c:if>
+		                            	</#if>
 		                            	<shiro:authenticated>
 				                    		<input type="button" value="提交" onclick="submitReply('j_reply_${comment.id}','${comment.id}');">
 				                    	</shiro:authenticated>
 		                            </li>
-						            <c:if test="${comment.replys != null and comment.replys.size() > 0}">
+						            <#if comment.replys !!>
 			                            <li>
-						              	<c:forEach items="${comment.replys }" var="reply">
+			                            <#list comment.replys as reply>
 			                            	<div>
 											  <div style="width: 500px;float: left;">${reply.content }</div>
-											  <div style="text-align: right;width: 100%;float: right;">${reply.post_date }&nbsp;&nbsp;${reply.user.account }</div>
+											  <div style="text-align: right;width: 100%;float: right;">${reply.postDate }&nbsp;&nbsp;${reply.user.account }</div>
 											</div>
-			                          	</c:forEach>
+			                          	</#list>
 			                            </li>
-			                        </c:if>
+			                        </#if>
 		                        </ul>
 		                    </div>
 		                </article>
-		             </c:forEach>
-		            </c:when>
-		           	<c:otherwise>
-		           		<p>快来抢沙发</p>
-		           	</c:otherwise>
-	           </c:choose>
+		             </#list>
+		       <#else>
+	           		<p>快来抢沙发</p>
+	           </#if>
             </div>
                     
             <div id="write-answer">
                 <h2 class="common-title">我有话说</h2>
-                <c:choose>
-	                <c:when test="${user_model.id != article.user_id }">
-		                <form method="post" action="${path}/user/comment" onsubmit="return checkForm();">
-		                    <div id="wmd-button-bar">
-		                    	<input type="hidden" name="object_id" value="${article.id }">
-		                    	<input type="hidden" name="article_user_id" value="${article.user_id }">
-		                    	<textarea placeholder="用词请文明" rows="8" cols="115" id="j_content" name="content" style="resize: none;overflow-y:auto;"></textarea>
-		                    	<input type="submit" id="j_sub" value="提交">
-		                    </div>
-		                </form>
-	                </c:when>
-	                <c:otherwise>
-	                	<div id="wmd-button-bar">
-	                    	<textarea placeholder="不能评论自己的话题哦！" readonly="readonly" rows="8" cols="115" id="j_content" name="content" style="resize: none;overflow-y:auto;"></textarea>
-	                    	<input type="submit" disabled="disabled" value="提交">
+                <#if user_model.id != article.userId>
+	                <form method="post" action="${path}/user/comment" onsubmit="return checkForm();">
+	                    <div id="wmd-button-bar">
+	                    	<input type="hidden" name="object_id" value="${article.id }">
+	                    	<input type="hidden" name="article_user_id" value="${article.userId }">
+	                    	<textarea placeholder="用词请文明" rows="8" cols="115" id="j_content" name="content" style="resize: none;overflow-y:auto;"></textarea>
+	                    	<input type="submit" id="j_sub" value="提交">
 	                    </div>
-	                </c:otherwise>
-                </c:choose>
+	                </form>
+	             <#else>
+                	<div id="wmd-button-bar">
+                    	<textarea placeholder="不能评论自己的话题哦！" readonly="readonly" rows="8" cols="115" id="j_content" name="content" style="resize: none;overflow-y:auto;"></textarea>
+                    	<input type="submit" disabled="disabled" value="提交">
+                    </div>
+                </#if>
             </div>
         </div>
 
         <div id="secondary" class="col-md-3 col-xs-12 hidden-xs hidden-sm">
             <aside class="q-info">
                 <ul class="hor-count">
-                    <li><strong>${article.visitor_volume}</strong>浏览数</li>
+                    <li><strong>${article.visitorNum}</strong>浏览数</li>
                     <li><strong>0</strong>收藏数</li>
                 </ul>
             </aside>
@@ -151,18 +152,9 @@
                 <aside class="box">
                     <h3>相关文章</h3>
                     <ul class="link-list">
-	                    <c:forEach items="${related_article}" var="article" begin="1" end="15">
-	                        <li ><a class="topic_title" href="${path}/article/${article.id}">
-								<c:choose>
-								   <c:when test="${fn:length(article.title) > 12}">
-								  	 <c:out value="${fn:substring(article.title, 0, 12)}......" />
-								   </c:when>
-								   <c:otherwise>
-								   	  <c:out value="${article.title}" />
-								   </c:otherwise>
-								  </c:choose>
-	     					</a></li>
-	                    </c:forEach>
+                    	<#list related_article as article>
+	                        <li><a class="topic_title" href="${path}/article/${article.id}">${article.title[0..12]}...</a></li>
+	                    </#list>
                     </ul>
                 </aside>
             </div>
@@ -178,11 +170,6 @@
 
 </body>
 <script type="text/javascript">
-//当图片丢失时显示默认图片
-function showErrImg(obj) {
-    var errorimg = "${path}/static/imgs/default_image.jpg";
-    obj.src = errorimg;
-}
 //提交评论内容时前端验证
 function checkForm() {
 	jQuery('#j_sub').attr('disabled',true);

@@ -15,12 +15,12 @@ String path = request.getContextPath();
 <meta content="gqpb25GFirs5rHHq/KylANDoUyNTk46Ey0Dng=" name="csrf-token">
 <link rel="icon" href="#">
 <link href="<%=path %>/css/min.css" rel="stylesheet" type="text/css" media="all">
-<link rel="stylesheet" href="<%=path %>/js/ueditor/themes/default/css/ueditor.min.css" type="text/css">
-<link rel="stylesheet" href="<%=path %>/js/autocomplete/jquery-ui.css" type="text/css">
-<script type="text/javascript" src="<%=path %>/js/ueditor/third-party/jquery-1.10.2.min.js"></script>
-<script type="text/javascript" src="<%=path %>/js/analytics.js"></script>
-<script type="text/javascript" src="<%=path %>/js/ueditor/ueditor.config.js"></script>
-<script type="text/javascript" src="<%=path %>/js/ueditor/ueditor.all.min.js"></script>
+<link rel="stylesheet" href="<%=path %>/static/js/ueditor/themes/default/css/ueditor.min.css" type="text/css">
+<link rel="stylesheet" href="<%=path %>/static/js/autocomplete/jquery-ui.css" type="text/css">
+<script type="text/javascript" src="<%=path %>/static/js/ueditor/third-party/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="<%=path %>/static/js/analytics.js"></script>
+<script type="text/javascript" src="<%=path %>/static/js/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="<%=path %>/static/js/ueditor/ueditor.all.min.js"></script>
 <title>IT干货技术分享网-会员中心</title>
 </head>
 <body>

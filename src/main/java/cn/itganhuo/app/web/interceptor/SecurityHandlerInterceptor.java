@@ -76,11 +76,6 @@ public class SecurityHandlerInterceptor implements HandlerInterceptor {
 			HttpUtil.setValue(request.getSession(), "session_token", UUID.randomUUID().toString());
 		}
 		
-		//获取请求项目地址
-		if (!StringUtil.hasText(ConstantPool.REQ_CONTEXT_PATH.get())) {
-			ConstantPool.REQ_CONTEXT_PATH.set(request.getContextPath());
-		}
-		
 		return true;
 	}
 

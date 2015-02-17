@@ -7,9 +7,9 @@ String path = request.getContextPath();
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet" href="<%=path %>/css/style.css" />
-<link rel="stylesheet" href="<%=path %>/css/responsive.css" />
-<script type="text/javascript" src="<%=path %>/js/jquery-1.8.3.min.js"></script>
+<link rel="stylesheet" href="<%=path %>/static/css/style.css" />
+<link rel="stylesheet" href="<%=path %>/static/css/responsive.css" />
+<script type="text/javascript" src="<%=path %>/static/js/jquery-1.8.3.min.js"></script>
 <title>Insert title here</title>
 </head>
 <body>

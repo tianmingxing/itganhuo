@@ -49,11 +49,6 @@ public class ConstantPool {
 	/**
 	 * 当前项目部署的真实路径（绝对地址）
 	 */
-	public static final ThreadLocal<String> REAL_PATH = new ThreadLocal<String>();
+	public static String REAL_PATH = null;
 	
-	/**
-	 * 请求访问项目名称，拦截器内对它赋值，线上默认"/"。
-	 */
-	public static final ThreadLocal<String> REQ_CONTEXT_PATH = new ThreadLocal<String>();
-
 }

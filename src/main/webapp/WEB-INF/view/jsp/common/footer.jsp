@@ -5,7 +5,7 @@
 <%--      <a class='dark' href='faq.html'>关于</a> | --%>
     </div>
     <div class='col_fade'>
-      <p>&copy; 2014 - <%=DateUtil.getNowDateTimeStr("yyyy") %> </p>
+      <p>&copy; 2014-2015</p>
       <p>当前呈现版本:  2014.11.24 </p>
       <p>粤ICP备14073525号-1</p>
     </div>

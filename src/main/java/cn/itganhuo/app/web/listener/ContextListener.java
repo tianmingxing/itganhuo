@@ -87,7 +87,7 @@ public class ContextListener implements ServletContextListener {
 		if (!real_path.endsWith("/")) {
 			real_path = real_path.concat("/");
 		}
-		ConstantPool.REAL_PATH.set(real_path);
+		ConstantPool.REAL_PATH = real_path;
 	}
 
 }

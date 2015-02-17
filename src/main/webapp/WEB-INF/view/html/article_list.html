@@ -5,7 +5,26 @@
 <title>工作经验分享列表-IT干货技术分享网</title>
 <link rel="stylesheet" href="${path}/static/css/style.css" />
 <link rel="stylesheet" href="${path}/static/css/responsive.css" />
-<script type="text/javascript" src="${path}/static/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="${path}/static/js/plugin/jquery-1.8.3.min.js"></script>
+<script type="text/javascript">
+function showErrImg(obj) {
+    var errorimg = "${path}/static/imgs/default_image.jpg";
+    obj.src = errorimg;
+}
+$(document).ready(function() {
+    $('html').click(function() {
+        $(".has-dropdown, #site-nav-btn").removeClass('active');
+        $('.site-nav').addClass('hidden-xs');
+    });
+    $(document).scroll(function() {
+        if ($(this).scrollTop() > 720) {
+            $('#backtop').removeClass('hidden');
+        } else {
+            $('#backtop').addClass('hidden');
+        }
+    });
+});
+</script>
 </head>
 <body id="body">
 
@@ -99,25 +118,6 @@
 
 <a id="backtop" class="mobi-hide hidden" href="#body">回顶部</a>
 </body>
-<script type="text/javascript">
-function showErrImg(obj) {
-    var errorimg = "${path}/static/imgs/default_image.jpg";
-    obj.src = errorimg;
-}
-$(document).ready(function() {
-    $('html').click(function() {
-        $(".has-dropdown, #site-nav-btn").removeClass('active');
-        $('.site-nav').addClass('hidden-xs');
-    });
-    $(document).scroll(function() {
-        if ($(this).scrollTop() > 720) {
-            $('#backtop').removeClass('hidden');
-        } else {
-            $('#backtop').addClass('hidden');
-        }
-    });
-});
-</script>
 <script>
 	window._bd_share_config = {
 		common : {

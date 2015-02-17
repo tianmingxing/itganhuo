@@ -11,8 +11,8 @@
 	<meta content="_csrf" name="csrf-param">
 	<meta content="gqpb25GFirs5rHHq/KylANDoUyNTk46Ey0Dng=" name="csrf-token">
 	<link rel="icon" href="#">
-	<link href="<%=request.getContextPath()%>/css/min.css" rel="stylesheet" type="text/css" media="all">
-	<script type="text/javascript" src="<%=request.getContextPath()%>/js/analytics.js"></script>
+	<link href="<%=request.getContextPath()%>/static/css/min.css" rel="stylesheet" type="text/css" media="all">
+	<script type="text/javascript" src="<%=request.getContextPath()%>/static/js/analytics.js"></script>
 	</head>
   <%@ include file="../common/header.jsp" %>
   <body>
