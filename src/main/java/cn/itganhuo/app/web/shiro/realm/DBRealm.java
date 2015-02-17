@@ -14,7 +14,7 @@
  * The author does not guarantee the quality of the project and its stability, reliability, and security does not bear any responsibility.
  * 作者不保证本项目质量并对其稳定性、可靠性和安全性不承担任何责任.
  */
-package cn.itganhuo.app.web.realm;
+package cn.itganhuo.app.web.shiro.realm;
 
 import java.util.HashSet;
 import java.util.Set;

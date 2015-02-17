@@ -97,9 +97,9 @@ function showErrImg(obj) {
 		                            	<#if user_model == null || user_model.id == ''>
 		                            		<input type="button" value="提交" onclick="javascript:window.location.href='${path}/user/signin';">
 		                            	</#if>
-		                            	<shiro:authenticated>
+		                            	<@shiro.authenticated>
 				                    		<input type="button" value="提交" onclick="submitReply('j_reply_${comment.id}','${comment.id}');">
-				                    	</shiro:authenticated>
+				                    	</@shiro.authenticated>
 		                            </li>
 						            <#if comment.replys !!>
 			                            <li>

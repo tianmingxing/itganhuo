@@ -18,7 +18,7 @@
 	</bean>
 	
 	<!-- 自定义域来源于数据库 -->
-	<bean id="dbRealm" class="cn.itganhuo.app.web.realm.DBRealm">
+	<bean id="dbRealm" class="cn.itganhuo.app.web.shiro.realm.DBRealm">
 		<property name="credentialsMatcher" ref="matcher" />
 	</bean>
 

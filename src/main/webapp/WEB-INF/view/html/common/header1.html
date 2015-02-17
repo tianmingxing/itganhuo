@@ -6,7 +6,7 @@
         <ul class="site-nav hidden-xs">
             <li class="current"><a href="${path}/">分享</a></li>
         </ul>
-        <shiro:guest>
+        <@shiro.guest>
         	<ul class="user-nav">
             	<li>
                 	<a id="login-link" href="${path}/user/signin">登录</a>
@@ -15,8 +15,8 @@
                 	<a href="${path}/user/register">注册</a>
             	</li>
             </ul>
-        </shiro:guest>
-        <shiro:user>
+        </@shiro.guest>
+        <@shiro.user>
 	        <ul class="user-nav">
 	            <li class="has-dropdown">
 	                <a class="hidden-xs" href="${path}/logout">退出</a>
@@ -25,6 +25,6 @@
 	                <a href="${path}/user/<shiro:principal/>" class="hidden-xs"><shiro:principal/><i class="i-arrow-s"></i></a>
 	            </li>
 	        </ul>
-        </shiro:user>
+        </@shiro.user>
     </nav>
 </div>

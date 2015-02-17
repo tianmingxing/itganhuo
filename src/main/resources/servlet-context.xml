@@ -21,7 +21,7 @@
 	</context:component-scan>
 
 	<!-- Freemarker配置 -->
-	<bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+	<bean id="freemarkerConfig" class="cn.itganhuo.app.web.shiro.ShiroTagFreeMarkerConfigurer">
 		<property name="templateLoaderPath" value="/WEB-INF/view/html/" />
 		<property name="freemarkerVariables">
 			<map>
