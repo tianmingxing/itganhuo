@@ -10,6 +10,8 @@
  */
 package cn.itganhuo.app.common.pool;
 
+import java.text.MessageFormat;
+
 import org.junit.Test;
 import org.springframework.util.Assert;
 
@@ -29,10 +31,9 @@ public class TestConfigPool {
 
 	@Test
 	public void test() {
-		//不在容器中测试时由于路径不正确这个测试通过不了，虽然这个功能是正常的但还是暂时把它注释。
-//		Assert.notNull(ConfigPool.getString("parameter.emailLinkValidCertification"));
-//		Assert.assertNotNull(ConfigPool.getString("parameter.requestGetContextPath"));
-//		Assert.assertEquals(MessageFormat.format(ConfigPool.getString("respMsg.email.EmailAuthSuccessful"), "admin"), "恭喜你：admin，邮箱地址认证成功！");
+		Assert.notNull(ConfigPool.getString("parameter.emailLinkValidCertification"));
+		Assert.notNull(ConfigPool.getString("parameter.requestGetContextPath"));
+		Assert.isTrue("恭喜你：admin，邮箱地址认证成功！".equals(MessageFormat.format(ConfigPool.getString("respMsg.email.EmailAuthSuccessful"), "admin")));
 	}
 
 }

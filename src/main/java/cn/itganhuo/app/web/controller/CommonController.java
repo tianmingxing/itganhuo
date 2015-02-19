@@ -21,6 +21,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
@@ -28,6 +30,7 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -122,7 +125,8 @@ public class CommonController {
 	 * @return 转发到项目开发团队介绍页面
 	 */
 	@RequestMapping(value = "/teams", method = RequestMethod.GET)
-	public String refurlTeam() {
+	public String refurlTeam(Model model, HttpServletRequest request) {
+		model.addAttribute("path", request.getContextPath());
 		return "team";
 	}
 
@@ -216,7 +220,8 @@ public class CommonController {
 	 * @return 转发到项目升级日志页面
 	 */
 	@RequestMapping(value = "/devblog", method = RequestMethod.GET)
-	public String refurlDevblog() {
+	public String refurlDevblog(Model model, HttpServletRequest request) {
+		model.addAttribute("path", request.getContextPath());
 		return "devblog";
 	}
 
@@ -228,7 +233,8 @@ public class CommonController {
 	 * @return 转发到关于我们页面
 	 */
 	@RequestMapping(value = "/about", method = RequestMethod.GET)
-	public String refurlAbout() {
+	public String refurlAbout(Model model, HttpServletRequest request) {
+		model.addAttribute("path", request.getContextPath());
 		return "about";
 	}
 
@@ -240,7 +246,8 @@ public class CommonController {
 	 * @return
 	 */
 	@RequestMapping(value = "/invitation", method = RequestMethod.GET)
-	public String invated() {
+	public String invated(Model model, HttpServletRequest request) {
+		model.addAttribute("path", request.getContextPath());
 		return "invitation";
 	}
 }

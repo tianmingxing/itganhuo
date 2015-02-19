@@ -12,6 +12,7 @@ String path = request.getContextPath();
 <meta name="author" content="JAVA私塾在线学习社区（1000人群329232140）">
 <meta content="_csrf" name="csrf-param">
 <meta content="gqpb25GFirs5rHHq/KylANDoUyNTk46Ey0Dng=" name="csrf-token">
+<title>登录-IT干货技术分享网</title>
 <link rel="icon" href="#">
 <link href="<%=path %>/static/css/min.css" rel="stylesheet" type="text/css" media="all">
 <script type="text/javascript" src="<%=path %>/static/js/plugin/jquery-1.8.3.min.js"></script>
@@ -55,26 +56,18 @@ function formCheck() {
 	jQuery(".btn").attr("onclick", "");
 	jQuery(".btn").val("登录中...");
 	jQuery(".alert.alert-error").hide();
-	jQuery.post('<%=path %>/user/signin',jQuery("#signin_form").serialize(),function(data){
-		var json = jQuery.parseJSON(data);
-		if (json.status == '1') {
-			window.location.href = '<%=path %>/user/' + json.msg;
+	jQuery.post('<%=path %>/user/signin',jQuery('#signin_form').serialize(),function(data){
+		if (data.status == '0000') {
+			window.location.href = '<%=path %>/user/' + data.appendInfo;
 		} else {
 			jQuery(".alert.alert-error").show();
-			jQuery("#j_msg").text(json.msg);
+			jQuery("#j_msg").text(data.message);
 			jQuery(".btn").attr("onclick", "formCheck();");
 			jQuery(".btn").val("登录");
 		}
 	});
 }
-jQuery(document).keyup(function(e){
-	var e = e || event, keycode = e.which || e.keyCode;
-	if (keycode == 13) {
-		jQuery(".btn").trigger("click");
-	}
-});
 </script>
-<title>IT干货技术分享网-登录</title>
 </head>
 <body>
 <%@ include file="../common/header.jsp" %>
@@ -139,4 +132,12 @@ jQuery(document).keyup(function(e){
 <%@ include file="../common/footer.jsp" %>
 <div id="sidebar-mask"></div>
 </body>
+<script type="text/javascript">
+jQuery(document).keyup(function(e){
+	var e = e || event, keycode = e.which || e.keyCode;
+	if (keycode == 13) {
+		jQuery(".btn").trigger("click");
+	}
+});
+</script>
 </html>

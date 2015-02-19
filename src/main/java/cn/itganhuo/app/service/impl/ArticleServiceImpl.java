@@ -104,7 +104,7 @@ public class ArticleServiceImpl implements ArticleService {
 	public List<Article> getArticleByUserId(int user_id, int row_num) {
 		Map<String, Object> param = new HashMap<String, Object>();
 		param.put("userId", user_id);
-		param.put("row_num", row_num);
+		param.put("rowNum", row_num);
 		return articleDao.getArticleByUserId(param);
 	}
 

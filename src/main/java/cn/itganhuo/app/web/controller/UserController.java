@@ -152,18 +152,21 @@ public class UserController {
 	 */
 	@Transactional
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	@ResponseBody
-	public RespMsg register(User user, HttpServletRequest request) {
+	public @ResponseBody RespMsg register(User user, HttpServletRequest request) {
 		RespMsg respMsg = new RespMsg();
-		/*
-		 * 数据验证：判断用户名、密码长度是否在区间值内、是否含有特殊字符、是否含有中文字符。
-		 */
-		if (user.getAccount().length() > 6 && user.getAccount().length() < 20) {
+		// 数据验证
+		// 判断用户名长度是否在区间值内
+		if (user.getAccount().length() >= 6 && user.getAccount().length() <= 20) {
+			// 判断用户名是否含有特殊字符
 			if (StringUtil.ifContainsSpecialStr(user.getAccount())) {
-				if (user.getPassword().length() > 6 && user.getPassword().length() < 20) {
-					if (StringUtil.ifContainsSpecialStr(user.getPassword())) {
+				// 判断密码长度是否在区间值内
+				if (user.getPassword().length() >= 6 && user.getPassword().length() <= 20) {
+					// 判断密码是否含有特殊字符
+					if (StringUtil.ifContainsSpecialStr(user.getPassword(), "`_~_#_$_%_^_&_*_(_)_-_=_+_{_}_[_]_|_\\_;_:_\'_\"_<_>_,_/")) {
+						// 判断用户名、密码中是否含有中文字符
 						if (!user.getAccount().matches("[\u4e00-\u9fa5]+") && !user.getPassword().matches("[\u4e00-\u9fa5]+")) {
 							User tmp_user = this.userService.loadByAccount(user.getAccount());
+							// 判断将要注册的账号是否已经存在
 							if (tmp_user == null || tmp_user.getId() <= 0) {
 								// 对密码加密
 								String algorithmName = "SHA-512";
@@ -174,13 +177,19 @@ public class UserController {
 								// 再次组装用户数据
 								user.setPassword(hash.toBase64());
 								user.setSalt(salt2);
-								user.setIsLock(1);
+								user.setIsLock(0);
 								user.setPostDate(DateUtil.getNowDateTimeStr(null));
 								user.setType(1);
 								// 保存用户
 								this.userService.insert(user);
-								// 将用户信息临时存放到会话中
+								
+								/*
+								 * 将用户信息临时存放到会话中，如此做法基于两点考虑：
+								 * 1、参照多数网站通常的做法所以没有提供注册并自动登录的功能；
+								 * 2、由于需要记住当前注册的用户所以这里将其信息存放到会话中，当然也是可以放到客户端缓存中。
+								 */
 								HttpUtil.setValue(ConstantPool.USER_TEMP_INFO, user);
+								respMsg.setAppendInfo(user.getAccount());
 							} else {
 								respMsg.setStatus("1002");
 								respMsg.setMessage(ConfigPool.getString("respMsg.login.UnknownAccount"));
@@ -233,9 +242,11 @@ public class UserController {
 				// 登录成功后将用户信息放到HTTP会话中
 				User d_user = userService.loadByAccount(user.getAccount());
 				current_user.getSession().setAttribute(ConstantPool.USER_SHIRO_SESSION_ID, d_user);
+				respMsg.setAppendInfo(d_user.getAccount());
 				// 更新用户最近登录时间和登录IP
 				User tmp = new User();
 				tmp.setAccount(user.getAccount());
+				tmp.setIsLock(0);
 				tmp.setLastLoginDate(DateUtil.getNowDateTimeStr(null));
 				tmp.setLastLoginIp(StringUtil.getNowHttpIp(request));
 				userService.updateInfoByAccount(tmp);
@@ -269,20 +280,23 @@ public class UserController {
 	@RequestMapping(value = "/{account}", method = RequestMethod.GET)
 	public ModelAndView center(@PathVariable(value = "account") String account) {
 		ModelAndView mav = new ModelAndView();
-		User user = null;
 		Subject current_user = SecurityUtils.getSubject();
-		user = (User) current_user.getSession().getAttribute(ConstantPool.USER_SHIRO_SESSION_ID);
-		if (user == null || user.getId() <= 0) {
-			user = userService.loadByAccount(current_user.getPrincipal().toString());
-			current_user.getSession().setAttribute(ConstantPool.USER_SHIRO_SESSION_ID, user);
+		if (current_user != null) {
+			User user = (User) current_user.getSession().getAttribute(ConstantPool.USER_SHIRO_SESSION_ID);
+			if (user != null) {
+				mav.addObject("user", user);
+		
+				// 查询最近发布话题5篇文章
+				List<Article> articles = articleService.getArticleByUserId(user.getId(), 5);
+				mav.addObject("articles", articles);
+		
+				mav.setViewName("user/center");
+			} else {
+				mav.setViewName("user/signin");
+			}
+		} else {
+			mav.setViewName("user/signin");
 		}
-		mav.addObject("user", user);
-
-		// 查询最近发布话题5篇文章
-		List<Article> articles = articleService.getArticleByUserId(user.getId(), 5);
-		mav.addObject("articles", articles);
-
-		mav.setViewName("user/center");
 		return mav;
 	}
 

@@ -17,9 +17,7 @@
 package cn.itganhuo.app.entity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * 针对前台请求（主要是异步请求）后台进行处理后返回的状态码<br>
@@ -58,7 +56,7 @@ public class RespMsg implements Serializable {
 	/*
 	 * 响应信息之附加信息
 	 */
-	private List<Object> appendInfo = new ArrayList<Object>();
+	private String appendInfo;
 
 	public Date getTime() {
 		return time;
@@ -84,11 +82,11 @@ public class RespMsg implements Serializable {
 		this.message = message;
 	}
 
-	public List<Object> getAppendInfo() {
+	public String getAppendInfo() {
 		return appendInfo;
 	}
 
-	public void setAppendInfo(List<Object> appendInfo) {
+	public void setAppendInfo(String appendInfo) {
 		this.appendInfo = appendInfo;
 	}
 

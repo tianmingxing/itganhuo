@@ -12,6 +12,7 @@ String path = request.getContextPath();
 <meta name="author" content="IT干货技术分享网-修改信息">
 <meta content="_csrf" name="csrf-param">
 <meta content="gqpb25GFirs5rHHq/KylANDoUyNTk46Ey0Dng=" name="csrf-token">
+<title>注册-IT干货技术分享网</title>
 <link rel="icon" href="#">
 <link href="<%=path %>/static/css/min.css" rel="stylesheet" type="text/css" media="all">
 <script type="text/javascript" src="<%=path %>/static/js/plugin/jquery-1.8.3.min.js"></script>
@@ -23,17 +24,12 @@ function formCheck() {
 	password_reg = /^.*[A-Za-z0-9\\w_-]+.*$/;
 	if (account == "") {
 		jQuery(".alert.alert-error").show();
-		jQuery("#j_msg").text("邮箱不能为空");
+		jQuery("#j_msg").text("账号不能为空");
 		jQuery("#account").focus();
 		return false;
 	} else if (account.length < 6) {
 		jQuery(".alert.alert-error").show();
 		jQuery("#j_msg").text("账号长度至少6个字符");
-		jQuery("#account").focus();
-		return;
-	} else if (!email_reg.test(account)) {
-		jQuery(".alert.alert-error").show();
-		jQuery("#j_msg").text("邮箱格式不正确");
 		jQuery("#account").focus();
 		return;
 	} else {
@@ -59,13 +55,12 @@ function formCheck() {
 	}
 	jQuery(".btn").attr("onclick", "");
 	jQuery(".alert.alert-error").hide();
-	jQuery.post('<%=path %>/user/register',jQuery("#register_form").serialize(),function(data){
-		var json = jQuery.parseJSON(data);
-		if (json.status == '1') {
-			window.location.href = '<%=path %>/emailskip/' + json.account;
+	jQuery.post('<%=path %>/user/register',jQuery("#register_form").serialize(),function(data) {
+		if (data.status == '0000') {
+			window.location.href = '<%=path %>/emailskip/' + data.appendInfo;
 		} else {
 			jQuery(".alert.alert-error").show();
-			jQuery("#j_msg").text(json.msg);
+			jQuery("#j_msg").text(data.message);
 			jQuery(".btn").attr("onclick", "formCheck();");
 		}
 	});
@@ -77,7 +72,6 @@ jQuery(document).keyup(function(e){
 	}
 });
 </script>
-<title>IT干货技术分享网-注册</title>
 </head>
 <body>
 <%@ include file="../common/header.jsp" %>
@@ -86,12 +80,10 @@ jQuery(document).keyup(function(e){
 		<div class='panel'>
 			<div class='header'> <span class='col_fade'>关于</span> </div>
 			<div class="inner">
-				<p>干货网</p>  
+				<p>IT干货</p>  
 				<p>在这里你可以：</p>
 				<ul>
-					<li>向别人提出你遇到的问题</li>
-					<li>帮助遇到问题的人</li>
-					<li>分享自己的知识</li>
+					<li>分享工作经验帮助遇到问题的人</li>
 					<li>和其它人一起进步</li>
 				</ul>
 			</div>
@@ -111,7 +103,7 @@ jQuery(document).keyup(function(e){
 				</div>
 				<form id="register_form" class="form-horizontal">
 					<div class="control-group">
-						<label class="control-label" for="account">注册邮箱</label>
+						<label class="control-label" for="account">账号</label>
 						<div class="controls">
 							<input class="input-xlarge" id="account" name="account" size="30" type="text">
 						</div>
@@ -122,8 +114,15 @@ jQuery(document).keyup(function(e){
 							<input class="input-xlarge" id="password" name="password" size="30" type="password">
 						</div>
 					</div>
+					<div class="control-group">
+						<label class="control-label" for="security_code">验证码</label>
+						<div class="controls">
+							<input class="input-mini" id="security_code" name="security_code" size="4" type="text">
+							<a id="" href="#">看不清？</a>
+						</div>
+					</div>
 					<div class="form-actions">
-						<input type="button" class="btn" value="注册" onclick="formCheck();">
+						<input type="button" class="btn" value="强势注册" onclick="formCheck();">
 					</div>
 				</form>
 			</div>

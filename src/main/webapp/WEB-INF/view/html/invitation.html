@@ -1,23 +1,18 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-    <%
-String path = request.getContextPath();
-%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<title>邀请朋友-IT干货技术分享网</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet" href="<%=path %>/static/css/style.css" />
-<link rel="stylesheet" href="<%=path %>/static/css/responsive.css" />
-<script type="text/javascript" src="<%=path %>/static/js/jquery-1.8.3.min.js"></script>
-<title>Insert title here</title>
+<link rel="stylesheet" href="${path}/static/css/style.css" />
+<link rel="stylesheet" href="${path}/static/css/responsive.css" />
+<script type="text/javascript" src="${path}/static/js/plugin/jquery-1.8.3.min.js"></script>
 </head>
 <body>
 <div class="container wrap">
  <h1>IT 干货</h1>
 <h2>你可以复制链接给好友</h2>
 <div>
-	链接地址<input type="text" value="<%=path %>/articles">
+	链接地址<input type="text" value="${path}/articles">
 
 </div>
 <h2>你也可以提供好友邮箱地址：</h2>
@@ -25,15 +20,14 @@ String path = request.getContextPath();
                             
 <h2>你也可以分享给好友</h2>
 <p class="preview_note">预览效果：</p>
-                            <div class="preview_container">
-                                <div class="preview_share_button" id="btn_demo">
-                                    <!--iframe内容或预览元素-->
-                                </div>
-                            </div>
-
+	<div class="preview_container">
+	    <div class="preview_share_button" id="btn_demo">
+	        <!--iframe内容或预览元素-->
+	    </div>
+	</div>
 </div>
 
-<form action="<%=path %>/register" name="form1"></form>
+<form action="${path}/register" name="form1"></form>
 </body>
 <script type="text/javascript">
 function PushEmail(){
@@ -49,8 +43,5 @@ function PushEmail(){
 		 } 
 	 	$("#form1").submit();
 }
-
-
-
 </script>
 </html>

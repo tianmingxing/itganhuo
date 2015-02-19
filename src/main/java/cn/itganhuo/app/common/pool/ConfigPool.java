@@ -68,7 +68,7 @@ public class ConfigPool {
 			if (config == null) {
 				synchronized (ConfigPool.class) {
 					if (config == null) {
-						config = new PropertiesConfiguration(ConstantPool.REAL_PATH + "/" + ConstantPool.CONFIG_BEAN_FILE_PATH);
+						config = new PropertiesConfiguration(ConstantPool.CONFIG_BEAN_FILE_PATH);
 					}
 				}
 			}
