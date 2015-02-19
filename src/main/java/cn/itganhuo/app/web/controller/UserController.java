@@ -502,20 +502,21 @@ public class UserController {
 	@RequiresAuthentication
 	@Transactional
 	@RequestMapping(value = "/share", method = RequestMethod.POST)
-	public RespMsg create(Article article, @RequestParam String str) {
+	public RespMsg create(Article article, @RequestParam String subject) {
 		RespMsg respMsg = new RespMsg();
 		if (article != null && StringUtil.hasText(article.getTitle()) && StringUtil.hasText(article.getContent())) {
 			// 获取当前登录用户信息
 			Subject current_user = SecurityUtils.getSubject();
 			User um = (User) current_user.getSession().getAttribute(ConstantPool.USER_SHIRO_SESSION_ID);
+			respMsg.setAppendInfo(um.getAccount());
 			// 重新组织文章参数
 			article.setUserId(um.getId());
 			// 保存文章
 			int article_id = articleService.addArticle(article);
 
 			// 保存标签
-			if (StringUtil.hasText(str)) {
-				String labels[] = str.split(",");
+			if (StringUtil.hasText(subject)) {
+				String labels[] = subject.split(",");
 				if (labels != null && labels.length > 0) {
 					// 判断是否超过5个标签，如果大于5个标签则超出的部分不做处理。
 					int lng = (labels.length > 5) ? 5 : labels.length;

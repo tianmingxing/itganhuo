@@ -12,7 +12,7 @@
 <meta content="gqpb25GFirs5rHHq/KylANDoUyNTk46Ey0Dng=" name="csrf-token">
 <link rel="icon" href="#">
 <link href="<%=request.getContextPath()%>/static/css/min.css" rel="stylesheet" type="text/css" media="all">
-<script type="text/javascript" src="<%=request.getContextPath()%>/static/js/analytics.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/static/js/plugin/analytics.js"></script>
 <title>会员注册</title>
 </head>
 <body>
@@ -56,7 +56,7 @@
 					<div class="control-group">
 						<label class="control-label" for="name">用户名：</label>
 						<div class="controls">
-							<input class="input-xlarge" id="name" name="name" size="30" type="text" value="${user.name}"/>
+							<input class="input-xlarge" id="name" name="name" size="30" type="text" value="${user.nickname}"/>
 						</div>
 					</div>
 					<div class="control-group">
@@ -104,7 +104,7 @@
 <%@ include file="../common/footer.jsp" %>
 <div id="sidebar-mask"></div>
 </body>
-<script type="text/javascript" src="${pageContext.request.contextPath }/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath }/static/js/plugin/jquery-1.8.3.min.js"></script>
 <script type="text/javascript">
 	function formCheck(){
 	var email = $("#email").val();

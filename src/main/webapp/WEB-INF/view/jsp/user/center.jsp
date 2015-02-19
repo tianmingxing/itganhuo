@@ -7,6 +7,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+<title>IT干货技术分享网-会员中心</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="description" content="IT干货。JAVA私塾在线学习社区（1000人群329232140）">
@@ -17,8 +18,13 @@
 <link rel="icon" href="#">
 <link href="<%=path %>/static/css/min.css" rel="stylesheet" type="text/css" media="all">
 <script type="text/javascript" src="<%=path %>/static/js/plugin/jquery-1.8.3.min.js"></script>
-<script type="text/javascript" src="<%=path %>/static/js/analytics.js"></script>
-<title>IT干货技术分享网-会员中心</title>
+<script type="text/javascript" src="<%=path %>/static/js/plugin/analytics.js"></script>
+<script type="text/javascript">
+function showErrImg(obj) {
+    var errorimg = "<%=path%>/static/imgs/default_image.jpg";
+    obj.src = errorimg;
+}
+</script>
 </head>
 <body>
 <%@ include file="../common/header.jsp" %>
@@ -32,7 +38,7 @@
 				<div class="user_card">
 					<div>
 						<a class="user_avatar" href="#">
-							<img src="<%=path %>/static/photo/<%=um.getAccount()%>.jpg" title="<%=um.getAccount()%>">
+							<img src="<%=path %>/static/upload/photos/<%=um.getAccount()%>.jpg" title="<%=um.getAccount()%>" onerror="showErrImg(this);">
 						</a>
 						<span class="user_name"><a class="dark" href="#"><%=um.getAccount()%></a></span>&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/user/update">设置</a> 
 						<div class="board clearfix">
@@ -106,16 +112,16 @@
 					<c:forEach items="${articles}" var="article">
 						<div class="cell">
 							<a class="user_avatar pull-left" href="#">
-								<img src="<%=path %>/photo/<%=um.getAccount()%>.jpg" title="<%=um.getAccount()%>">
+								<img src="<%=path %>/static/upload/photos/<%=um.getAccount()%>.jpg" title="<%=um.getAccount()%>" onerror="showErrImg(this);">
 							</a>
 							<span class="reply_count pull-left">
 								<span class="count_of_replies" title="回复数">${article.comments.size() }</span>
 								<span class="count_seperator">/</span>
-								<span class="count_of_visits" title="点击数">${article.visitor_volume }</span>
+								<span class="count_of_visits" title="点击数">${article.visitorNum }</span>
 							</span>
 							<a class="last_time pull-right" href="#">
-								<img class="user_small_avatar" src="<%=path %>/photo/${article.user.account}.jpg">
-								<span class="last_active_time">${article.post_date }</span>
+								<img class="user_small_avatar" src="<%=path %>/static/upload/photos/${article.user.account}.jpg" onerror="showErrImg(this);">
+								<span class="last_active_time">${article.postDate }</span>
 							</a>
 							<div class="topic_title_wrapper">
 								<a class="topic_title" href="<%=path %>/article/${article.id}">${article.title }</a>
@@ -166,6 +172,4 @@
 <%@ include file="../common/footer.jsp" %>
 <div id="sidebar-mask"></div>
 </body>
-<script type="text/javascript">
-</script>
 </html>

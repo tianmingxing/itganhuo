@@ -5092,7 +5092,7 @@ textarea#title {
 	-webkit-box-shadow:none;
 	-moz-box-shadow:none;
 	box-shadow:0 0 4px #c9baba;
-	background:#fff url(..../imgs/search.png) no-repeat 4px 4px;
+	background:#fff url("../imgs/search.png") no-repeat 4px 4px;
 	padding:4px 5px 4px 22px;
 	color:#666;
 	border:0

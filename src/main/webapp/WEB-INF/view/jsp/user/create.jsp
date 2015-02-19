@@ -18,10 +18,10 @@ String path = request.getContextPath();
 <link rel="stylesheet" href="<%=path %>/static/js/plugin/ueditor/themes/default/css/ueditor.min.css" type="text/css">
 <link rel="stylesheet" href="<%=path %>/static/js/plugin/autocomplete/jquery-ui.css" type="text/css">
 <script type="text/javascript" src="<%=path %>/static/js/plugin/ueditor/third-party/jquery-1.10.2.min.js"></script>
-<script type="text/javascript" src="<%=path %>/static/js/analytics.js"></script>
+<script type="text/javascript" src="<%=path %>/static/js/plugin/analytics.js"></script>
 <script type="text/javascript" src="<%=path %>/static/js/plugin/ueditor/ueditor.config.js"></script>
 <script type="text/javascript" src="<%=path %>/static/js/plugin/ueditor/ueditor.all.min.js"></script>
-<title>IT干货技术分享网-会员中心</title>
+<title>发帖-用户中心-IT干货技术分享网</title>
 </head>
 <body>
 <%@ include file="../common/header.jsp" %>
@@ -63,12 +63,12 @@ String path = request.getContextPath();
 		<div class="panel">
 			<div class="header">
 				<ol class="breadcrumb">
-					<li><a href="/">主页</a><span class="divider">/</span></li>				
-					<li class="active">发布话题</li>				
+					<li><a href="/">主页</a><span class="divider">/</span></li>
+					<li class="active">发布话题</li>
 				</ol>
 			</div>
-			<div class="inner post">			  
-				<form id="create_topic_form" action="<%=path %>/user/share" method="post" onsubmit="return checkForm();">
+			<div class="inner post">
+				<form id="create_topic_form" >
 					<fieldset>
 						<input type="text" name="title" maxlength="50" style="width: 98%;">
 						<div class="markdown_in_editor">
@@ -79,7 +79,7 @@ String path = request.getContextPath();
 								<div id="j_label"></div>
 							</div>
 							<div class="editor_buttons">
-								<button id="submit_btn" type="submit" class="btn btn-primary">提交</button>
+								<button id="submit_btn" type="button" class="btn btn-primary">提交</button>
 							</div>
 						</div>
 					</fieldset>
@@ -143,6 +143,7 @@ String path = request.getContextPath();
 
 	//
 	var ue = UE.getEditor('container');
+	
 	function checkForm() {
 		jQuery('#submit_btn').attr('disabled', true);
 		jQuery('#submit_btn').text('提交中...');
@@ -176,6 +177,19 @@ String path = request.getContextPath();
 			return false;
 		}
 		return true;
+	}
+	
+	function submitForm() {
+		if (!submit_btn()) {
+			return;
+		}
+		jQuery.post('<%=path %>/user/share', jQuery('#create_topic_form').serialize(), function(data){
+			if (data.status == '0000') {
+				window.location.href = '<%=path %>/user/' + data.appendInfo;
+			} else {
+				alert(data.message);
+			}
+		});
 	}
 </script>
 </html>
