@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
 	String path = request.getContextPath();
-	User um = (User) request.getAttribute("user_model");
+	User um = (User) request.getAttribute("user");
 %>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -15,8 +15,8 @@
 <meta content="_csrf" name="csrf-param">
 <meta content="gqpb25GFirs5rHHq/KylANDoUyNTk46Ey0Dng=" name="csrf-token">
 <link rel="icon" href="#">
-<link href="<%=path %>/css/min.css" rel="stylesheet" type="text/css" media="all">
-<script type="text/javascript" src="<%=path %>/static/js/jquery-1.8.3.min.js"></script>
+<link href="<%=path %>/static/css/min.css" rel="stylesheet" type="text/css" media="all">
+<script type="text/javascript" src="<%=path %>/static/js/plugin/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="<%=path %>/static/js/analytics.js"></script>
 <title>IT干货技术分享网-会员中心</title>
 </head>
@@ -32,7 +32,7 @@
 				<div class="user_card">
 					<div>
 						<a class="user_avatar" href="#">
-							<img src="<%=path %>/photo/<%=um.getAccount()%>.jpg" title="<%=um.getAccount()%>">
+							<img src="<%=path %>/static/photo/<%=um.getAccount()%>.jpg" title="<%=um.getAccount()%>">
 						</a>
 						<span class="user_name"><a class="dark" href="#"><%=um.getAccount()%></a></span>&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/user/update">设置</a> 
 						<div class="board clearfix">

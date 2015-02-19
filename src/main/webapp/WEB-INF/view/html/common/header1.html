@@ -22,7 +22,7 @@
 	                <a class="hidden-xs" href="${path}/logout">退出</a>
 	            </li>
 	            <li class="has-dropdown">
-	                <a href="${path}/user/<shiro:principal/>" class="hidden-xs"><shiro:principal/><i class="i-arrow-s"></i></a>
+	                <a href="${path}/user/<@shiro.principal/>" class="hidden-xs"><@shiro.principal/><i class="i-arrow-s"></i></a>
 	            </li>
 	        </ul>
         </@shiro.user>
