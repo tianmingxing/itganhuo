@@ -18,7 +18,7 @@ String path = request.getContextPath();
 <link rel="stylesheet" href="<%=path %>/static/js/plugin/ueditor/themes/default/css/ueditor.min.css" type="text/css">
 <link rel="stylesheet" href="<%=path %>/static/js/plugin/autocomplete/jquery-ui.css" type="text/css">
 <script type="text/javascript" src="<%=path %>/static/js/plugin/ueditor/third-party/jquery-1.10.2.min.js"></script>
-<script type="text/javascript" src="<%=path %>/static/js/plugin/analytics.js"></script>
+<script type="text/javascript" src="<%=path %>/static/js/analytics.js"></script>
 <script type="text/javascript" src="<%=path %>/static/js/plugin/ueditor/ueditor.config.js"></script>
 <script type="text/javascript" src="<%=path %>/static/js/plugin/ueditor/ueditor.all.min.js"></script>
 <title>发帖-用户中心-IT干货技术分享网</title>

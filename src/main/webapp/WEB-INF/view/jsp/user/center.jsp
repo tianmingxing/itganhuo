@@ -18,7 +18,7 @@
 <link rel="icon" href="#">
 <link href="<%=path %>/static/css/min.css" rel="stylesheet" type="text/css" media="all">
 <script type="text/javascript" src="<%=path %>/static/js/plugin/jquery-1.8.3.min.js"></script>
-<script type="text/javascript" src="<%=path %>/static/js/plugin/analytics.js"></script>
+<script type="text/javascript" src="<%=path %>/static/js/analytics.js"></script>
 <script type="text/javascript">
 function showErrImg(obj) {
     var errorimg = "<%=path%>/static/imgs/default_image.jpg";

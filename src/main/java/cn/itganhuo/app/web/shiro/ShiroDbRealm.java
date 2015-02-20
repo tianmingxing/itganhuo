@@ -14,7 +14,7 @@
  * The author does not guarantee the quality of the project and its stability, reliability, and security does not bear any responsibility.
  * 作者不保证本项目质量并对其稳定性、可靠性和安全性不承担任何责任.
  */
-package cn.itganhuo.app.web.shiro.realm;
+package cn.itganhuo.app.web.shiro;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -50,9 +50,9 @@ import cn.itganhuo.app.service.UserService;
  * @version 0.0.1-SNAPSHOT
  * @author 深圳-小兴
  */
-public class DBRealm extends AuthorizingRealm {
+public class ShiroDbRealm extends AuthorizingRealm {
 
-	private static final Logger log = LogManager.getLogger(DBRealm.class.getName());
+	private static final Logger log = LogManager.getLogger(ShiroDbRealm.class.getName());
 
 	private UserService userService = null;
 

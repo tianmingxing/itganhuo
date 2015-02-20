@@ -19,7 +19,7 @@ String path = request.getContextPath();
 <script type="text/javascript" src="<%=path %>/static/js/analytics.js"></script>
 <script type="text/javascript">
 function formCheck() {
-	var account = jQuery("#account").val(), password = jQuery("#password").val();
+	var account = jQuery("#account").val(), password = jQuery("#password").val(), security_code = $('#security_code').val();
 	var email_reg = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/,
 	password_reg = /^.*[A-Za-z0-9\\w_-]+.*$/;
 	if (account == "") {
@@ -53,6 +53,14 @@ function formCheck() {
 	} else {
 		jQuery(".alert.alert-error").hide();
 	}
+	if (security_code == '') {
+		jQuery(".alert.alert-error").show();
+		jQuery("#j_msg").text("验证码不能为空。");
+		jQuery("#security_code").focus();
+		return;
+	} else {
+		jQuery(".alert.alert-error").hide();
+	}
 	jQuery(".btn").attr("onclick", "");
 	jQuery(".alert.alert-error").hide();
 	jQuery.post('<%=path %>/user/register',jQuery("#register_form").serialize(),function(data) {
@@ -71,6 +79,11 @@ jQuery(document).keyup(function(e){
 		jQuery(".btn").trigger("click");
 	}
 });
+
+//更换验证码
+function refreshCaptcha() {
+    document.getElementById("img_captcha").src="<%=path%>/verificationCode/kaptcha.jpg?t=" + Math.random();  
+}
 </script>
 </head>
 <body>
@@ -117,8 +130,9 @@ jQuery(document).keyup(function(e){
 					<div class="control-group">
 						<label class="control-label" for="security_code">验证码</label>
 						<div class="controls">
-							<input class="input-mini" id="security_code" name="security_code" size="4" type="text">
-							<a id="" href="#">看不清？</a>
+							<input class="input-mini" id="security_code" name="securityCode" size="4" type="text">
+							<img id="img_captcha" alt="验证码" src="<%=path%>/verificationCode/kaptcha.jpg">
+							<a href="javascript:refreshCaptcha();">看不清？</a>
 						</div>
 					</div>
 					<div class="form-actions">

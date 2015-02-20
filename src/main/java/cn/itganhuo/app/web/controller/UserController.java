@@ -152,67 +152,75 @@ public class UserController {
 	 */
 	@Transactional
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public @ResponseBody RespMsg register(User user, HttpServletRequest request) {
+	public @ResponseBody RespMsg register(User user, @RequestParam String securityCode, HttpServletRequest request) {
 		RespMsg respMsg = new RespMsg();
 		// 数据验证
-		// 判断用户名长度是否在区间值内
-		if (user.getAccount().length() >= 6 && user.getAccount().length() <= 20) {
-			// 判断用户名是否含有特殊字符
-			if (StringUtil.ifContainsSpecialStr(user.getAccount())) {
-				// 判断密码长度是否在区间值内
-				if (user.getPassword().length() >= 6 && user.getPassword().length() <= 20) {
-					// 判断密码是否含有特殊字符
-					if (StringUtil.ifContainsSpecialStr(user.getPassword(), "`_~_#_$_%_^_&_*_(_)_-_=_+_{_}_[_]_|_\\_;_:_\'_\"_<_>_,_/")) {
-						// 判断用户名、密码中是否含有中文字符
-						if (!user.getAccount().matches("[\u4e00-\u9fa5]+") && !user.getPassword().matches("[\u4e00-\u9fa5]+")) {
-							User tmp_user = this.userService.loadByAccount(user.getAccount());
-							// 判断将要注册的账号是否已经存在
-							if (tmp_user == null || tmp_user.getId() <= 0) {
-								// 对密码加密
-								String algorithmName = "SHA-512";
-								String salt1 = user.getAccount();
-								String salt2 = new SecureRandomNumberGenerator().nextBytes().toHex();
-								int hashIterations = 2;
-								SimpleHash hash = new SimpleHash(algorithmName, user.getPassword(), salt1.concat(salt2), hashIterations);
-								// 再次组装用户数据
-								user.setPassword(hash.toBase64());
-								user.setSalt(salt2);
-								user.setIsLock(0);
-								user.setPostDate(DateUtil.getNowDateTimeStr(null));
-								user.setType(1);
-								// 保存用户
-								this.userService.insert(user);
-								
-								/*
-								 * 将用户信息临时存放到会话中，如此做法基于两点考虑：
-								 * 1、参照多数网站通常的做法所以没有提供注册并自动登录的功能；
-								 * 2、由于需要记住当前注册的用户所以这里将其信息存放到会话中，当然也是可以放到客户端缓存中。
-								 */
-								HttpUtil.setValue(ConstantPool.USER_TEMP_INFO, user);
-								respMsg.setAppendInfo(user.getAccount());
+		//校验验证码：之所以采用手动校验是因为在集成shiro过滤器时发现诸多不便
+		String captcha = (String) request.getSession().getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
+		log.debug("captcha=" + captcha + ", securityCode=" + securityCode);
+		if (captcha != null && captcha.equalsIgnoreCase(securityCode)) {
+			// 判断用户名长度是否在区间值内
+			if (user.getAccount().length() >= 6 && user.getAccount().length() <= 20) {
+				// 判断用户名是否含有特殊字符
+				if (StringUtil.ifContainsSpecialStr(user.getAccount())) {
+					// 判断密码长度是否在区间值内
+					if (user.getPassword().length() >= 6 && user.getPassword().length() <= 20) {
+						// 判断密码是否含有特殊字符
+						if (StringUtil.ifContainsSpecialStr(user.getPassword(), "`_~_#_$_%_^_&_*_(_)_-_=_+_{_}_[_]_|_\\_;_:_\'_\"_<_>_,_/")) {
+							// 判断用户名、密码中是否含有中文字符
+							if (!user.getAccount().matches("[\u4e00-\u9fa5]+") && !user.getPassword().matches("[\u4e00-\u9fa5]+")) {
+								User tmp_user = this.userService.loadByAccount(user.getAccount());
+								// 判断将要注册的账号是否已经存在
+								if (tmp_user == null || tmp_user.getId() <= 0) {
+									// 对密码加密
+									String algorithmName = "SHA-512";
+									String salt1 = user.getAccount();
+									String salt2 = new SecureRandomNumberGenerator().nextBytes().toHex();
+									int hashIterations = 2;
+									SimpleHash hash = new SimpleHash(algorithmName, user.getPassword(), salt1.concat(salt2), hashIterations);
+									// 再次组装用户数据
+									user.setPassword(hash.toBase64());
+									user.setSalt(salt2);
+									user.setIsLock(0);
+									user.setPostDate(DateUtil.getNowDateTimeStr(null));
+									user.setType(1);
+									// 保存用户
+									this.userService.insert(user);
+									
+									/*
+									 * 将用户信息临时存放到会话中，如此做法基于两点考虑：
+									 * 1、参照多数网站通常的做法所以没有提供注册并自动登录的功能；
+									 * 2、由于需要记住当前注册的用户所以这里将其信息存放到会话中，当然也是可以放到客户端缓存中。
+									 */
+									HttpUtil.setValue(ConstantPool.USER_TEMP_INFO, user);
+									respMsg.setAppendInfo(user.getAccount());
+								} else {
+									respMsg.setStatus("1002");
+									respMsg.setMessage(ConfigPool.getString("respMsg.login.UnknownAccount"));
+								}
 							} else {
-								respMsg.setStatus("1002");
-								respMsg.setMessage(ConfigPool.getString("respMsg.login.UnknownAccount"));
+								respMsg.setStatus("3000");
+								respMsg.setMessage(ConfigPool.getString("respMsg.common.CanNotContainChineseStr"));
 							}
 						} else {
-							respMsg.setStatus("3000");
-							respMsg.setMessage(ConfigPool.getString("respMsg.common.CanNotContainChineseStr"));
+							respMsg.setStatus("2001");
+							respMsg.setMessage(ConfigPool.getString("respMsg.register.PasswordFormatNotLegitimate"));
 						}
 					} else {
-						respMsg.setStatus("2001");
+						respMsg.setStatus("2000");
 						respMsg.setMessage(ConfigPool.getString("respMsg.register.PasswordFormatNotLegitimate"));
 					}
 				} else {
-					respMsg.setStatus("2000");
-					respMsg.setMessage(ConfigPool.getString("respMsg.register.PasswordFormatNotLegitimate"));
+					respMsg.setStatus("1001");
+					respMsg.setMessage(ConfigPool.getString("respMsg.register.AccountNumberFormatNotLegitimate"));
 				}
 			} else {
-				respMsg.setStatus("1001");
+				respMsg.setStatus("1000");
 				respMsg.setMessage(ConfigPool.getString("respMsg.register.AccountNumberFormatNotLegitimate"));
 			}
 		} else {
-			respMsg.setStatus("1000");
-			respMsg.setMessage(ConfigPool.getString("respMsg.register.AccountNumberFormatNotLegitimate"));
+			respMsg.setMessage(ConfigPool.getString("respMsg.common.SecurityCodeError"));
+			respMsg.setStatus("1005");
 		}
 		return respMsg;
 	}
@@ -228,41 +236,49 @@ public class UserController {
 	@Transactional
 	@RequestMapping(value = "/signin", method = RequestMethod.POST)
 	@ResponseBody
-	public RespMsg signin(User user, HttpServletRequest request) {
+	public RespMsg signin(User user, @RequestParam String securityCode, HttpServletRequest request) {
 		RespMsg respMsg = new RespMsg();
 		Subject current_user = SecurityUtils.getSubject();
 		// 判断当前用户是否已经登录过，避免重新为它登录。
 		if (!current_user.isAuthenticated()) {
 			try {
-				// 组织登录参数
-				UsernamePasswordToken token = new UsernamePasswordToken(user.getAccount(), user.getPassword());
-				token.setRememberMe(true);
-				// 用户登录
-				current_user.login(token); 
-				// 登录成功后将用户信息放到HTTP会话中
-				User d_user = userService.loadByAccount(user.getAccount());
-				current_user.getSession().setAttribute(ConstantPool.USER_SHIRO_SESSION_ID, d_user);
-				respMsg.setAppendInfo(d_user.getAccount());
-				// 更新用户最近登录时间和登录IP
-				User tmp = new User();
-				tmp.setAccount(user.getAccount());
-				tmp.setIsLock(0);
-				tmp.setLastLoginDate(DateUtil.getNowDateTimeStr(null));
-				tmp.setLastLoginIp(StringUtil.getNowHttpIp(request));
-				userService.updateInfoByAccount(tmp);
-			} catch (UnknownAccountException uae) {
+				//校验验证码：之所以采用手动校验是因为在集成shiro过滤器时发现诸多不便
+				String captcha = (String) request.getSession().getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
+				log.debug("captcha=" + captcha + ", securityCode=" + securityCode);
+				if (captcha != null && captcha.equalsIgnoreCase(securityCode)) {
+					// 组织登录参数
+					UsernamePasswordToken token = new UsernamePasswordToken(user.getAccount(), user.getPassword());
+					token.setRememberMe(true);
+					// 用户登录
+					current_user.login(token); 
+					// 登录成功后将用户信息放到HTTP会话中
+					User d_user = userService.loadByAccount(user.getAccount());
+					current_user.getSession().setAttribute(ConstantPool.USER_SHIRO_SESSION_ID, d_user);
+					respMsg.setAppendInfo(d_user.getAccount());
+					// 更新用户最近登录时间和登录IP
+					User tmp = new User();
+					tmp.setAccount(user.getAccount());
+					tmp.setIsLock(0);
+					tmp.setLastLoginDate(DateUtil.getNowDateTimeStr(null));
+					tmp.setLastLoginIp(StringUtil.getNowHttpIp(request));
+					userService.updateInfoByAccount(tmp);
+				} else {
+					respMsg.setMessage(ConfigPool.getString("respMsg.common.SecurityCodeError"));
+					respMsg.setStatus("1005");
+				}
+			} catch (UnknownAccountException e) {
 				respMsg.setMessage(ConfigPool.getString("respMsg.login.UnknownAccount"));
 				respMsg.setStatus("1000");
-			} catch (IncorrectCredentialsException ice) {
+			} catch (IncorrectCredentialsException e) {
 				respMsg.setMessage(ConfigPool.getString("respMsg.login.IncorrectCredentials"));
 				respMsg.setStatus("1001");
-			} catch (LockedAccountException lae) {
+			} catch (LockedAccountException e) {
 				respMsg.setMessage(ConfigPool.getString("respMsg.login.LockedAccount"));
 				respMsg.setStatus("1002");
-			} catch (EmailUnauthorizedException ae) {
+			} catch (EmailUnauthorizedException e) {
 				respMsg.setMessage(ConfigPool.getString("respMsg.login.EmailUnauthorized"));
 				respMsg.setStatus("1003");
-			} catch (AuthenticationException ae) {
+			} catch (AuthenticationException e) {
 				respMsg.setMessage(ConfigPool.getString("respMsg.login.Authentication"));
 				respMsg.setStatus("1004");
 			}

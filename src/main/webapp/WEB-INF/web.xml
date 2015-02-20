@@ -83,6 +83,16 @@
 	    <url-pattern>/druid</url-pattern>
 	</servlet-mapping>
 	
+	<!-- 展现图形验证码 -->
+	<servlet>
+		<servlet-name>kaptcha</servlet-name>
+		<servlet-class>com.google.code.kaptcha.servlet.KaptchaServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>kaptcha</servlet-name>
+		<url-pattern>/verificationCode/kaptcha.jpg</url-pattern>
+	</servlet-mapping>
+	
 	<!-- HHTP会话管理 -->
 	<session-config>
 		<session-timeout>30</session-timeout>

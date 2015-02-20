@@ -12,7 +12,7 @@
 <meta content="gqpb25GFirs5rHHq/KylANDoUyNTk46Ey0Dng=" name="csrf-token">
 <link rel="icon" href="#">
 <link href="<%=request.getContextPath()%>/static/css/min.css" rel="stylesheet" type="text/css" media="all">
-<script type="text/javascript" src="<%=request.getContextPath()%>/static/js/plugin/analytics.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/static/js/analytics.js"></script>
 <title>会员注册</title>
 </head>
 <body>
