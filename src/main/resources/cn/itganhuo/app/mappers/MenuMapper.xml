@@ -50,7 +50,7 @@
 		</where>
 	</select>
 
-	<insert id="addMenu" parameterType="Menu" useGeneratedKeys="true" keyProperty="ID">
+	<insert id="addMenu" parameterType="Menu" useGeneratedKeys="true" keyProperty="id">
 		insert into t_menu
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="pid != null">pid,</if>

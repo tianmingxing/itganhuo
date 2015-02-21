@@ -28,7 +28,7 @@
 		from t_template
 	</select>
 
-	<insert id="insert" parameterType="Template" useGeneratedKeys="true" keyProperty="ID">
+	<insert id="insert" parameterType="Template" useGeneratedKeys="true" keyProperty="id">
 		insert into t_template
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="type != null">type,</if>

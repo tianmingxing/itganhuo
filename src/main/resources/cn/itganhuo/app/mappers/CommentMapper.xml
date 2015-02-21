@@ -131,7 +131,7 @@
 	</resultMap>
 
 	<!-- 保存用户针对某篇文章发表的评论 -->
-	<insert id="insert" parameterType="Comment" useGeneratedKeys="true" keyProperty="ID">
+	<insert id="insert" parameterType="Comment" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO t_comment
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="type != null">type,</if>

@@ -23,16 +23,14 @@
 	</resultMap>
 	
 	<!-- 保存文章和标签的多对多关系 -->
-	<insert id="insert" parameterType="ArticleLabel" useGeneratedKeys="true" keyProperty="ID">
+	<insert id="insert" parameterType="ArticleLabel" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO t_article_label
 		<trim prefix="(" suffix=")" suffixOverrides=",">
-			<if test="id != null">id,</if>
 			<if test="articleId != null">articleId,</if>
 			<if test="labelId != null">labelId,</if>
 			<if test="userId != null">userId,</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
-			<if test="id != null">#{id},</if>
 			<if test="articleId != null">#{articleId},</if>
 			<if test="labelId != null">#{labelId},</if>
 			<if test="userId != null">#{userId},</if>

@@ -38,7 +38,7 @@
 		select count(1) from t_roles
 	</select>
 
-	<insert id="insert" parameterType="Roles" useGeneratedKeys="true" keyProperty="ID">
+	<insert id="insert" parameterType="Roles" useGeneratedKeys="true" keyProperty="id">
 		insert into t_roles
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="role != null">role,</if>

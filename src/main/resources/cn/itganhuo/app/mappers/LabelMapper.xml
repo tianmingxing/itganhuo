@@ -21,17 +21,15 @@
 		</where>
 	</select>
 	
-	<insert id="insert" parameterType="Label" useGeneratedKeys="true" keyProperty="ID">
+	<insert id="insert" parameterType="Label" useGeneratedKeys="true" keyProperty="id">
 		insert into t_label
 		<trim prefix="(" suffix=")" suffixOverrides=",">
-			<if test="id != null">id,</if>
 			<if test="userId != null">userId,</if>
 			<if test="name != null">name,</if>
 			<if test="description != null">description,</if>
 			<if test="postDate != null">postDate,</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
-			<if test="id != null">#{id},</if>
 			<if test="userId != null">#{userId},</if>
 			<if test="name != null">#{name},</if>
 			<if test="description != null">#{description},</if>

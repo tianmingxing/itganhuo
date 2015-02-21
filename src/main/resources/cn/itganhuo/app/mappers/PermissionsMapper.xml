@@ -38,7 +38,7 @@
 		select count(1) from t_permissions
 	</select>
 
-	<insert id="insert" parameterType="Permissions" useGeneratedKeys="true" keyProperty="ID">
+	<insert id="insert" parameterType="Permissions" useGeneratedKeys="true" keyProperty="id">
 		insert into t_permissions
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="permission != null">permission,</if>

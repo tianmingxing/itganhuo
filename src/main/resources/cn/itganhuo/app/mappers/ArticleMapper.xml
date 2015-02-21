@@ -352,17 +352,20 @@
 		<if test="paging != null and paging.sort != null and paging.order != null">
 			ORDER BY a.${paging.sort} ${paging.order}
 		</if>
-		<if test="paging != null and paging.page > 0 and paging.rows > 0">
+		<if test="paging != null and paging.rows > 0">
 			LIMIT #{paging.offrow}, #{paging.rows}
 		</if>
 	</select>
 
 	<!-- 查询文章总行数 -->
-	<select id="countArticleRows" resultType="int">
+	<select id="countArticleRows" resultType="int" parameterType="Map">
 		SELECT
 		COUNT(1)
 		FROM
 		t_article a
+		<where>
+			<if test="userId != null">a.userId = #{userId}</if>
+		</where>
 	</select>
 
 	<!-- 根据文章主键查询其作者和多个补充问题信息 -->
@@ -389,11 +392,18 @@
 		WHERE
 		a.userId = #{userId}
 		ORDER BY a.id DESC
-		LIMIT 0,#{rowNum}
+		<choose>
+			<when test="rows != null and rows > 0">
+				LIMIT #{offrow}, #{rows}
+			</when>
+			<otherwise>
+				LIMIT 0, 5
+			</otherwise>
+		</choose>
 	</select>
 
 	<!-- 保存一篇文章到数据库 -->
-	<insert id="insert" parameterType="Article" useGeneratedKeys="true" keyProperty="ID">
+	<insert id="insert" parameterType="Article" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO t_article
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="userId != null">userId,</if>

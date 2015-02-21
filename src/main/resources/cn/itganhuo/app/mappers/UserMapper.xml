@@ -32,7 +32,7 @@
 		emailValidateCode, emailValidateDate
 	</sql>
 
-	<insert id="insert" parameterType="User" useGeneratedKeys="true" keyProperty="ID">
+	<insert id="insert" parameterType="User" useGeneratedKeys="true" keyProperty="id">
 		insert into t_user
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="account != null">account,</if>

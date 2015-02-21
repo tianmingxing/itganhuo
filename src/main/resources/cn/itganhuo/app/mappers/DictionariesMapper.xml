@@ -46,7 +46,7 @@
 		</where>
 	</select>
 
-	<insert id="insert" parameterType="Dictionaries" useGeneratedKeys="true" keyProperty="ID">
+	<insert id="insert" parameterType="Dictionaries" useGeneratedKeys="true" keyProperty="id">
 		insert into t_dictionaries
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="pid != null">pid,</if>

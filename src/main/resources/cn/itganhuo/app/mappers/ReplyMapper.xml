@@ -67,7 +67,7 @@
 	</resultMap>
 
 	<!-- 保存用户针对某评论发表的回复 -->
-	<insert id="insert" parameterType="Reply" useGeneratedKeys="true" keyProperty="ID">
+	<insert id="insert" parameterType="Reply" useGeneratedKeys="true" keyProperty="id">
 		insert into t_reply
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="parentId != null">parentId,</if>
