@@ -152,9 +152,17 @@ function showErrImg(obj) {
                 <aside class="box">
                     <h3>相关文章</h3>
                     <ul class="link-list">
-                    	<#list related_article as article>
-	                        <li><a class="topic_title" href="${path}/article/${article.id}">${article.title[0..12]}...</a></li>
-	                    </#list>
+                    	<#if related_article !!>
+	                    	<#list related_article as article>
+	                    		<li><a class="topic_title" href="${path}/article/${article.id}">
+		                    		<#if article.title?length gt 20>
+		                    			${article.title[0..20]}...
+		                    		<#else>
+		                    			${article.title}
+		                    		</#if>
+		                        </a></li>
+		                    </#list>
+	                    </#if>
                     </ul>
                 </aside>
             </div>

@@ -250,5 +250,6 @@ public class CommonController {
 		model.addAttribute("path", request.getContextPath());
 		return "invitation";
 	}
+	
 }
 

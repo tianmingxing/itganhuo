@@ -43,7 +43,7 @@ function showErrImg(obj) {
 						<span class="user_name"><a class="dark" href="#"><%=um.getAccount()%></a></span>&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/user/update">设置</a> 
 						<div class="board clearfix">
 							<div class="floor">
-								<a href="#"><span class="big">196</span> 话题收藏</a>
+								<a href="#"><span class="big">196</span> 收藏</a>
 							</div>
 							<div class="floor">
 								<a href="#"><span class="big">36</span> 关注</a>
@@ -62,7 +62,7 @@ function showErrImg(obj) {
 		</div>
 	</div>
 	<div id="content">
-	<%--
+	
 		<div class="panel">
 			<div class="header">
 				<ul class="breadcrumb">
@@ -72,12 +72,12 @@ function showErrImg(obj) {
 			</div>
 			<div class="inner userinfo">
 				<div class="user_big_avatar">
-					<img src="<%=path %>/imgs/03.png" class="user_avatar" title="<%=um.getAccount()%>">
+					<img src="<%=path %>/static/upload/photos/<%=um.getAccount()%>.jpg" class="user_avatar" title="<%=um.getAccount()%>" onerror="showErrImg(this);">
 				</div>
 				<a class="dark"><%=um.getAccount()%></a>
 				<div class="col_fade">
 					<span>
-						<img src="<%=path %>/imgs/04.png">
+						<img src="<%=path %>/static/imgs/04.png">
 						36 关注
 						52 粉丝
 						2925 积分</span>
@@ -85,27 +85,27 @@ function showErrImg(obj) {
 				<div class="user_profile">
 					<ul class="unstyled">
 						<li>
-							<img class="user_icon" src="<%=path %>/imgs/05.png">
+							<img class="user_icon" src="<%=path %>/static/imgs/05.png">
 							<a class="dark" href="#" target="_blank">http://#</a>
 						</li>
 						<li>
-							<img class="user_icon" src="<%=path %>/imgs/06.png">
-							<a class="dark" href="#" target="_blank">@youxiachai</a>
+							<img class="user_icon" src="<%=path %>/static/imgs/06.png">
+							<a class="dark" href="#" target="_blank">@you</a>
 						</li>		
 						<li>
-							<img class="user_icon" src="<%=path %>/imgs/07.png">
+							<img class="user_icon" src="<%=path %>/static/imgs/07.png">
 							<a class="dark" href="#" target="_blank">http://#</a>
 						</li>
 									
 					</ul>
 				</div>
-				<p class="col_fade">于 2012-9-30 16:07 加入 CNode</p>
+				<p class="col_fade">于 <%=um.getPostDate()%> 加入 ITGanHuo</p>
 			</div>
 		</div>
-		--%>
+
 		<div class="panel">
 			<div class="header">
-				<span class="col_fade">最近发布话题</span>
+				<span class="col_fade">最近发布分享</span>
 			</div>
 			<c:choose>
 				<c:when test="${articles != null && articles.size() > 0 }">
@@ -134,18 +134,17 @@ function showErrImg(obj) {
 				</c:otherwise>
 			</c:choose>
 			<div class="cell more">
-				<a class="dark" href="#">查看更多»</a>
+				<a class="dark" href="<%=path%>/user/articles">查看更多»</a>
 			</div>
 		</div>
 		
-		<%--
 		<div class="panel">
 			<div class="header">
 				<span class="col_fade">最近参与话题</span>
 			</div>
 			<div class="cell">
 				<a class="user_avatar pull-left" href="#">
-					<img src="<%=path %>/imgs/03.png" title="kingapple">
+					<img src="<%=path %>/static/upload/photos/<%=um.getAccount()%>.jpg" title="kingapple" onerror="showErrImg(this);">
 				</a>
 				<span class="reply_count pull-left">
 					<span class="count_of_replies" title="回复数">10</span>
@@ -153,7 +152,7 @@ function showErrImg(obj) {
 					<span class="count_of_visits" title="点击数">376</span>
 				</span>
 				<a class="last_time pull-right" href="#">
-					<img class="user_small_avatar" src="<%=path %>/imgs/03.png">
+					<img class="user_small_avatar" src="<%=path %>/static/imgs/03.png" onerror="showErrImg(this);">
 					<span class="last_active_time">6-12 15:42</span>
 				</a>
 				<div class="topic_title_wrapper">
@@ -164,7 +163,6 @@ function showErrImg(obj) {
 				<a class="dark" href="#">查看更多»</a>
 			</div>
 		</div>
-		 --%>
 		
 	</div>
 </div>

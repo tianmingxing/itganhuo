@@ -73,7 +73,7 @@ public interface ArticleService {
 	 * @author 深圳-小兴
 	 * @return 数据总行数
 	 */
-	public int countArticleRows();
+	public int countArticleRows(Map<String, Object> param);
 
 	/**
 	 * 会员添加一遍文章
@@ -100,7 +100,7 @@ public interface ArticleService {
 	 *            数据行数
 	 * @return 文章集合
 	 */
-	public List<Article> getArticleByUserId(int user_id, int row_num);
+	public List<Article> getArticleByUserId(Map<String, Object> param);
 
 	/**
 	 * 增加浏览次数

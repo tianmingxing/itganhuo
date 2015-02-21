@@ -16,7 +16,6 @@
  */
 package cn.itganhuo.app.service.impl;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -79,8 +78,8 @@ public class ArticleServiceImpl implements ArticleService {
 	 * @see cn.itganhuo.app.service.ArticleService#countArticleRows()
 	 */
 	@Override
-	public int countArticleRows() {
-		return articleDao.countArticleRows();
+	public int countArticleRows(Map<String, Object> param) {
+		return articleDao.countArticleRows(param);
 	}
 
 	/* (non-Javadoc)
@@ -101,10 +100,7 @@ public class ArticleServiceImpl implements ArticleService {
 	 * @see cn.itganhuo.app.service.ArticleService#getArticleByUserId(int, int)
 	 */
 	@Override
-	public List<Article> getArticleByUserId(int user_id, int row_num) {
-		Map<String, Object> param = new HashMap<String, Object>();
-		param.put("userId", user_id);
-		param.put("rowNum", row_num);
+	public List<Article> getArticleByUserId(Map<String, Object> param) {
 		return articleDao.getArticleByUserId(param);
 	}
 

@@ -37,12 +37,12 @@ public class ConstantPool {
 	public static final String USER_SHIRO_SESSION_ID = "user_shiro_session_id";
 
 	/**
-	 * 用户信息临时存放到会话中，这个常量是用来作为KEY的一个标识。
+	 * 用户账号信息临时存放到会话中，这个常量是用来作为KEY的一个标识。
 	 */
-	public static final String USER_TEMP_INFO = "user_temp_info";
+	public static final String USER_ACCOUNT_COOKIE_ID = "user_account_cookie_id";
 	
 	/**
-	 * 系统配置文件所在相对路径
+	 * 系统配置文件所在相对路径名称
 	 */
 	public static final String CONFIG_BEAN_FILE_PATH = "config-pool.properties";
 	

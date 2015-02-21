@@ -63,14 +63,14 @@ $(document).ready(function() {
 							</div>
 							<div class="p-summary">
 								<a class="author" data-toggle="tooltip" data-placement="bottom" rel="tooltip" href="${path}/user/${article.user.account}" title="${article.user.account}">
-									<img class="avatar-40" src="${path}/photo/${article.user.account}.jpg" alt="${article.user.account}" onerror="showErrImg(this);"/>
+									<img class="avatar-40" src="${path}/static/upload/photo/${article.user.account}.jpg" alt="${article.user.account}" onerror="showErrImg(this);"/>
 								</a>
 								<h2>
 									<a href="${path}/article/${article.id}" title="${article.title }">${article.title }</a>
 								</h2>
 								<div class="meta">
 									<span class="views">
-										<i class="i-view"></i> ${article.visitorVolume} 次浏览</span>&nbsp;
+										<i class="i-view"></i> ${article.visitorNum} 次浏览</span>&nbsp;
 										<ul class="meta-tags">
 											<li><i class="i-tag"></i></li>
 												<#list article.articleLabels as articleLabel>

@@ -21,7 +21,9 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -51,6 +53,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import cn.itganhuo.app.common.page.Pagination;
 import cn.itganhuo.app.common.pool.ConfigPool;
 import cn.itganhuo.app.common.pool.ConstantPool;
 import cn.itganhuo.app.common.utils.DateUtil;
@@ -152,76 +155,70 @@ public class UserController {
 	 */
 	@Transactional
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public @ResponseBody RespMsg register(User user, @RequestParam String securityCode, HttpServletRequest request) {
+	public @ResponseBody RespMsg register(User user, @RequestParam String securityCode, HttpServletRequest request, HttpServletResponse response) {
 		RespMsg respMsg = new RespMsg();
 		// 数据验证
-		//校验验证码：之所以采用手动校验是因为在集成shiro过滤器时发现诸多不便
+		//校验验证码：之所以采用手动校验是因为在集成shiro过滤器时发现诸多不便，同时手动验证灵活性大且应用方便直观。
 		String captcha = (String) request.getSession().getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
-		log.debug("captcha=" + captcha + ", securityCode=" + securityCode);
 		if (captcha != null && captcha.equalsIgnoreCase(securityCode)) {
-			// 判断用户名长度是否在区间值内
-			if (user.getAccount().length() >= 6 && user.getAccount().length() <= 20) {
-				// 判断用户名是否含有特殊字符
-				if (StringUtil.ifContainsSpecialStr(user.getAccount())) {
-					// 判断密码长度是否在区间值内
-					if (user.getPassword().length() >= 6 && user.getPassword().length() <= 20) {
-						// 判断密码是否含有特殊字符
-						if (StringUtil.ifContainsSpecialStr(user.getPassword(), "`_~_#_$_%_^_&_*_(_)_-_=_+_{_}_[_]_|_\\_;_:_\'_\"_<_>_,_/")) {
-							// 判断用户名、密码中是否含有中文字符
-							if (!user.getAccount().matches("[\u4e00-\u9fa5]+") && !user.getPassword().matches("[\u4e00-\u9fa5]+")) {
-								User tmp_user = this.userService.loadByAccount(user.getAccount());
-								// 判断将要注册的账号是否已经存在
-								if (tmp_user == null || tmp_user.getId() <= 0) {
-									// 对密码加密
-									String algorithmName = "SHA-512";
-									String salt1 = user.getAccount();
-									String salt2 = new SecureRandomNumberGenerator().nextBytes().toHex();
-									int hashIterations = 2;
-									SimpleHash hash = new SimpleHash(algorithmName, user.getPassword(), salt1.concat(salt2), hashIterations);
-									// 再次组装用户数据
-									user.setPassword(hash.toBase64());
-									user.setSalt(salt2);
-									user.setIsLock(0);
-									user.setPostDate(DateUtil.getNowDateTimeStr(null));
-									user.setType(1);
-									// 保存用户
-									this.userService.insert(user);
-									
-									/*
-									 * 将用户信息临时存放到会话中，如此做法基于两点考虑：
-									 * 1、参照多数网站通常的做法所以没有提供注册并自动登录的功能；
-									 * 2、由于需要记住当前注册的用户所以这里将其信息存放到会话中，当然也是可以放到客户端缓存中。
-									 */
-									HttpUtil.setValue(ConstantPool.USER_TEMP_INFO, user);
-									respMsg.setAppendInfo(user.getAccount());
-								} else {
-									respMsg.setStatus("1002");
-									respMsg.setMessage(ConfigPool.getString("respMsg.login.UnknownAccount"));
-								}
-							} else {
-								respMsg.setStatus("3000");
-								respMsg.setMessage(ConfigPool.getString("respMsg.common.CanNotContainChineseStr"));
-							}
-						} else {
-							respMsg.setStatus("2001");
-							respMsg.setMessage(ConfigPool.getString("respMsg.register.PasswordFormatNotLegitimate"));
-						}
-					} else {
-						respMsg.setStatus("2000");
-						respMsg.setMessage(ConfigPool.getString("respMsg.register.PasswordFormatNotLegitimate"));
-					}
-				} else {
-					respMsg.setStatus("1001");
-					respMsg.setMessage(ConfigPool.getString("respMsg.register.AccountNumberFormatNotLegitimate"));
-				}
-			} else {
-				respMsg.setStatus("1000");
-				respMsg.setMessage(ConfigPool.getString("respMsg.register.AccountNumberFormatNotLegitimate"));
-			}
-		} else {
 			respMsg.setMessage(ConfigPool.getString("respMsg.common.SecurityCodeError"));
 			respMsg.setStatus("1005");
+			return respMsg;
 		}
+		// 判断用户名长度是否在区间值内
+		if (user.getAccount().length() >= 6 && user.getAccount().length() <= 20) {
+			respMsg.setStatus("1000");
+			respMsg.setMessage(ConfigPool.getString("respMsg.register.AccountNumberFormatNotLegitimate"));
+			return respMsg;
+		}
+		// 判断用户名是否含有特殊字符
+		if (StringUtil.ifContainsSpecialStr(user.getAccount())) {
+			respMsg.setStatus("1001");
+			respMsg.setMessage(ConfigPool.getString("respMsg.register.AccountNumberFormatNotLegitimate"));
+			return respMsg;
+		}
+		// 判断密码长度是否在区间值内
+		if (user.getPassword().length() >= 6 && user.getPassword().length() <= 20) {
+			respMsg.setStatus("2000");
+			respMsg.setMessage(ConfigPool.getString("respMsg.register.PasswordFormatNotLegitimate"));
+			return respMsg;
+		}
+		// 判断密码是否含有特殊字符
+		if (StringUtil.ifContainsSpecialStr(user.getPassword(), "`_~_#_$_%_^_&_*_(_)_-_=_+_{_}_[_]_|_\\_;_:_\'_\"_<_>_,_/")) {
+			respMsg.setStatus("2001");
+			respMsg.setMessage(ConfigPool.getString("respMsg.register.PasswordFormatNotLegitimate"));
+			return respMsg;
+		}
+		// 判断用户名、密码中是否含有中文字符
+		if (!user.getAccount().matches("[\u4e00-\u9fa5]+") && !user.getPassword().matches("[\u4e00-\u9fa5]+")) {
+			respMsg.setStatus("3000");
+			respMsg.setMessage(ConfigPool.getString("respMsg.common.CanNotContainChineseStr"));
+			return respMsg;
+		}
+		// 判断将要注册的账号是否已经存在
+		User tmp_user = this.userService.loadByAccount(user.getAccount());
+		if (tmp_user == null || tmp_user.getId() <= 0) {
+			respMsg.setStatus("1002");
+			respMsg.setMessage(ConfigPool.getString("respMsg.login.UnknownAccount"));
+			return respMsg;
+		}
+		// 对密码加密
+		String algorithmName = "SHA-512";
+		String salt1 = user.getAccount();
+		String salt2 = new SecureRandomNumberGenerator().nextBytes().toHex();
+		int hashIterations = 2;
+		SimpleHash hash = new SimpleHash(algorithmName, user.getPassword(), salt1.concat(salt2), hashIterations);
+		// 再次组装用户数据
+		user.setPassword(hash.toBase64());
+		user.setSalt(salt2);
+		user.setIsLock(0);
+		user.setPostDate(DateUtil.getNowDateTimeStr(null));
+		user.setType(1);
+		// 保存用户
+		this.userService.insert(user);
+		HttpUtil.setCookie(response, ConstantPool.USER_ACCOUNT_COOKIE_ID, user.getAccount());
+		
+		respMsg.setAppendInfo(user.getAccount());
 		return respMsg;
 	}
 
@@ -301,12 +298,51 @@ public class UserController {
 			User user = (User) current_user.getSession().getAttribute(ConstantPool.USER_SHIRO_SESSION_ID);
 			if (user != null) {
 				mav.addObject("user", user);
-		
 				// 查询最近发布话题5篇文章
-				List<Article> articles = articleService.getArticleByUserId(user.getId(), 5);
+				Map<String, Object> param = new HashMap<String, Object>();
+				param.put("userId", user.getId());
+				param.put("offrow", 0);
+				param.put("rows", 5);
+				List<Article> articles = articleService.getArticleByUserId(param);
 				mav.addObject("articles", articles);
-		
 				mav.setViewName("user/center");
+			} else {
+				mav.setViewName("user/signin");
+			}
+		} else {
+			mav.setViewName("user/signin");
+		}
+		return mav;
+	}
+	
+	/**
+	 * 进入用户中心-文章列表页面
+	 * 
+	 * @version 0.0.1-SNAPSHOT
+	 * @author 深圳-小兴
+	 * @return 转发到用户中心-文章列表页面
+	 */
+	@RequestMapping(value = "/articles", method = RequestMethod.GET)
+	public ModelAndView refurlArticles(@RequestParam(defaultValue = "1") String now_page, HttpServletRequest request) {
+		ModelAndView mav = new ModelAndView();
+		Subject current_user = SecurityUtils.getSubject();
+		if (current_user != null) {
+			User user = (User) current_user.getSession().getAttribute(ConstantPool.USER_SHIRO_SESSION_ID);
+			if (user != null) {
+				mav.addObject("user", user);
+				
+				Map<String, Object> param = new HashMap<String, Object>();
+				param.put("userId", user.getId());
+				param.put("offrow", StringUtil.getInt(now_page, 1));
+				param.put("rows", 20);
+				
+				List<Article> articles = articleService.getArticleByUserId(param);
+				int total = articleService.countArticleRows(param);
+				Pagination pagination = new Pagination(StringUtil.getInt(now_page, 1), 20, 5, total, request.getContextPath().concat("/articles"), "0000");
+				
+				mav.addObject("pagination", pagination);
+				mav.addObject("articles", articles);
+				mav.setViewName("user/articles");
 			} else {
 				mav.setViewName("user/signin");
 			}
@@ -501,7 +537,7 @@ public class UserController {
 	@RequestMapping(value = "/share", method = RequestMethod.GET)
 	public ModelAndView refurlShare() {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("user/create");
+		mav.setViewName("user/share");
 		return mav;
 	}
 
@@ -518,7 +554,7 @@ public class UserController {
 	@RequiresAuthentication
 	@Transactional
 	@RequestMapping(value = "/share", method = RequestMethod.POST)
-	public RespMsg create(Article article, @RequestParam String subject) {
+	public @ResponseBody RespMsg share(Article article, @RequestParam String label) {
 		RespMsg respMsg = new RespMsg();
 		if (article != null && StringUtil.hasText(article.getTitle()) && StringUtil.hasText(article.getContent())) {
 			// 获取当前登录用户信息
@@ -528,11 +564,11 @@ public class UserController {
 			// 重新组织文章参数
 			article.setUserId(um.getId());
 			// 保存文章
-			int article_id = articleService.addArticle(article);
+			articleService.addArticle(article);
 
 			// 保存标签
-			if (StringUtil.hasText(subject)) {
-				String labels[] = subject.split(",");
+			if (StringUtil.hasText(label)) {
+				String labels[] = label.split(",");
 				if (labels != null && labels.length > 0) {
 					// 判断是否超过5个标签，如果大于5个标签则超出的部分不做处理。
 					int lng = (labels.length > 5) ? 5 : labels.length;
@@ -540,21 +576,22 @@ public class UserController {
 					for (int i = 0; i < lng; i++) {
 						int label_id = 0;
 						// 判断每个标签是否存在于数据库中，如果存在则取出其标签编号.
-						Label label = new Label();
-						label.setName(labels[i].trim());
-						List<Label> list = labelService.getLabelByCondition(label);
+						Label l = new Label();
+						l.setName(labels[i].trim());
+						List<Label> list = labelService.getLabelByCondition(l);
 						if (list.size() > 0) {
 							label_id = list.get(0).getId();
 						} else { // 否则新增这个标签并获取它的编号
-							Label label2 = new Label();
-							label2.setUserId(um.getId());
-							label2.setName(labels[i].trim());
-							label2.setPostDate(DateUtil.getNowDateTimeStr(null));
-							label_id = labelService.saveLabel(label2);
+							Label l2 = new Label();
+							l2.setUserId(um.getId());
+							l2.setName(labels[i].trim());
+							l2.setPostDate(DateUtil.getNowDateTimeStr(null));
+							labelService.saveLabel(l2);
+							label_id = l2.getId();
 						}
 						// 保存文章和标签之间的关联关系。
 						ArticleLabel asm = new ArticleLabel();
-						asm.setArticleId(article_id);
+						asm.setArticleId(article.getId());
 						asm.setLabelId(label_id);
 						asm.setUserId(um.getId());
 						articleService.saveArticleLabel(asm);

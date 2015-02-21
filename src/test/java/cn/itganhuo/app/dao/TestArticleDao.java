@@ -75,7 +75,7 @@ public class TestArticleDao extends AbstractContextControllerTests {
 	
 	@Test
 	public void testCountArticleRows() {
-		Assert.isTrue(articleDao.countArticleRows() > 0);
+		Assert.isTrue(articleDao.countArticleRows(null) > 0);
 	}
 	
 	@Test

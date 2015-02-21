@@ -122,7 +122,7 @@ public class ArticleController {
 		
 		// 根据条件查询文章列表
 		List<Article> articles = articleService.findArticleByCondition(map);
-		int total = articleService.countArticleRows();
+		int total = articleService.countArticleRows(null);
 		Pagination pagination = new Pagination(StringUtil.getInt(now_page, 1), 10, 5, total, request_get_context_path.concat("/articles"), search_type);
 		
 		// 返回数据

@@ -129,7 +129,7 @@ function refreshCaptcha() {
 						<label class="control-label" for="security_code">验证码</label>
 						<div class="controls">
 							<input class="input-mini" id="security_code" name="securityCode" size="4" type="text">
-							<img id="img_captcha" alt="验证码" src="<%=path%>/verificationCode/kaptcha.jpg">
+							<img id="img_captcha" alt="验证码" src="<%=path%>/verificationCode/kaptcha.jpg" style="height: 30px; width: 120px">
 							<a href="javascript:refreshCaptcha();">看不清？</a>
 						</div>
 					</div>

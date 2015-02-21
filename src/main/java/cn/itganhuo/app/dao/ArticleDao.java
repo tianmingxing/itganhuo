@@ -67,7 +67,7 @@ public interface ArticleDao {
 	 * @author 深圳-小兴
 	 * @return 返回记录数
 	 */
-	public int countArticleRows();
+	public int countArticleRows(Map<String, Object> param);
 
 	/**
 	 * 新增一篇文章

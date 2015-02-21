@@ -34,7 +34,7 @@ import cn.itganhuo.app.entity.ArticleLabel;
  * @author 深圳-小兴
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@Transactional
+//@Transactional
 public class TestArticleLabelDao extends AbstractContextControllerTests {
 	
 	@Autowired
@@ -46,7 +46,9 @@ public class TestArticleLabelDao extends AbstractContextControllerTests {
 		articleLabel.setArticleId(1);
 		articleLabel.setLabelId(1);
 		articleLabel.setUserId(1);
-		Assert.isTrue(articleLabelDao.insert(articleLabel) > 0);
+		int i = articleLabelDao.insert(articleLabel);
+		System.out.println("i====>" + i + ", articleLabel.id=" + articleLabel.getId());
+		Assert.isTrue(i > 0);
 	}
 	
 	@Test
