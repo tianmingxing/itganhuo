@@ -30,6 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
@@ -156,7 +157,6 @@ public class UserController {
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public @ResponseBody RespMsg register(User user, @RequestParam String securityCode, HttpServletRequest request, HttpServletResponse response) {
 		RespMsg respMsg = new RespMsg();
-		// 数据验证
 		//校验验证码：之所以采用手动校验是因为在集成shiro过滤器时发现诸多不便，同时手动验证灵活性大且应用方便直观。
 		String captcha = (String) request.getSession().getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
 		if (captcha != null && captcha.equalsIgnoreCase(securityCode)) {
@@ -164,6 +164,11 @@ public class UserController {
 			respMsg.setStatus("1005");
 			return respMsg;
 		}
+		// SQL特殊字符转义防御SQL注入
+		String tmpAccount = StringEscapeUtils.escapeSql(user.getAccount());
+        String tmpPassword = StringEscapeUtils.escapeSql(user.getPassword());
+        user.setAccount(tmpAccount);
+        user.setPassword(tmpPassword);
 		// 判断用户名长度是否在区间值内
 		if (user.getAccount().length() >= 6 && user.getAccount().length() <= 20) {
 			respMsg.setStatus("1000");

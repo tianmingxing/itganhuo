@@ -34,7 +34,7 @@ import org.apache.logging.log4j.Logger;
  * <h2>特殊字符请求过滤器</h2>
  * <dl>
  * <dt>功能描述</dt>
- * <dd>1、过滤替换特殊敏感字符；2、防御SQL注入攻击。</dd>
+ * <dd>1、过滤替换特殊敏感字符</dd>
  * <dt>使用规范</dt>
  * <dd>无</dd>
  * </dl>
