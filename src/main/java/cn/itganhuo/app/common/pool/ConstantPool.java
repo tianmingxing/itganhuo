@@ -22,7 +22,7 @@ package cn.itganhuo.app.common.pool;
  * <dt>功能描述</dt>
  * <dd>本系统中所用到的常量值都统一在这里进行配置。</dd>
  * <dt>使用规范</dt>
- * <dd>在此配置的常量属性值应该是静态不可修改的，如果不符合这两个条件那么请将到resources.properties中配置你要的
+ * <dd>在此配置的常量属性值应该是静态不可修改的，如果不符合这两个条件那么请将到resources/config-pool.properties中配置你要的
  * 属性。在程序中反复使用且二次变动性较小的常量属性可以在本类中配置，从而可以避免重复命名提高程序可维护性。</dd>
  * </dl>
  * 
@@ -37,18 +37,33 @@ public class ConstantPool {
 	public static final String USER_SHIRO_SESSION_ID = "user_shiro_session_id";
 
 	/**
-	 * 用户账号信息临时存放到会话中，这个常量是用来作为KEY的一个标识。
+	 * 用户账号信息临时存放到客户端缓存中，这个常量是用来作为KEY的一个标识。
 	 */
 	public static final String USER_ACCOUNT_COOKIE_ID = "user_account_cookie_id";
 	
 	/**
 	 * 系统配置文件所在相对路径名称
 	 */
-	public static final String CONFIG_BEAN_FILE_PATH = "config-pool.properties";
+	public static final String CONFIG_POOL_FILE_NAME = "config-pool.properties";
 	
 	/**
-	 * 当前项目部署的真实路径（绝对地址）
+	 * 系统配置文件所在相对路径名称
 	 */
-	public static String REAL_PATH = null;
+	public static final String KEYWORD_POOL_FILE_NAME = "keyword-pool.txt";
+	
+	/**
+	 * 在客户端请求中的令牌标识
+	 */
+	public static final String REQUEST_TOKEN = "request_token";
+	
+	/**
+	 * 在服务端会话中的令牌标识
+	 */
+	public static final String SESSION_TOKEN = "session_token";
+	
+	/**
+	 * 存放到config-pool.properties中用来标识项目部署真实路径绝对地址的键
+	 */
+	public final static String REAL_PATH = "real_path";
 	
 }

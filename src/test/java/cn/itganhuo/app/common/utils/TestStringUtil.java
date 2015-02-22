@@ -10,8 +10,8 @@
  */
 package cn.itganhuo.app.common.utils;
 
-import org.junit.Assert;
 import org.junit.Test;
+import org.springframework.util.Assert;
 
 import cn.itganhuo.app.common.utils.StringUtil;
 
@@ -31,13 +31,19 @@ public class TestStringUtil {
 
 	@Test
 	public void testifContainsSpecialStr() {
-		Assert.assertFalse(StringUtil.ifContainsSpecialStr("adm!in!123"));
-		Assert.assertTrue(StringUtil.ifContainsSpecialStr("admin123"));
+		Assert.isTrue(!StringUtil.ifContainsSpecialStr("adm!in!123"));
+		Assert.isTrue(StringUtil.ifContainsSpecialStr("admin123"));
 	}
 	
 	@Test
 	public void testifContainsSpecialStr2Replace() {
-		Assert.assertEquals(StringUtil.ifContainsSpecialStr2Replace("*adm!~in!1 2 3%"), "admin1 2 3");
-		Assert.assertEquals(StringUtil.ifContainsSpecialStr2Replace("*adm!~！in!123%"), "adm！in123");
+		Assert.isTrue("admin1 2 3".equals(StringUtil.ifContainsSpecialStrReplace("*adm!~in!1 2 3%")));
+		Assert.isTrue("adm！in123".equals(StringUtil.ifContainsSpecialStrReplace("*adm!~！in!123%")));
+	}
+	
+	@Test
+	public void testReplaceSqlInjectStr() {
+		System.out.println(StringUtil.replaceSqlInjectStr("~`+dsf-/*dgkje$%<p>?"));
+		Assert.isTrue("2421A11B1A1C1".equals(StringUtil.replaceSqlInjectStr("2421a11b1a1c1")));
 	}
 }

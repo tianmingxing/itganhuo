@@ -83,7 +83,7 @@
 	    <url-pattern>/druid</url-pattern>
 	</servlet-mapping>
 	
-	<!-- 展现图形验证码 -->
+	<!-- 图形验证码 -->
 	<servlet>
 		<servlet-name>kaptcha</servlet-name>
 		<servlet-class>com.google.code.kaptcha.servlet.KaptchaServlet</servlet-class>
@@ -92,6 +92,16 @@
 		<servlet-name>kaptcha</servlet-name>
 		<url-pattern>/verificationCode/kaptcha.jpg</url-pattern>
 	</servlet-mapping>
+	
+	<!-- 特殊字符过滤器 -->
+	<filter>
+		<filter-name>characterReplaceFilter</filter-name>
+		<filter-class>cn.itganhuo.app.web.filter.CharacterReplaceFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>characterReplaceFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 	
 	<!-- HHTP会话管理 -->
 	<session-config>

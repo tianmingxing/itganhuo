@@ -1,15 +1,10 @@
+<%@page import="cn.itganhuo.app.common.utils.HttpUtil"%>
 <%@ page language="java" import="cn.itganhuo.app.common.pool.ConstantPool,cn.itganhuo.app.common.utils.StringUtil,cn.itganhuo.app.entity.User" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%
 	String path = request.getContextPath();
-User um = (User) session.getAttribute(ConstantPool.USER_TEMP_INFO);
-// if (um == null || !StringUtil.hasText(um.getId())) {
-//     out.print("八戒你又开始捣乱了");
-//     return;
-// }
-// String account = um.getAccount();
-String account = "";
-int index = account.lastIndexOf("@") + 1;
-String mail_url = "http://mail." + account.substring(index, account.length());
+	String account = HttpUtil.getCookie(request, ConstantPool.USER_ACCOUNT_COOKIE_ID);
+	int index = account.lastIndexOf("@") + 1;
+	String mail_url = "http://mail." + account.substring(index, account.length());
 %>
 <!DOCTYPE html>
 <html>

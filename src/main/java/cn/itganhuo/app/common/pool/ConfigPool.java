@@ -16,14 +16,13 @@
  */
 package cn.itganhuo.app.common.pool;
 
-import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.commons.configuration.reloading.FileChangedReloadingStrategy;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import cn.itganhuo.app.common.utils.StringUtil;
-import cn.itganhuo.app.exception.InternalException;
+import cn.itganhuo.app.exception.PeripheralException;
 
 /**
  * <h2>从config-pool.properties配置文件读取值</h2>
@@ -41,40 +40,40 @@ public class ConfigPool {
 
 	private static final Logger log = LogManager.getLogger(ConfigPool.class.getName());
 
-	private static Configuration config = null;
+	private static PropertiesConfiguration config = null;
 
 	private ConfigPool() {
 	}
+	
+	static {
+		try {
+			config = new PropertiesConfiguration(ConstantPool.CONFIG_POOL_FILE_NAME);
+			config.setReloadingStrategy(new FileChangedReloadingStrategy());
+		} catch (ConfigurationException e) {
+			throw new PeripheralException(log, "Config-pool.properties file failed to initialize.", e);
+		}
+	}
+	
+	/**
+	 * 往配置文件中保存键值对
+	 * @param key
+	 * @param value
+	 */
+	public static void setProperty(String key, String value) {
+		try {
+			config.setProperty(key, value);
+			config.save();
+		} catch (ConfigurationException e) {
+			throw new PeripheralException(log, "Save the file fails.", e);
+		}
+	}
 
 	/**
-	 * <h2>从缓存的Configuration中取值，第一次取值时会先创建这个对象实例。</h2>
-	 * 
-	 * @version 0.0.1-SNAPSHOT
-	 * @author 深圳-小兴
-	 * @param fname
-	 *            配置文件的路径
+	 * 按键取值
 	 * @param key
-	 *            键
 	 * @return 返回值
 	 */
 	public static String getString(String key) {
-		if (!StringUtil.hasText(ConstantPool.CONFIG_BEAN_FILE_PATH)) {
-			throw new InternalException(log, "Configuration file path is incorrect.");
-		}
-		if (!StringUtil.hasText(key)) {
-			throw new InternalException(log, "The key you entered is not legitimate.");
-		}
-		try {
-			if (config == null) {
-				synchronized (ConfigPool.class) {
-					if (config == null) {
-						config = new PropertiesConfiguration(ConstantPool.CONFIG_BEAN_FILE_PATH);
-					}
-				}
-			}
-		} catch (ConfigurationException e) {
-			throw new InternalException(log, "Profiles read exception.", e);
-		}
-		return config.getString(key.trim());
+		return config.getString(key);
 	}
 }

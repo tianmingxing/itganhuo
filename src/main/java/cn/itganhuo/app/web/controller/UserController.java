@@ -46,7 +46,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -184,7 +183,8 @@ public class UserController {
 			return respMsg;
 		}
 		// 判断密码是否含有特殊字符
-		if (StringUtil.ifContainsSpecialStr(user.getPassword(), "`_~_#_$_%_^_&_*_(_)_-_=_+_{_}_[_]_|_\\_;_:_\'_\"_<_>_,_/")) {
+		String[] s = {"`", "~", "#", "$", "%", "^", "&", "*", "(", ")", "-", "=", "+", "{", "}", "[", "]", "|", "\\", ";", ":", "\'", "\"", "<", ">", ",", "/"};
+		if (StringUtil.ifContainsSpecialStr(user.getPassword(), s)) {
 			respMsg.setStatus("2001");
 			respMsg.setMessage(ConfigPool.getString("respMsg.register.PasswordFormatNotLegitimate"));
 			return respMsg;
@@ -241,7 +241,6 @@ public class UserController {
 			try {
 				//校验验证码：之所以采用手动校验是因为在集成shiro过滤器时发现诸多不便
 				String captcha = (String) request.getSession().getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
-				log.debug("captcha=" + captcha + ", securityCode=" + securityCode);
 				if (captcha != null && captcha.equalsIgnoreCase(securityCode)) {
 					// 组织登录参数
 					UsernamePasswordToken token = new UsernamePasswordToken(user.getAccount(), user.getPassword());
@@ -291,11 +290,12 @@ public class UserController {
 	 * @return 转发到用户中心页面
 	 */
 	@RequestMapping(value = "/{account}", method = RequestMethod.GET)
-	public ModelAndView center(@PathVariable(value = "account") String account) {
+	public ModelAndView center() {
 		ModelAndView mav = new ModelAndView();
 		Subject current_user = SecurityUtils.getSubject();
-		if (current_user != null) {
-			User user = (User) current_user.getSession().getAttribute(ConstantPool.USER_SHIRO_SESSION_ID);
+		String account = (String) current_user.getPrincipal();
+		if (StringUtil.hasText(account)) {
+			User user = userService.loadByAccount(account);
 			if (user != null) {
 				mav.addObject("user", user);
 				// 查询最近发布话题5篇文章

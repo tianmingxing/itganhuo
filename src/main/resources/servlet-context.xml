@@ -75,8 +75,9 @@
 	<!-- 拦截器 -->
 	<mvc:interceptors>
 		<mvc:interceptor>
-			<mvc:mapping path="/*" />
-			<bean class="cn.itganhuo.app.web.interceptor.SecurityHandlerInterceptor" />
+			<mvc:mapping path="/**" />
+			<mvc:exclude-mapping path="/static/**"/>
+			<bean class="cn.itganhuo.app.web.interceptor.FormRepeatSubmitHandlerInterceptor" />
 		</mvc:interceptor>
 	</mvc:interceptors>
 

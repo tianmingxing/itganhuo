@@ -36,4 +36,21 @@ public class TestConfigPool {
 		Assert.isTrue("恭喜你：admin，邮箱地址认证成功！".equals(MessageFormat.format(ConfigPool.getString("respMsg.email.EmailAuthSuccessful"), "admin")));
 	}
 
+	@Test
+	public void testGetString() {
+		System.out.println(ConfigPool.getString("parameter.emailLinkValidCertification"));
+		try {
+			Thread.sleep(10000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.out.println(ConfigPool.getString("parameter.emailLinkValidCertification"));
+	}
+	
+	@Test
+	public void testSetProperty() {
+		System.out.println(ConfigPool.getString(ConstantPool.REAL_PATH));
+		ConfigPool.setProperty(ConstantPool.REAL_PATH, "/home/jre");
+		System.out.println(ConfigPool.getString(ConstantPool.REAL_PATH));
+	}
 }

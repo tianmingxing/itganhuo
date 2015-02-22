@@ -23,6 +23,7 @@ import javax.servlet.ServletContextListener;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import cn.itganhuo.app.common.pool.ConfigPool;
 import cn.itganhuo.app.common.pool.ConstantPool;
 
 /**
@@ -87,7 +88,7 @@ public class ContextListener implements ServletContextListener {
 		if (!real_path.endsWith("/")) {
 			real_path = real_path.concat("/");
 		}
-		ConstantPool.REAL_PATH = real_path;
+		ConfigPool.setProperty(ConstantPool.REAL_PATH, real_path);
 	}
 
 }

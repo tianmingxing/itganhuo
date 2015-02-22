@@ -188,7 +188,7 @@ public class ArticleController {
 	@ResponseBody
 	public RespMsg saveReply(Reply reply, @RequestParam Integer comment_id) {
 		// 过滤并替换特殊字符
-		String content = StringUtil.ifContainsSpecialStr2Replace(reply.getContent());
+		String content = StringUtil.ifContainsSpecialStrReplace(reply.getContent());
 		reply.setContent(content);
 		// 获取当前登录用户信息
 		Subject current_user = SecurityUtils.getSubject(); User user_model = (User)

@@ -338,18 +338,17 @@ public class StringUtil {
 	 *            传入特殊字符，多个特殊字符之间用下划线“_”分隔。
 	 * @return 如果字符合法返回ture，否则返回false表示字符中含有认定的特殊字符。
 	 */
-	public static boolean ifContainsSpecialStr(String source, String str) {
-		if (!StringUtil.hasText(source) || !StringUtil.hasText(str)) {
+	public static boolean ifContainsSpecialStr(String source, String[] str) {
+		if (!StringUtil.hasText(source)) {
 			logger.warn("Can not be judged as parameter is empty.");
 			return false;
 		}
-		String[] s = str.split("_");
-		if (s.length <= 0) {
+		if (str.length <= 0) {
 			logger.warn("Can not be judged because of the special characters incoming format is incorrect.");
 			return false;
 		}
-		for (int i = 0; i < s.length; i++) {
-			if (source.indexOf(s[i].trim()) != -1) {
+		for (int i = 0; i < str.length; i++) {
+			if (source.indexOf(str[i].trim()) != -1) {
 				return false;
 			}
 		}
@@ -372,65 +371,15 @@ public class StringUtil {
 	 * @return 如果字符合法返回ture，否则返回false表示字符中含有认定的特殊字符。
 	 */
 	public static boolean ifContainsSpecialStr(String source) {
-		return StringUtil.ifContainsSpecialStr(source, "`_~_!_#_$_%_^_&_*_(_)_-_=_+_{_}_[_]_|_\\_;_:_\'_\"_<_>_,_._/_?");
-	}
-
-	/**
-	 * <h2>判断传进来的字符中是否包含特殊字符，如果存在就将这个特殊字符替换成指定字符。</h2>
-	 * <dl>
-	 * <dt>功能描述</dt>
-	 * <dd>如果你要自定义传入特殊字符可以使用这个方法。</dd>
-	 * <dt>使用规范</dt>
-	 * <dd>无</dd>
-	 * </dl>
-	 * 
-	 * @version 0.0.1-SNAPSHOT
-	 * @author 深圳-小兴
-	 * @param source
-	 *            要判断的字符
-	 * @param str
-	 *            传入特殊字符，多个特殊字符之间用下划线“_”分隔。
-	 * @param replaceStr
-	 *            传入要替换的字符，如果传入null则表示删除找到的特殊字符。
-	 * @return 如果字符合法返回ture，否则返回false表示字符中含有认定的特殊字符。
-	 */
-	public static String ifContainsSpecialStr2Replace(String source, String str, String replaceStr) {
-		if (!StringUtil.hasText(source) || !StringUtil.hasText(str)) {
-			logger.warn("Can not be judged as parameter is empty.");
-			return null;
-		}
-		String[] s = str.split("_");
-		if (s.length <= 0) {
-			logger.warn("Can not be judged because of the special characters incoming format is incorrect.");
-			return null;
-		}
-		return StringUtil.replaceSpecialStrMatch(source, s, replaceStr);
-	}
-
-	/**
-	 * <h2>判断传进来的字符中是否包含特殊字符，如果存在就将这个特殊字符删除掉（用NULL来替换它）。</h2>
-	 * <dl>
-	 * <dt>功能描述</dt>
-	 * <dd>目前认定属于特殊字符的有：`_~_!_#_$_%_^_&_*_(_)_-_=_+_{_}_[_]_|_\_;_:_'_"_<_>_,_._/_?。</dd>
-	 * <dt>使用规范</dt>
-	 * <dd>无</dd>
-	 * </dl>
-	 * 
-	 * @version 0.0.1-SNAPSHOT
-	 * @author 深圳-小兴
-	 * @param source
-	 *            要判断的字符
-	 * @return 如果字符合法返回ture，否则返回false表示字符中含有认定的特殊字符。
-	 */
-	public static String ifContainsSpecialStr2Replace(String source) {
-		return StringUtil.ifContainsSpecialStr2Replace(source, "`_~_!_#_$_%_^_&_*_(_)_-_=_+_{_}_[_]_|_\\_;_:_\'_\"_<_>_,_._/_?", null);
+		String[] s = {"`", "~", "!", "#", "$", "%", "^", "&", "*", "(", ")", "-", "=", "+", "{", "}", "[", "]", "|", "\\", ";", ":", "\'", "\"", "<", ">", ",", ".", "/", "?"};
+		return StringUtil.ifContainsSpecialStr(source, s);
 	}
 
 	/**
 	 * <h2>匹配替换指定的特殊字符</h2>
 	 * <dl>
 	 * <dt>功能描述</dt>
-	 * <dd>这个方法是与ifContainsSpecialStr2Replace方法配套使用的私有方法。</dd>
+	 * <dd>这个方法是与ifContainsSpecialStrReplace方法配套使用的方法。</dd>
 	 * <dt>使用规范</dt>
 	 * <dd>无</dd>
 	 * </dl>
@@ -446,7 +395,7 @@ public class StringUtil {
 	 * @return 如果字符合法返回ture，否则返回false表示字符中含有认定的特殊字符。
 	 * @return 返回处理OK的字符
 	 */
-	private static String replaceSpecialStrMatch(String source, String[] s, String replaceStr) {
+	public static String replaceSpecialStrMatch(String source, String[] s, String replaceStr) {
 		for (int i = 0; i < s.length; i++) {
 			boolean bool = true;
 			while (bool) {
@@ -457,6 +406,59 @@ public class StringUtil {
 					} else {
 						source = source.substring(0, index) + replaceStr + source.substring(index, source.length());
 					}
+				} else {
+					bool = false;
+				}
+			}
+		}
+		return source;
+	}
+	
+	/**
+	 * <h2>匹配替换指定的特殊字符</h2>
+	 * <dl>
+	 * <dt>功能描述</dt>
+	 * <dd>无</dd>
+	 * <dt>使用规范</dt>
+	 * <dd>无</dd>
+	 * </dl>
+	 * 
+	 * @version 0.0.1-SNAPSHOT
+	 * @author 深圳-小兴
+	 * @param source
+	 *            要判断的字符
+	 * @param str
+	 *            传入特殊字符，多个特殊字符之间用下划线“_”分隔。
+	 * @param replaceStr
+	 *            传入要替换的字符，如果传入null则表示删除找到的特殊字符。
+	 * @return 如果字符合法返回ture，否则返回false表示字符中含有认定的特殊字符。
+	 * @return 返回处理OK的字符
+	 */
+	public static String ifContainsSpecialStrReplace(String source) {
+		String[] s = {"`", "~", "!", "#", "$", "%", "^", "&", "*", "(", ")", "-", "=", "+", "{", "}", "[", "]", "|", "\\", ";", ":", "\'", "\"", "<", ">", ",", ".", "/", "?"};
+		return replaceSpecialStrMatch(source, s, null);
+	}
+	
+	/**
+	 * <h2>找到引起SQL注入的所有特殊字符，并将其分别替换成其转义字符。</h2>
+	 * <dl>
+	 * <dt>功能描述</dt>
+	 * <dd>实现思路：就是将固定的和SQL语句有关的几个关键字符替换成转义字符以达到SQL注入攻击无效的目的。</dd>
+	 * <dt>使用规范</dt>
+	 * <dd>无</dd>
+	 * </dl>
+	 * @param source 要判断并替换的字符
+	 * @return 返回处理完的字符，如果没有找到特殊字符则返回原字符串。
+	 */
+	public static String replaceSqlInjectStr(String source) {
+		String[] s = {"`_&#96;", "?_&#63;", "=_&#61;", "'_&apos;", "\"_&quot;", "+_&#43;", "-_&#45;", "*_&#42;", "/_&#47;", "%_&#37;", "<_&lt;", ">_&gt;"};
+		for (int i = 0; i < s.length; i++) {
+			boolean bool = true;
+			while (bool) {
+				String[] str = s[i].split("_");
+				int index = source.indexOf(str[0]);
+				if (index != -1) {
+					source = source.substring(0, index) + str[1] + source.substring(index + 1, source.length());
 				} else {
 					bool = false;
 				}
