@@ -25,11 +25,12 @@
 		<result property="isValidateEmail" column="isValidateEmail" />
 		<result property="emailValidateCode" column="emailValidateCode" />
 		<result property="emailValidateDate" column="emailValidateDate" />
+		<result property="credits" column="credits" />
 	</resultMap>
 
 	<sql id="userColumnList">
 		id, account, password, salt, isLock, nickname, sex, email, qq, phone, tel, postDate, type, lastLoginIp, lastLoginDate, isValidateEmail,
-		emailValidateCode, emailValidateDate
+		emailValidateCode, emailValidateDate, credits
 	</sql>
 
 	<insert id="insert" parameterType="User" useGeneratedKeys="true" keyProperty="id">
@@ -52,6 +53,7 @@
 			<if test="isValidateEmail != null">isValidateEmail,</if>
 			<if test="emailValidateCode != null">emailValidateCode,</if>
 			<if test="emailValidateDate != null">emailValidateDate,</if>
+			<if test="credits != null">credits,</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="account != null">#{account},</if>
@@ -71,6 +73,7 @@
 			<if test="isValidateEmail != null">#{isValidateEmail},</if>
 			<if test="emailValidateCode != null">#{emailValidateCode},</if>
 			<if test="emailValidateDate != null">#{emailValidateDate},</if>
+			<if test="credits != null">#{credits},</if>
 		</trim>
 	</insert>
 
@@ -106,6 +109,7 @@
 				<if test="isValidateEmail != null and isValidateEmail &gt; 0">isValidateEmail = #{isValidateEmail},</if>
 				<if test="emailValidateCode != null">emailValidateCode = #{emailValidateCode},</if>
 				<if test="emailValidateDate != null">emailValidateDate = #{emailValidateDate},</if>
+				<if test="credits != null">credits = #{credits},</if>
 			</trim>
 		</set>
 		where account = #{account}

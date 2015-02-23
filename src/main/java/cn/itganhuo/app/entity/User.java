@@ -99,6 +99,18 @@ public class User implements Serializable {
 	 * 邮箱认证开始时间，如果认证成功则修改为验证成功时的时间。
 	 */
 	private String emailValidateDate;
+	/*
+	 * 用户积分
+	 */
+	private Double credits;
+
+	public Double getCredits() {
+		return credits;
+	}
+
+	public void setCredits(Double credits) {
+		this.credits = credits;
+	}
 
 	public Integer getId() {
 		return id;
@@ -281,7 +293,7 @@ public class User implements Serializable {
 				+ ", lastLoginIp=" + lastLoginIp + ", lastLoginDate="
 				+ lastLoginDate + ", isValidateEmail=" + isValidateEmail
 				+ ", emailValidateCode=" + emailValidateCode
-				+ ", emailValidateDate=" + emailValidateDate + "]";
+				+ ", emailValidateDate=" + emailValidateDate + ", credits" + credits + "]";
 	}
 
 }

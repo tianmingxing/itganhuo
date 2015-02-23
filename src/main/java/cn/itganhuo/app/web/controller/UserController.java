@@ -461,6 +461,7 @@ public class UserController {
 	 * @param user 用户数据
 	 * @return 密码修改成功后返回到用户中心
 	 */
+	@RequiresAuthentication
 	@Transactional
 	@RequestMapping(value = "/updatePassword", method = RequestMethod.POST)
 	public String updatePassword(User user) {
@@ -485,22 +486,25 @@ public class UserController {
 	 * 修改头像功能，跳转到修改头像页面
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 小朱
+	 * @author 天津小朱，深圳-小兴
 	 * @return 转发到用户修改头像页面
 	 */
+	@RequiresAuthentication
 	@RequestMapping(value = "/upload", method = RequestMethod.GET)
-	public String refurlUpload() {
+	public String refurlUpload(Model model, HttpServletRequest request) {
+		model.addAttribute("path", "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath());
 		return "user/upload";
 	}
 
 	/**
 	 * 完成修改头像功能，把用户的头像存到项目下photo文件夹中
 	 * 
-	 * @author 小朱
+	 * @author 天津-小朱
 	 * @version 0.0.1-SNAPSHOT
 	 * @param request
 	 * @return
 	 */
+	@RequiresAuthentication
 	@RequestMapping(value = "/uploadImg", method = RequestMethod.POST)
 	@ResponseBody
 	public String uploadImg(HttpServletRequest request) {
@@ -511,7 +515,7 @@ public class UserController {
 		if (user == null || user.getId() <= 0) {
 			user = userService.loadByAccount(current_user.getPrincipal().toString());
 		}
-		String path = request.getSession().getServletContext().getRealPath("/") + "photo" + "/" + user.getId() + ".jpg";
+		String path = request.getSession().getServletContext().getRealPath("/static/upload/") + "photo" + "/" + user.getId() + ".jpg";
 		File file = new File(path);
 		try {
 			if (file.exists())

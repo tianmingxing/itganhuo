@@ -50,7 +50,7 @@ function showErrImg(obj) {
 								<div class="space"></div>
 								<a href="#"><span class="big">52</span> 粉丝</a>
 								<div class="space"></div>
-								<span class="big">2925</span> 积分
+								<span class="big"><%=um.getCredits()%></span> 积分
 							</div>
 							<div class="floor">
 								<a href="<%=path %>/user/share" style="background: rgb(0,154,97); color: white; width: 30px; height: 15px;">开始分享</a>
@@ -80,7 +80,7 @@ function showErrImg(obj) {
 						<img src="<%=path %>/static/imgs/04.png">
 						36 关注
 						52 粉丝
-						2925 积分</span>
+						<%=um.getCredits()%> 积分</span>
 				</div>
 				<div class="user_profile">
 					<ul class="unstyled">
