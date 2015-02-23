@@ -4,17 +4,16 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8" />
-<title>-IT干货技术分享网</title>
+<title>404-IT干货技术分享网</title>
 </head>
 <body id="body">
 
 	<div class="container wrap">
 		<div class="row inner edge">
 			<h1>八戒，你又调皮了不是！</h1>
-			<p><a href="javascript:alert('懒的上链接，自己单击左上角logo吧！^_^')">果断回首页</a></p>
+			<p><a href="javascript:window.location.href='<%=request.getContextPath()%>/'">果断回首页</a></p>
 			<div style="display: none">${errorMsg }</div>
 		</div>
 	</div>
 
-	<a id="backtop" class="mobi-hide hidden" href="#body">回顶部</a>
 </html>
