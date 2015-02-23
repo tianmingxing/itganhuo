@@ -1,6 +1,6 @@
 /*
 SQLyog Ultimate v11.25 (64 bit)
-MySQL - 5.5.40 : Database - itganhuo
+MySQL - 5.5.37-0ubuntu0.12.04.1 : Database - test
 *********************************************************************
 */
 
@@ -13,9 +13,9 @@ MySQL - 5.5.40 : Database - itganhuo
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-CREATE DATABASE /*!32312 IF NOT EXISTS*/`itganhuo` /*!40100 DEFAULT CHARACTER SET utf8 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`test` /*!40100 DEFAULT CHARACTER SET utf8 */;
 
-USE `itganhuo`;
+USE `test`;
 
 /*Table structure for table `t_article` */
 
@@ -35,7 +35,7 @@ CREATE TABLE `t_article` (
   `answerNum` int(11) DEFAULT '0' COMMENT '文章主评论数量（不统计回复数量）',
   PRIMARY KEY (`id`),
   KEY `ymd` (`ymd`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COMMENT='保存用户发表的文章';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='保存用户发表的文章';
 
 /*Data for the table `t_article` */
 
@@ -51,7 +51,7 @@ CREATE TABLE `t_article_label` (
   `labelId` int(11) NOT NULL COMMENT '标签主键',
   `userId` int(11) NOT NULL COMMENT '作者主键',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='保存文章和标签之间的关系';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='保存文章和标签之间的关系';
 
 /*Data for the table `t_article_label` */
 
@@ -90,7 +90,7 @@ CREATE TABLE `t_comment` (
   `praise` int(11) DEFAULT '0' COMMENT '记录针对本评论所赞数量，仅针对评论时有效',
   `trample` int(11) DEFAULT '0' COMMENT '记录针对本评论所踩数量，仅针对评论时有效',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='保存对文章评论的数据，注意赞和踩也是评价的一种。';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='保存对文章评论的数据，注意赞和踩也是评价的一种。';
 
 /*Data for the table `t_comment` */
 
@@ -108,7 +108,7 @@ CREATE TABLE `t_dictionaries` (
   `description` varchar(500) DEFAULT NULL COMMENT '对属性组的描述',
   `sort` int(11) DEFAULT NULL COMMENT '排序字段',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='数字字典，用来把一些高度重复的属性保存到数据库。';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='数字字典，用来把一些高度重复的属性保存到数据库。';
 
 /*Data for the table `t_dictionaries` */
 
@@ -125,7 +125,7 @@ CREATE TABLE `t_label` (
   `description` text COMMENT '标签介绍',
   `postDate` varchar(50) NOT NULL COMMENT '标签添加时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='保存标签信息，标签是由用户发表文章时添加的。';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='保存标签信息，标签是由用户发表文章时添加的。';
 
 /*Data for the table `t_label` */
 
@@ -145,7 +145,7 @@ CREATE TABLE `t_menu` (
   `url` varchar(255) DEFAULT NULL COMMENT '菜单链接到页面的地址',
   `sort` int(11) DEFAULT NULL COMMENT '菜单自定义排序字段',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='保存运营后台菜单信息';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='保存运营后台菜单信息';
 
 /*Data for the table `t_menu` */
 
@@ -161,7 +161,7 @@ CREATE TABLE `t_permissions` (
   `description` varchar(255) NOT NULL COMMENT '权限描述',
   `isAvailable` int(1) NOT NULL DEFAULT '1' COMMENT '是否有效 0无效,1有效',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 /*Data for the table `t_permissions` */
 
@@ -179,7 +179,7 @@ CREATE TABLE `t_reply` (
   `content` text NOT NULL COMMENT '回复内容',
   `postDate` varchar(50) NOT NULL COMMENT '回复时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='保存对评论的回复信息';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='保存对评论的回复信息';
 
 /*Data for the table `t_reply` */
 
@@ -195,7 +195,7 @@ CREATE TABLE `t_roles` (
   `description` varchar(255) NOT NULL COMMENT '角色描述',
   `isAvailable` int(1) NOT NULL DEFAULT '1' COMMENT '是否有效 0无效,1有效',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 /*Data for the table `t_roles` */
 
@@ -213,7 +213,7 @@ CREATE TABLE `t_template` (
   `postDate` varchar(50) NOT NULL COMMENT '邮件模板发布时间',
   `isAvailable` int(1) NOT NULL DEFAULT '1' COMMENT '是否启用，0未启用1启用',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 /*Data for the table `t_template` */
 
@@ -242,12 +242,13 @@ CREATE TABLE `t_user` (
   `isValidateEmail` int(1) NOT NULL DEFAULT '0' COMMENT '邮箱地址是否认证（0未认证，1已认证）',
   `emailValidateCode` varchar(255) DEFAULT NULL COMMENT '邮箱认证码',
   `emailValidateDate` varchar(50) DEFAULT NULL COMMENT '邮箱认证开始时间，如果认证成功则修改为验证成功时的时间。',
+  `credits` double(10,2) DEFAULT '0.00' COMMENT '积分',
   PRIMARY KEY (`id`,`account`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='保存用户信息';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='保存用户信息';
 
 /*Data for the table `t_user` */
 
-insert  into `t_user`(`id`,`account`,`password`,`salt`,`isLock`,`nickname`,`sex`,`email`,`qq`,`phone`,`tel`,`postDate`,`type`,`lastLoginIp`,`lastLoginDate`,`isValidateEmail`,`emailValidateCode`,`emailValidateDate`) values (1,'admin','123...','2342434',1,'管理员',1,'mx.tian@qq.com',504487927,'15111111111','0755-12345678','2014-12-12 12:12:34',1,NULL,NULL,0,NULL,NULL);
+insert  into `t_user`(`id`,`account`,`password`,`salt`,`isLock`,`nickname`,`sex`,`email`,`qq`,`phone`,`tel`,`postDate`,`type`,`lastLoginIp`,`lastLoginDate`,`isValidateEmail`,`emailValidateCode`,`emailValidateDate`,`credits`) values (1,'admin','123...','2342434',1,'管理员',1,'mx.tian@qq.com',504487927,'15111111111','0755-12345678','2014-12-12 12:12:34',1,NULL,NULL,0,NULL,NULL,12.00);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
