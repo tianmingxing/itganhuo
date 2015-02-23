@@ -2,7 +2,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
-    <title>头像修改</title>
+    <title>头像修改-IT干货技术分享网</title>
    	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta charset="utf-8">
 	<meta name="description" content="IT干货技术分享网-会员信息修改">
@@ -26,7 +26,7 @@
 	window.onload=function(){
  		 xiuxiu.embedSWF("altContent",5,"100%","100%");
   		/*第1个参数是加载编辑器div容器，第2个参数是编辑器类型，第3个参数是div容器宽，第4个参数是div容器高*/
-  		xiuxiu.setUploadURL("http://www.itganhuo.cn/user/uploadImg");//修改为上传接收图片程序地址
+  		xiuxiu.setUploadURL("<%=request.getAttribute("path")%>/user/uploadImg");//修改为上传接收图片程序地址
   		/*回调函数*/
 		xiuxiu.onUploadResponse = function (data)
 		{
@@ -34,7 +34,7 @@
 				strs = data.split(",");
 				if(strs[0] == 'success'){
 					alert("更新头像成功,点击返回用户中心");
-					window.location.href = "http://www.itganhuo.cn/user/" + strs[1]; 				
+					window.location.href = "<%=request.getAttribute("path")%>/user/" + strs[1]; 				
 				} else {
 					alert("更新头像失败，请再试一下吧");
 					return;
