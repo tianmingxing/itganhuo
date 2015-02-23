@@ -137,7 +137,7 @@ public interface ArticleDao {
 	 *            文章主键
 	 * @return 返回一篇文章非常详情的信息
 	 */
-	public Article getArticleDetailById(int id);
+	public Article getArticleDetailById(Map<String, Object> param);
 
 	/**
 	 * 根据文章id查询相同标签下相关的文章

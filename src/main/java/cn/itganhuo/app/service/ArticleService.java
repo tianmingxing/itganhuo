@@ -64,7 +64,7 @@ public interface ArticleService {
 	 *            文章主键
 	 * @return 一篇文章
 	 */
-	public Article getArticleDetailById(int id);
+	public Article getArticleDetailById(Map<String, Object> param);
 
 	/**
 	 * 统计文章总数

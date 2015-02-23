@@ -103,7 +103,9 @@ public class TestArticleDao extends AbstractContextControllerTests {
 	
 	@Test
 	public void testGetArticleDetailById() {
-		Assert.notNull(articleDao.getArticleDetailById(1));
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("id", 1);
+		Assert.notNull(articleDao.getArticleDetailById(param));
 	}
 	
 	@Test

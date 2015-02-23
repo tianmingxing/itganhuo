@@ -304,7 +304,7 @@
 		文章详情页：根据文章主键查询文章详细信息，
 		包括作者、补充、补充人信息、评论、评论人信息、回复、回复人信息、标签
 	 -->
-	<select id="getArticleDetailById" resultMap="article_result" parameterType="Integer">
+	<select id="getArticleDetailById" resultMap="article_result" parameterType="Map">
 		SELECT
 		<include refid="article_column_list" />
 		,
@@ -336,7 +336,11 @@
 		LEFT JOIN t_user            c4 ON e.userId    = c4.id
 		LEFT JOIN t_article_label   f  ON a.id         = f.articleId
 		LEFT JOIN t_label           g  ON f.labelId   = g.id
-		WHERE a.id = #{id}
+		<where>
+			<if test="ymd != null">a.ymd = #{ymd}</if>
+			AND
+			<if test="id != null">a.id = #{id}</if>
+		</where>
 		ORDER BY d.id, e.id DESC
 	</select>
 

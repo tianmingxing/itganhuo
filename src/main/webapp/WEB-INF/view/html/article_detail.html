@@ -154,7 +154,7 @@ function showErrImg(obj) {
                     <ul class="link-list">
                     	<#if related_article !!>
 	                    	<#list related_article as article>
-	                    		<li><a class="topic_title" href="${path}/article/${article.id}">
+	                    		<li><a class="topic_title" href="${path}/article/${article.ymd}/${article.id}">
 		                    		<#if article.title?length gt 20>
 		                    			${article.title[0..20]}...
 		                    		<#else>

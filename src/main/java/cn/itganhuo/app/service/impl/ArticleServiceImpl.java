@@ -70,8 +70,8 @@ public class ArticleServiceImpl implements ArticleService {
 	 * @see cn.itganhuo.app.service.ArticleService#getArticleDetailById(int)
 	 */
 	@Override
-	public Article getArticleDetailById(int id) {
-		return articleDao.getArticleDetailById(id);
+	public Article getArticleDetailById(Map<String, Object> param) {
+		return articleDao.getArticleDetailById(param);
 	}
 
 	/* (non-Javadoc)

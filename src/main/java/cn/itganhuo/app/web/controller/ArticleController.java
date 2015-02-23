@@ -149,28 +149,34 @@ public class ArticleController {
 	 * @param id 文章ID
 	 * @return 转发到文章详情页
 	 */
-	@RequestMapping(value = "/article/{id}", method = RequestMethod.GET)
-	public ModelAndView getArticleById(@PathVariable(value = "id") Integer id, HttpServletRequest request) {
-		// 统计并更新文章访问人数
-		articleService.addVisitorNumById(id);
-
-		// 查询文章详细信息，包括作者、补充、补充人信息、评论、评论人信息、回复、回复人信息、标签
-		Article article_detail = articleService.getArticleDetailById(id);
-
-		// 获取当前登录用户信息
-		Subject current_user = SecurityUtils.getSubject();
-		User user = (User) current_user.getSession().getAttribute(ConstantPool.USER_SHIRO_SESSION_ID);
-
-		// 查询当前文章相关联的其它文章
-		List<Article> related_article = articleService.getArticleByLabel(id);
-
-		// 返回封装数据到控制器
+	@RequestMapping(value = "/article/{ymd}/{id}", method = RequestMethod.GET)
+	public ModelAndView getArticleById(@PathVariable(value = "ymd") String ymd, @PathVariable(value = "id") Integer id, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("article", article_detail);
-		mav.addObject("user", user);
-		mav.addObject("path", request.getContextPath());
-		mav.addObject("related_article", related_article);
-		mav.setViewName("article_detail");
+		// 查询文章详细信息，包括作者、补充、补充人信息、评论、评论人信息、回复、回复人信息、标签
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("id", id);
+		param.put("ymd", ymd);
+		Article article_detail = articleService.getArticleDetailById(param);
+		if (article_detail != null && article_detail.getId() > 0) {
+			// 统计并更新文章访问人数
+			articleService.addVisitorNumById(id);
+			
+			// 获取当前登录用户信息
+			Subject current_user = SecurityUtils.getSubject();
+			User user = (User) current_user.getSession().getAttribute(ConstantPool.USER_SHIRO_SESSION_ID);
+	
+			// 查询当前文章相关联的其它文章
+			List<Article> related_article = articleService.getArticleByLabel(id);
+	
+			// 返回封装数据到控制器
+			mav.addObject("article", article_detail);
+			mav.addObject("user", user);
+			mav.addObject("path", request.getContextPath());
+			mav.addObject("related_article", related_article);
+			mav.setViewName("article_detail");
+		} else {
+			mav.setViewName("error/error");
+		}
 		return mav;
 	}
 
