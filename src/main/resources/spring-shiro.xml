@@ -67,6 +67,7 @@
 	            /user/updatePassword = authc
 	            /user/** = user
 	            /article/saveReply = authc
+	            /auth_email/** = anon
 	            /** = anon
 	        </value>
 	    </property>
