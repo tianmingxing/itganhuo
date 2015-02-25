@@ -20,6 +20,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import cn.itganhuo.app.common.pool.ConfigPool;
 import cn.itganhuo.app.common.utils.DateUtil;
@@ -76,9 +77,9 @@ public class TemplateServiceImpl implements TemplateService {
 	 * 
 	 * @see cn.itganhuo.service.EmailTemplateService#generateAuthURL(java.lang.String )
 	 */
-//	@Transactional
+	@Transactional
 	public String generateAuthURL(String account) {
-		StringBuffer buffer = new StringBuffer(ConfigPool.getString("requestGetContextPath")).append("/auth_email/");
+		StringBuffer buffer = new StringBuffer(ConfigPool.getString("parameter.requestGetContextPath")).append("/auth_email/");
 		User um = userService.loadByAccount(account);
 		buffer.append(um.getId());
 		String str = String.valueOf(um.getId()).concat(account).concat(um.getSalt()) + System.currentTimeMillis();

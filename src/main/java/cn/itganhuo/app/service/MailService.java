@@ -17,7 +17,6 @@
 package cn.itganhuo.app.service;
 
 import cn.itganhuo.app.entity.Template;
-import cn.itganhuo.app.entity.User;
 
 /**
  * <h2>邮件通知服务层接口</h2>
@@ -44,8 +43,8 @@ public interface MailService {
 	 * 
 	 * @version 0.0.1-SNAPSHOT
 	 * @author 天津-小朱
-	 * @param user
-	 * @param template
+	 * @param email 邮件地址
+	 * @param template 信息模板
 	 */
-	public void sendMail(User user, Template template);
+	public void sendMail(String email, Template template);
 }

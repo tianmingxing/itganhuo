@@ -199,20 +199,6 @@ public class CommonController {
 	}
 
 	/**
-	 * 邮件认证跳转提示页面
-	 * 
-	 * @version 0.0.1-SNAPSHOT
-	 * @author 深圳-小兴
-	 * @return 转发到邮箱认证结果页面
-	 */
-	@RequestMapping(value = "/emailskip/{account}")
-	public ModelAndView refurlEmailskip(@PathVariable String account) {
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("user/emailskip");
-		return mav;
-	}
-
-	/**
 	 * 进入开发日志页面
 	 * 
 	 * @version 0.0.1-SNAPSHOT

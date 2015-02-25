@@ -46,7 +46,7 @@ public class User implements Serializable {
 	/*
 	 * 账号是否锁定，默认新注册账号是锁定状态（0不锁定，1锁定）
 	 */
-	private Integer isLock = 1;
+	private Integer isLock;
 	/*
 	 * 昵称
 	 */
@@ -90,7 +90,7 @@ public class User implements Serializable {
 	/*
 	 * 邮箱地址是否认证（0未认证，1已认证）
 	 */
-	private Integer isValidateEmail = 0;
+	private Integer isValidateEmail;
 	/*
 	 * 邮箱认证码
 	 */

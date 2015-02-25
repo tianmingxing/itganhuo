@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" import="cn.itganhuo.app.entity.User,cn.itganhuo.app.common.utils.*" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -45,16 +45,16 @@
 				<div class="alert alert-error" style="display: none">
 					  <strong id="j_msg">信息有误。</strong>
 				</div>
-				<form id="update_form" class="form-horizontal" method="post">
+				<form id="update_form" action="<%=request.getContextPath()%>/user/update" class="form-horizontal" method="post">
+					<input type="hidden" name="request_token" value="<%=HttpUtil.getToken(session)%>">
 					<div class="control-group">
-						<label class="control-label" for="account">登录名：</label>
+						<label class="control-label" for="account">账号：</label>
 						<div class="controls">
-							<input type="hidden" name="account" value="${user.account}">
-							${user.account}
+							<input type="hidden" name="account" value="${user.account}">${user.account}
 						</div>
 					</div>
 					<div class="control-group">
-						<label class="control-label" for="name">用户名：</label>
+						<label class="control-label" for="name">昵称：</label>
 						<div class="controls">
 							<input class="input-xlarge" id="name" name="name" size="30" type="text" value="${user.nickname}"/>
 						</div>
@@ -62,30 +62,45 @@
 					<div class="control-group">
 						<label class="control-label" for="sex">性别：</label>
 						<div class="controls">
-							<input class="input-xlarge" id="sex" name="sex" size="30" type="radio" value="1" ${(user.sex == 1)?'checked':''}>
-								先生
-							</input>&nbsp;&nbsp;&nbsp;
-							<input class="input-xlarge" id="sex" name="sex" size="30" type="radio" value="0" ${(user.sex == 0)?'checked':''}>
-								女士
-							</input>
+							<input class="input-xlarge" id="sex" name="sex" size="30" type="radio" value="1" ${(user.sex == 1)?'checked':''}>男&nbsp;&nbsp;
+							<input class="input-xlarge" id="sex" name="sex" size="30" type="radio" value="2" ${(user.sex == 2)?'checked':''}>女&nbsp;&nbsp;
+							<input class="input-xlarge" id="sex" name="sex" size="30" type="radio" value="3" ${(user.sex == 3)?'checked':''}>保密
 						</div>
 					</div>
 					<div class="control-group">
 						<label class="control-label" for="email">电子邮箱：</label>
 						<div class="controls">
-							<input class="input-xlarge" id="email" name="email" size="30" value="${user.email}">
+							<c:choose>
+								<c:when test="${user.email != null}">
+									<input class="input-xlarge" id="email" name="email" size="30" value="${user.email}">
+									<a href="<%=request.getContextPath()%>/user/emailskip/${user.account}">认证邮箱</a>
+								</c:when>
+								<c:when test="${user.isValidateEmail == 1}">
+									<input type="button" class="input-xlarge" size="30" value="${user.email}">
+									<a href="#" style="color: red;">已认证</a>
+								</c:when>
+								<c:otherwise>
+									<input class="input-xlarge" id="email" name="email" size="30" value="">
+								</c:otherwise>
+							</c:choose>
 						</div>
 					</div>
 					<div class="control-group">
-						<label class="control-label" for="qq">qq：</label>
+						<label class="control-label" for="qq">QQ：</label>
 						<div class="controls">
 							<input class="input-xlarge" id="qq" name="qq" size="30" value="${user.qq}" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
 						</div>
 					</div>
 					<div class="control-group">
-						<label class="control-label" for="phone">联系电话：</label>
+						<label class="control-label" for="phone">手机：</label>
 						<div class="controls">
 							<input class="input-xlarge" id="phone" name="phone" size="30" value="${user.phone}" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="phone">电话：</label>
+						<div class="controls">
+							<input class="input-xlarge" id="tel" name="tel" size="30" value="${user.tel}" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
 						</div>
 					</div>
 					<div>

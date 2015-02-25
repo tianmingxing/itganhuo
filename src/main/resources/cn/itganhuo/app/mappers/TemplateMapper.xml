@@ -6,13 +6,13 @@
 
 	<cache />
 
-	<sql id="templateColumnList">id, type, name, content, postDate, isAvailable</sql>
+	<sql id="templateColumnList">id, type, enName, content, chName, isAvailable</sql>
 
 	<select id="loadByName" resultType="Template" parameterType="java.lang.String">
 		select
 		<include refid="templateColumnList" />
 		from t_template
-		where name = #{name}
+		where enName = #{enName}
 	</select>
 
 	<select id="loadById" resultType="Template" parameterType="Integer">
@@ -32,14 +32,15 @@
 		insert into t_template
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="type != null">type,</if>
-			<if test="name != null">name,</if>
+			<if test="enName != null">enName,</if>
+			<if test="chName != null">chName,</if>
 			<if test="content != null">content,</if>
-			<if test="postDate != null">postDate,</if>
 			<if test="isAvailable != null">isAvailable,</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="type != null">#{type},</if>
-			<if test="name != null">#{name},</if>
+			<if test="enName != null">#{enName},</if>
+			<if test="chName != null">#{chName},</if>
 			<if test="content != null">#{content},</if>
 			<if test="postDate != null">#{postDate},</if>
 			<if test="isAvailable != null">#{isAvailable},</if>

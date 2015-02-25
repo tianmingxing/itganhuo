@@ -361,34 +361,46 @@ public class UserController {
 	 * 进入修改信息页面从session中获取到账户名并找到对应的用户
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 小朱
+	 * @author 小朱，深圳-小兴
 	 * @param model
 	 * @param session
 	 * @return 跳转到用户信息修改页面
 	 */
+	@RequiresAuthentication
 	@RequestMapping(value = "/update", method = RequestMethod.GET)
-	public String update(Model model, HttpSession session) {
-		User user = null;
+	public String refurlUpdate(Model model) {
 		Subject current_user = SecurityUtils.getSubject();
-		user = (User) current_user.getSession().getAttribute(ConstantPool.USER_SHIRO_SESSION_ID);
-		if (user == null || user.getId() <= 0) {
-			user = userService.loadByAccount(current_user.getPrincipal().toString());
+		User user = (User) current_user.getSession().getAttribute(ConstantPool.USER_SHIRO_SESSION_ID);
+		if (user != null) {
+			User u = userService.loadByAccount(user.getAccount());
+			model.addAttribute("user", u);
+			return "user/update";
 		}
-		model.addAttribute("user", user);
-		return "user/update";
+		return "redirect:/user/center";
 	}
 
 	/**
 	 * 修改用户信息 修改用户的基本信息，成功返回主页，失败重新进入修改
 	 * 
 	 * @version 0.0.1-SNAPSHOT
-	 * @author 小朱
+	 * @author 小朱，深圳-小兴
 	 * @param user
 	 * @return
 	 */
 	@RequiresAuthentication
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public String refurlUpdate(User user) {
+	public String update(User user) {
+		// 防止用户修改其关键信息
+		user.setPassword(null);
+		user.setSalt(null);
+		user.setPostDate(null);
+		user.setCredits(null);
+		// 如果邮箱有值则表示用户想要修改，此时应该将新邮箱设置为未认证状态。
+		if (StringUtil.hasText(user.getEmail())) {
+			user.setIsValidateEmail(0);
+		} else {
+			user.setIsValidateEmail(null);
+		}
 		if (this.userService.updateInfoByAccount(user) != 0) {
 			return "redirect:/user/center";
 		} else
@@ -404,6 +416,7 @@ public class UserController {
 	 * @param session
 	 * @return 跳转到用户修改密码页面
 	 */
+	@RequiresAuthentication
 	@RequestMapping(value = "/updatePassword", method = RequestMethod.GET)
 	public String updatePassword(Model model, HttpSession session) {
 		User user = null;
@@ -473,7 +486,7 @@ public class UserController {
 					tmp_str = tmp_str.replaceFirst("##account##", user.getAccount());
 				}
 				template.setContent(tmp_str);
-				mailService.sendMail(user, template);
+				mailService.sendMail(user.getEmail(), template);
 			} else
 				throw new InternalException("Corresponding template does not exist.");
 		} else {
@@ -535,7 +548,7 @@ public class UserController {
 	/**
 	 * 进入会员分享页面
 	 * <ol>
-	 * <li>必须具备身份已认证权限</li>
+	 * <li>必须具备身份已认证权限，并且邮箱已经被认证。反之则中转到用户资料修改页面</li>
 	 * </ol>
 	 * 
 	 * @version 0.0.1-SNAPSHOT
@@ -544,10 +557,13 @@ public class UserController {
 	 */
 	@RequiresAuthentication
 	@RequestMapping(value = "/share", method = RequestMethod.GET)
-	public ModelAndView refurlShare() {
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("user/share");
-		return mav;
+	public String refurlShare() {
+		Subject current_user = SecurityUtils.getSubject();
+		User user = (User) current_user.getSession().getAttribute(ConstantPool.USER_SHIRO_SESSION_ID);
+		if (user != null && user.getIsValidateEmail() == 1) {
+			return "user/share";
+		}
+		return "redirect:/user/update";
 	}
 
 	/**
@@ -696,5 +712,32 @@ public class UserController {
 			}
 		}
 		return autoCompletes;
+	}
+	
+	/**
+	 * 邮件认证<br>
+	 * 为当前登录用户发送一封邮箱认证邮件
+	 * 
+	 * @version 0.0.1-SNAPSHOT
+	 * @author 深圳-小兴
+	 * @return 转发到邮箱认证页面
+	 */
+	@RequiresAuthentication
+	@RequestMapping(value = "/emailskip/{account}")
+	public String emailApprove(Model model) {
+		// 1、查询邮件模板
+		Template template = templateService.loadByName("certifiedMail");
+		String str = template.getContent();
+		// 2、获取变量
+		Subject current_user = SecurityUtils.getSubject();
+		User user_model = (User) current_user.getSession().getAttribute(ConstantPool.USER_SHIRO_SESSION_ID);
+		String url = templateService.generateAuthURL(user_model.getAccount());
+		// 3、数据替换
+		str = str.replaceAll("#account#", user_model.getAccount());
+		str = str.replaceAll("#url#", url);
+		template.setContent(str);
+		// 4、发送邮件
+		mailService.sendMail(user_model.getEmail(), template);
+		return "user/emailskip";
 	}
 }

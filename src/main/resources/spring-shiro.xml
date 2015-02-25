@@ -63,6 +63,8 @@
 	            /user/comment = authc
 	            /user/upload = authc
 	            /user/uploadImg = authc
+	            /user/update = authc
+	            /user/updatePassword = authc
 	            /user/** = user
 	            /article/saveReply = authc
 	            /** = anon

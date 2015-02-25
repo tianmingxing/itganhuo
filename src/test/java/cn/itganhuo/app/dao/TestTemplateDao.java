@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import cn.itganhuo.app.AbstractContextControllerTests;
-import cn.itganhuo.app.common.utils.DateUtil;
 import cn.itganhuo.app.entity.Template;
 
 /**
@@ -48,9 +47,9 @@ public class TestTemplateDao extends AbstractContextControllerTests {
 	public void testInsert() {
 		Template template = new Template();
 		template.setType(1);
-		template.setName("用户接收欢迎注册信息");
+		template.setEnName("hello");
+		template.setChName("用户接收欢迎注册信息");
 		template.setContent("#account#，欢迎你加入IT干货技术分享网。");
-		template.setPostDate(DateUtil.getNowDateTimeStr(null));
 		template.setIsAvailable(1);
 		Assert.isTrue(1 == templateDao.insert(template), "保存消息模板失败了");
 	}

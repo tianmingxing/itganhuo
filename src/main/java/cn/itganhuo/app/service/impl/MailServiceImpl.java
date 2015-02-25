@@ -22,6 +22,8 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeUtility;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -29,8 +31,9 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import cn.itganhuo.app.common.utils.PropertiesUtil;
+import cn.itganhuo.app.common.utils.StringUtil;
 import cn.itganhuo.app.entity.Template;
-import cn.itganhuo.app.entity.User;
+import cn.itganhuo.app.exception.InternalException;
 import cn.itganhuo.app.service.MailService;
 
 /**
@@ -47,6 +50,8 @@ import cn.itganhuo.app.service.MailService;
  */
 @Service
 public class MailServiceImpl implements MailService {
+	
+	private final static Logger log = LogManager.getLogger(MailServiceImpl.class.getName());
 
 	@Autowired
 	JavaMailSender mailSender;
@@ -55,31 +60,30 @@ public class MailServiceImpl implements MailService {
 	TaskExecutor executor;
 
 	/**
-	 * 将用户修改的原始密码发送到其邮箱中,如果其邮箱没有修改，那么则默认发送到注册的帐户的邮箱中发件人的名称和
-	 * 邮箱是从javamail.properties中获取得到的 email:要发送的邮件地址 template:邮件模板
+	 * <h2>发送邮件</h2>
+	 * <dl>
+	 * <dt>功能描述</dt>
+	 * <dd>执行邮件发送任务，发送任务是以多线程的方式异步执行的。</dd>
+	 * <dt>使用规范</dt>
+	 * <dd>在调用本方法时给它传入收件人地址和模板信息</dd>
+	 * </dl>
 	 */
-	public void sendMail(final User user, final Template template) {
-
+	@Override
+	public void sendMail(final String email, final Template template) {
+		if (!StringUtil.hasText(email)) {
+			throw new InternalException(log, "Recipient address can not be empty.");
+		}
 		executor.execute(new Runnable() {
-
 			public void run() {
-
 				try {
 					MimeMessage msg = mailSender.createMimeMessage();
-
 					MimeMessageHelper helper = new MimeMessageHelper(msg, true, "utf-8");
-
-					String myName = PropertiesUtil.getInstance().load("javamail").getProperty("myname");
-					String myEmail = PropertiesUtil.getInstance().load("javamail").getProperty("myemail");
+					String myName = PropertiesUtil.getInstance().load("resources").getProperty("myname");
+					String myEmail = PropertiesUtil.getInstance().load("resources").getProperty("myemail");
 					helper.setFrom(MimeUtility.encodeText(myName) + "<" + myEmail + ">");
-					if (user.getEmail() == null || "".equals(user.getEmail())) {
-						helper.setTo(user.getAccount());
-					} else {
-						helper.setTo(user.getEmail());
-					}
-					helper.setSubject(template.getName());
+					helper.setTo(email);
+					helper.setSubject(template.getChName());
 					helper.setText(template.getContent(), true);
-
 					mailSender.send(msg);
 				} catch (MessagingException e) {
 					e.printStackTrace();
@@ -89,5 +93,4 @@ public class MailServiceImpl implements MailService {
 			}
 		});
 	}
-
 }

@@ -39,7 +39,7 @@ import cn.itganhuo.app.common.utils.StringUtil;
  * <dd>
  * <ol>
  * <li>防止重复提交（根据页面标识选择性拦截） 如果你需要在表单提交时做重复提交拦截，那么请在表单里面隐藏 一个字段放token的值。 
- * <pre><input type="hidden" name="request_token" value="<%=HttpUtil.getString(session, "session_token")%>"></pre></li>
+ * <pre><input type="hidden" name="request_token" value="<%=HttpUtil.getToken(session, "session_token")%>"></pre></li>
  * </ol>
  * </dd>
  * </dl>

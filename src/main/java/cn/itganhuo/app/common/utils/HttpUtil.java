@@ -20,6 +20,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -31,6 +32,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 
+import cn.itganhuo.app.common.pool.ConstantPool;
 import cn.itganhuo.app.exception.InternalException;
 
 /**
@@ -329,6 +331,16 @@ public class HttpUtil {
 	public static Object getValue(String key) {
 		Subject current_user = SecurityUtils.getSubject();
 		return current_user.getSession().getAttribute(key);
+	}
+	
+	/**
+	 * 从会话中取出令牌
+	 * @return
+	 */
+	public static String getToken(HttpSession session) {
+		String token = StringUtil.getMD5Shiro(UUID.randomUUID().toString());
+		HttpUtil.setValue(session, ConstantPool.SESSION_TOKEN, token);
+		return token;
 	}
 
 }

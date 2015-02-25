@@ -85,9 +85,7 @@ public class TemplateController {
 	@RequestMapping(value = "/insert", method = RequestMethod.POST)
 	public String insertEmailTemplate(Template template) {
 		if (templateService.insert(template) != 0) {
-			if (log.isInfoEnabled()) {
-				log.debug("插入email信息" + template.getName() + "成功");
-			}
+			log.debug("插入email信息" + template.getChName() + "成功");
 			return "redirect:list";
 		} else
 			return "redirect:list";

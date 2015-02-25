@@ -36,21 +36,37 @@ public class Template implements Serializable {
 	 */
 	private Integer type;
 	/*
+	 * 模板英文名称，用来唯一确定各个模块。
+	 */
+	private String enName;
+	/*
 	 * 模板名称
 	 */
-	private String name;
+	private String chName;
 	/*
 	 * 模板内容，需要替换的变量用##包含起来。
 	 */
 	private String content;
 	/*
-	 * 邮件模板发布时间
-	 */
-	private String postDate;
-	/*
 	 * 是否启用，0未启用1启用
 	 */
 	private Integer isAvailable;
+
+	public String getEnName() {
+		return enName;
+	}
+
+	public void setEnName(String enName) {
+		this.enName = enName;
+	}
+
+	public String getChName() {
+		return chName;
+	}
+
+	public void setChName(String chName) {
+		this.chName = chName;
+	}
 
 	public Integer getId() {
 		return id;
@@ -58,14 +74,6 @@ public class Template implements Serializable {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public String getPostDate() {
-		return postDate;
-	}
-
-	public void setPostDate(String postDate) {
-		this.postDate = postDate;
 	}
 
 	public Integer getIsAvailable() {
@@ -82,14 +90,6 @@ public class Template implements Serializable {
 
 	public int getType() {
 		return type;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name == null ? null : name.trim();
 	}
 
 	public String getContent() {
@@ -127,8 +127,9 @@ public class Template implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Template [id=" + id + ", type=" + type + ", name=" + name + ", content=" + content + ", postDate=" + postDate + ", isAvailable=" + isAvailable
-				+ "]";
+		return "Template [id=" + id + ", type=" + type + ", enName=" + enName
+				+ ", chName=" + chName + ", content=" + content
+				+ ", isAvailable=" + isAvailable + "]";
 	}
 
 }
