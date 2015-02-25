@@ -4,7 +4,9 @@
 <div class="global-nav">
     <nav class="global-nav container">
         <ul class="site-nav hidden-xs">
-            <li class="current"><a href="${path}/">分享</a></li>
+        	<li <#if servletPath?index_of('/index') != -1>class="current"</#if>><a href="${path}/index">首页</a></li>
+            <li <#if servletPath?index_of('/article') != -1>class="current"</#if>><a href="${path}/articles/1/1">文章</a></li>
+            <li <#if servletPath?index_of('/labels') != -1>class="current"</#if>><a href="${path}/labels">标签</a></li>
         </ul>
         <@shiro.guest>
         	<ul class="user-nav">

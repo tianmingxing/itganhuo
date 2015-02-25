@@ -1,6 +1,7 @@
-<%@ page language="java" import="java.util.*,cn.itganhuo.app.common.utils.StringUtil" pageEncoding="UTF-8"%>
+<%@ page language="java" import="cn.itganhuo.app.entity.RespMsg" pageEncoding="UTF-8"%>
 <%
     String path = request.getContextPath();
+	RespMsg respMsg = (RespMsg) request.getAttribute("respMsg");
 %>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -29,7 +30,7 @@
 				</ul>
 			</div>
 			<div class="inner">
-				<p><%=StringUtil.unicode2Str(request.getAttribute("msg").toString())%></p>
+				<p><%=respMsg.getMessage()%></p>
 				<p><a href="<%=path%>/user/signin">登录</a>&nbsp;&nbsp;<a href="<%=path%>/">回到首页</a></p>
 			</div>
 		</div>

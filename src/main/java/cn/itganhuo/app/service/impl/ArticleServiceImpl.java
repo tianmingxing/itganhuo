@@ -144,8 +144,13 @@ public class ArticleServiceImpl implements ArticleService {
 	 * @see cn.itganhuo.app.service.ArticleService#getArticleByLabel(int)
 	 */
 	@Override
-	public List<Article> getArticleByLabel(int id) {
-		return articleDao.getArticleByLabel(id);
+	public List<Article> getSameLabelArticleById(int id) {
+		return articleDao.getSameLabelArticleById(id);
+	}
+
+	@Override
+	public List<Article> getArticleByLabelId(Map<String, Object> param) {
+		return articleDao.getArticleByLabelId(param);
 	}
 
 }

@@ -54,5 +54,5 @@
 		LEFT JOIN t_label g ON f.labelId = g.id
 		WHERE f.articleId = #{articleId}
 	</select>
-
+	
 </mapper>

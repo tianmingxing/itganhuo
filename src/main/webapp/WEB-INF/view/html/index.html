@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>首页-IT干货技术分享网</title>
+<link rel="stylesheet" href="${path}/static/css/style.css" />
+<link rel="stylesheet" href="${path}/static/css/responsive.css" />
+<style type="text/css">
+.tag {
+	padding-left: 7px;
+	padding-right: 7px;
+	border-radius: 3px;
+	width: 50%;
+	float: left;
+	margin-top: 20px;
+}
+.widget-tag {
+	position: relative;
+	height: 200px;
+	overflow: hidden;
+	border: 1px solid #ddd;
+	margin-bottom: 14px;
+}
+.widget-tag h2 {
+	margin: 12px;
+	font-size: 16px;
+}
+.widget-ta_action {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	padding: 8px 12px;
+	background-color: #f6f6f6;
+}
+.main-title {
+margin: 30px 0 25px;
+font-size: 18px;
+vertical-align: middle;
+}
+.widget-tag .tag-title {
+	background-color: #f3f3f3;
+margin: 0;
+line-height: 32px;
+padding: 0 12px;
+}
+.left {
+width: 75%; float: left;
+}
+.right {
+width: 25%; float: left;
+margin-top: 30px;
+}
+.widget-welcome {
+margin-bottom: 25px;
+padding: 15px;
+border: 1px solid #ddd;
+background-color: #fff;
+color: #666;
+-moz-box-shadow: 3px 3px 0 rgba(0,0,0,0.05);
+-webkit-box-shadow: 3px 3px 0 rgba(0,0,0,0.05);
+box-shadow: 3px 3px 0 rgba(0,0,0,0.05);
+}
+.widget-box {
+	margin: 25px 0;
+padding-top: 25px;
+border-top: 1px solid #eee;
+}
+.h4 .widget-box__title {
+margin: 0 0 20px;
+font-size: 16px;
+}
+.taglist--block {
+	list-style: none;
+padding: 0;
+font-size: 0;
+}
+.mb10 .tagPopup {
+margin-bottom: 8px;
+padding: 0;
+font-size: 13px;
+}
+</style>
+</head>
+
+<body id="body">
+
+<#include "common/header1.html">
+
+<div class="container">
+	<div class="left">
+		<p class="main-title">今天，有什么心得感悟分享给大家呢？<a class="btn btn-primary action" href="${path}/user/share">立即分享 </a></p>
+		<#if labels?exists>
+		    <#list labels as label>
+				<section class="tag">
+			        <div class="widget-tag">
+			        	<div class="tag-title">
+			            	<h2><a href="#">${label.name}</a></h2>
+			            </div>
+			            <#list label.articles as article>
+			            <p><a href="${path}/article/${article.ymd}/${article.id}" title="${article.title }">${article.title}</a>${article.postDate}</p>
+			            </#list>
+			        </div>
+			    </section>
+			</#list>
+	    </#if>
+    </div>
+    <div class="right">
+    	<aside class="widget-welcome">
+		    <h2 style="color: #D0021B;">工作经验分享平台</h2>
+		    <p>欢迎大家分享自己在工作中的经验，帮助更多的人最准确、便捷的找到自己想要的解决方案。</p>
+		    <ul class="list-unstyled">
+		        <li><a href="#" class="btn-sn-qq"><span class="icon-sn-qq"></span> QQ 账号登录</a></li>
+		        <li><a href="#" class="btn-sn-weibo"><span class="icon-sn-weibo"></span> 微博账号登录</a></li>
+		    </ul>
+		</aside>
+		<div class="widget-box">
+              <h2 class="h4 widget-box__title">热门作者</h2>
+              <ul class="list-unstyled list-unstyled">
+               <li class="widget-user media">
+                   <a class="pull-left" href="/blog/seanlook">
+                       <img class="media-object avatar-40" src="http://sfault-avatar.b0.upaiyun.com/262/226/2622265737-54781334bc458_big64">
+                   </a>
+                   <div class="media-object">
+                       <strong><a href="/blog/seanlook">seanlook</a></strong>
+                       <p class="text-muted">最近获得 27 投票</p>
+                   </div>
+               </li>
+       		</ul>
+        </div>
+        <div class="widget-box">
+            <h2 class="h4 widget-box__title">热门标签</h2>
+            <ul class="taglist--block">
+             	<li class="mb10 tagPopup">
+                    <a href="/t/javascript/blogs" data-id="1040000000089436" class="tag" data-original-title="javascript">javascript</a>
+                    <span class="text-muted">× 973</span>
+                </li>
+            </ul>
+		</div> 
+    </div>
+</div>
+
+<#include "common/footer.html">
+
+</body>
+<script>
+	window._bd_share_config = {
+		common : {
+			bdText : 'IT干货技术分享网',	
+			bdDesc : '我发现了一个值得收藏的网站，它们是一家专注提供IT工作经验分享社区的网站',	
+			bdUrl : 'http://www.itganhuo.cn', 	
+			bdPic : 'http://www.itganhuo.cn/static/imgs/default_image.jpg'
+		},
+		share : [{
+			"bdSize" : 16
+		}],
+		slide : [{	   
+			bdImg : 0,
+			bdPos : "right",
+			bdTop : 100
+		}],
+		image : [{
+			viewType : 'list',
+			viewPos : 'top',
+			viewColor : 'black',
+			viewSize : '16',
+			viewList : ['qzone','tsina','huaban','tqq','renren']
+		}],
+		selectShare : [{
+			"bdselectMiniList" : ['qzone','tqq','kaixin001','bdxc','tqf']
+		}]
+	}
+	with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+</html>

@@ -20,6 +20,9 @@ import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -39,9 +42,13 @@ import org.springframework.web.servlet.ModelAndView;
 import cn.itganhuo.app.common.pool.ConfigPool;
 import cn.itganhuo.app.common.utils.DateUtil;
 import cn.itganhuo.app.common.utils.StringUtil;
+import cn.itganhuo.app.entity.Article;
+import cn.itganhuo.app.entity.Label;
 import cn.itganhuo.app.entity.RespMsg;
 import cn.itganhuo.app.entity.User;
 import cn.itganhuo.app.exception.InternalException;
+import cn.itganhuo.app.service.ArticleService;
+import cn.itganhuo.app.service.LabelService;
 import cn.itganhuo.app.service.UserService;
 
 /**
@@ -63,6 +70,10 @@ public class CommonController {
 
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private LabelService labelService;
+	@Autowired
+	private ArticleService articleService;
 
 	/**
 	 * 返回头部公共页面
@@ -155,7 +166,7 @@ public class CommonController {
 				// 邮箱地址是否已经认证过
 				if (1 != user.getIsValidateEmail()) {
 					try {
-						Date validate_date = new SimpleDateFormat().parse(user.getEmailValidateDate());
+						Date validate_date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(user.getEmailValidateDate());
 						Date now_date = DateUtil.getAfterOrBeforDay(Integer.valueOf(ConfigPool.getString("parameter.emailLinkValidCertification")));
 						// 比较当前时间是否超过有效期
 						if (now_date.after(validate_date)) {
@@ -237,5 +248,48 @@ public class CommonController {
 		return "invitation";
 	}
 	
+	/**
+	 * 进入首页
+	 * 
+	 * @version 0.0.1-SNAPSHOT
+	 * @author 深圳-小兴
+	 * @return 转发到首页
+	 */
+	@RequestMapping(value = "/index", method = RequestMethod.GET)
+	public String refurlIndex(Model model, HttpServletRequest request) {
+		// 1、查询标签列表
+		List<Label> ls = labelService.getLabelByCondition(null);
+		// 2、根据标签查询其所对应的文章
+		if (ls != null && ls.size() > 0) {
+			for (int i = 0; i < ls.size(); i++) {
+				Map<String, Object> param = new HashMap<String, Object>();
+				param.put("labelId", ls.get(i).getId());
+				param.put("rows", 5);
+				List<Article> articles = articleService.getArticleByLabelId(param);
+				ls.get(i).setArticles(articles);
+			}
+		}
+		model.addAttribute("labels", ls);
+		model.addAttribute("path", request.getContextPath());
+		model.addAttribute("servletPath", request.getServletPath());
+		return "index";
+	}
+	
+	/**
+	 * 进入标签页面
+	 * 
+	 * @version 0.0.1-SNAPSHOT
+	 * @author 深圳-小兴
+	 * @return 转发到标签页面
+	 */
+	@RequestMapping(value = "/labels", method = RequestMethod.GET)
+	public String refurlLabels(Model model, HttpServletRequest request) {
+		// 1、查询标签列表
+		List<Label> ls = labelService.getLabelByCondition(null);
+		model.addAttribute("ls", ls);
+		model.addAttribute("path", request.getContextPath());
+		model.addAttribute("servletPath", request.getServletPath());
+		return "labels";
+	}
 }
 

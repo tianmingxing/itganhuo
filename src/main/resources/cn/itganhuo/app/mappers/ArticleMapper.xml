@@ -449,7 +449,7 @@
 		WHERE a.id = #{id}
 	</update>
 	
-	<select id="getArticleByLabel" parameterType="Integer" resultType="Article">
+	<select id="getSameLabelArticleById" parameterType="Integer" resultType="Article">
 		SELECT 
 		  * 
 		FROM
@@ -466,6 +466,21 @@
 		      t_article_label 
 		    WHERE articleId = #{id}))
 		AND id != #{id} 
+	</select>
+	
+	<select id="getArticleByLabelId" parameterType="Map" resultType="Article">
+		SELECT 
+		  * 
+		FROM
+		  t_article a 
+		WHERE a.id IN 
+		  (SELECT 
+		    b.articleId 
+		  FROM
+		    t_article_label b 
+		  WHERE b.labelId = #{labelId}) 
+		ORDER BY a.id DESC 
+		LIMIT 0, #{rows} 
 	</select>
 	
 </mapper>

@@ -17,6 +17,7 @@
 package cn.itganhuo.app.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 文章标签表数据封装类
@@ -51,6 +52,16 @@ public class Label implements Serializable {
 	 * 标签添加人信息
 	 */
 	private User user;
+	
+	private List<Article> articles;
+	
+	public List<Article> getArticles() {
+		return articles;
+	}
+
+	public void setArticles(List<Article> articles) {
+		this.articles = articles;
+	}
 
 	public Integer getId() {
 		return id;

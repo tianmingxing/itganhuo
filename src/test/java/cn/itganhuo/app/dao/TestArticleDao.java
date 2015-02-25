@@ -110,6 +110,6 @@ public class TestArticleDao extends AbstractContextControllerTests {
 	
 	@Test
 	public void testGetArticleByLabel() {
-		Assert.notNull(articleDao.getArticleByLabel(1));
+		Assert.notNull(articleDao.getSameLabelArticleById(1));
 	}
 }

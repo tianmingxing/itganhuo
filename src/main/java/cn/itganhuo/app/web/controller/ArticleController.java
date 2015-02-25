@@ -131,6 +131,7 @@ public class ArticleController {
 		mav.addObject("pagination", pagination);
 		mav.addObject("search_type", search_type);
 		mav.addObject("path", request.getContextPath());
+		mav.addObject("servletPath", request.getServletPath());
 		mav.setViewName("article_list");
 		return mav;
 	}
@@ -166,7 +167,7 @@ public class ArticleController {
 			User user = (User) current_user.getSession().getAttribute(ConstantPool.USER_SHIRO_SESSION_ID);
 	
 			// 查询当前文章相关联的其它文章
-			List<Article> related_article = articleService.getArticleByLabel(id);
+			List<Article> related_article = articleService.getSameLabelArticleById(id);
 	
 			// 返回封装数据到控制器
 			mav.addObject("article", article_detail);

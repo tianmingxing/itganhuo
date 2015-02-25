@@ -46,4 +46,5 @@ public interface ArticleLabelDao {
 	 * @param article_id
 	 */
 	public List<ArticleLabel> getArticleLabelById(int articleId);
+	
 }

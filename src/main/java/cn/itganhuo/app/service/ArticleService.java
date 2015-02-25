@@ -156,5 +156,12 @@ public interface ArticleService {
 	 *            文章ID
 	 * @return 文章集合
 	 */
-	public List<Article> getArticleByLabel(int id);
+	public List<Article> getSameLabelArticleById(int id);
+	
+	/**
+	 * 获取某个标签下对应的文章，默认按插入顺序，只取出5条。
+	 * @param labelId 标签ID
+	 * @return 返回文章列表
+	 */
+	public List<Article> getArticleByLabelId(Map<String, Object> param);
 }
