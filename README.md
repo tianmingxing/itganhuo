@@ -32,7 +32,7 @@ File > Import > (Maven > Existring Maven Projects) > 选择项目所在路径即
 启动
 ====
 本项目采用Maven + Jetty构建而无需Tomcat就可运行（当然如果你将项目放到Tomcat里面运行也是可以的）：
-* 直接在项目上运行`mav jetty:run`来运行，但如果你是在IDE工具里那可在项目上右击选择Run As > Maven build... > 在Goals框中输入`clean package jetty:run`并回车即可。
+* 直接在项目上运行`mvn jetty:run`来运行，但如果你是在IDE工具里那可在项目上右击选择Run As > Maven build... > 在Goals框中输入`clean package jetty:run`并回车即可。
 * 浏览器访问：http://localhost:8080/app
 
 包结构说明
