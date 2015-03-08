@@ -528,7 +528,7 @@ public class UserController {
 		if (user == null || user.getId() <= 0) {
 			user = userService.loadByAccount(current_user.getPrincipal().toString());
 		}
-		String path = request.getSession().getServletContext().getRealPath("/static/upload/") + "photos" + "/" + user.getId() + ".jpg";
+		String path = request.getSession().getServletContext().getRealPath("/static/upload/") + "/photos/" + user.getId() + ".jpg";
 		File file = new File(path);
 		try {
 			if (file.exists())
@@ -539,7 +539,7 @@ public class UserController {
 			msg = "success";
 			log.debug(user.getAccount() + "Path modified image=" + path);
 		} catch (IOException e) {
-			throw new InternalException(log, e);
+			throw new InternalException(log, "file path=" + path, e);
 		}
 		log.debug(msg + "," + user.getAccount());
 		return msg + "," + user.getAccount();

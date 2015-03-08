@@ -38,7 +38,7 @@ function showErrImg(obj) {
 				<div class="user_card">
 					<div>
 						<a class="user_avatar" href="#">
-							<img src="<%=path %>/static/upload/photos/<%=um.getAccount()%>.jpg" title="<%=um.getAccount()%>" onerror="showErrImg(this);">
+							<img src="<%=path %>/static/upload/photos/<%=um.getId()%>.jpg" title="<%=um.getAccount()%>" onerror="showErrImg(this);">
 						</a>
 						<span class="user_name"><a class="dark" href="#"><%=um.getAccount()%></a></span>&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/user/update">设置</a> 
 						<div class="board clearfix">
@@ -72,7 +72,7 @@ function showErrImg(obj) {
 			</div>
 			<div class="inner userinfo">
 				<div class="user_big_avatar">
-					<img src="<%=path %>/static/upload/photos/<%=um.getAccount()%>.jpg" class="user_avatar" title="<%=um.getAccount()%>" onerror="showErrImg(this);">
+					<img src="<%=path %>/static/upload/photos/<%=um.getId()%>.jpg" class="user_avatar" title="<%=um.getAccount()%>" onerror="showErrImg(this);">
 				</div>
 				<a class="dark"><%=um.getAccount()%></a>
 				<div class="col_fade">
