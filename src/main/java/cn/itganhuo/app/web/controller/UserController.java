@@ -170,39 +170,39 @@ public class UserController {
         user.setAccount(tmpAccount);
         user.setPassword(tmpPassword);
 		// 判断用户名长度是否在区间值内
-		if (user.getAccount().length() >= 6 && user.getAccount().length() <= 20) {
+		if (user.getAccount().length() < 6 || user.getAccount().length() > 20) {
 			respMsg.setStatus("1000");
 			respMsg.setMessage(ConfigPool.getString("respMsg.register.AccountNumberFormatNotLegitimate"));
 			return respMsg;
 		}
 		// 判断用户名是否含有特殊字符
-		if (StringUtil.ifContainsSpecialStr(user.getAccount())) {
+		if (!StringUtil.ifContainsSpecialStr(user.getAccount())) {
 			respMsg.setStatus("1001");
 			respMsg.setMessage(ConfigPool.getString("respMsg.register.AccountNumberFormatNotLegitimate"));
 			return respMsg;
 		}
 		// 判断密码长度是否在区间值内
-		if (user.getPassword().length() >= 6 && user.getPassword().length() <= 20) {
+		if (user.getPassword().length() < 6 || user.getPassword().length() > 20) {
 			respMsg.setStatus("2000");
 			respMsg.setMessage(ConfigPool.getString("respMsg.register.PasswordFormatNotLegitimate"));
 			return respMsg;
 		}
 		// 判断密码是否含有特殊字符
 		String[] s = {"`", "~", "#", "$", "%", "^", "&", "*", "(", ")", "-", "=", "+", "{", "}", "[", "]", "|", "\\", ";", ":", "\'", "\"", "<", ">", ",", "/"};
-		if (StringUtil.ifContainsSpecialStr(user.getPassword(), s)) {
+		if (!StringUtil.ifContainsSpecialStr(user.getPassword(), s)) {
 			respMsg.setStatus("2001");
 			respMsg.setMessage(ConfigPool.getString("respMsg.register.PasswordFormatNotLegitimate"));
 			return respMsg;
 		}
 		// 判断用户名、密码中是否含有中文字符
-		if (!user.getAccount().matches("[\u4e00-\u9fa5]+") && !user.getPassword().matches("[\u4e00-\u9fa5]+")) {
+		if (user.getAccount().matches("[\u4e00-\u9fa5]+") || user.getPassword().matches("[\u4e00-\u9fa5]+")) {
 			respMsg.setStatus("3000");
 			respMsg.setMessage(ConfigPool.getString("respMsg.common.CanNotContainChineseStr"));
 			return respMsg;
 		}
 		// 判断将要注册的账号是否已经存在
 		User tmp_user = this.userService.loadByAccount(user.getAccount());
-		if (tmp_user == null || tmp_user.getId() <= 0) {
+		if (tmp_user != null) {
 			respMsg.setStatus("1002");
 			respMsg.setMessage(ConfigPool.getString("respMsg.login.UnknownAccount"));
 			return respMsg;
