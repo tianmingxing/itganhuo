@@ -65,7 +65,7 @@ function formCheck() {
 	jQuery(".alert.alert-error").hide();
 	jQuery.post('<%=path %>/user/register',jQuery("#register_form").serialize(),function(data) {
 		if (data.status == '0000') {
-			window.location.href = '<%=path %>/emailskip/' + data.appendInfo;
+			window.location.href = '<%=path %>/user/signin';
 		} else {
 			jQuery(".alert.alert-error").show();
 			jQuery("#j_msg").text(data.message);
