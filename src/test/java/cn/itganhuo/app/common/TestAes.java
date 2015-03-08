@@ -12,7 +12,7 @@ public class TestAes {
 		System.out.println(Aes.parseByte2HexStr(Aes.encrypt("com.mysql.jdbc.Driver", key)));
 		
 		//生成本地数据库连接信息
-		System.out.println(Aes.parseByte2HexStr(Aes.encrypt("jdbc:mysql://localhost:3306/itganhuo?useUnicode=true&characterEncoding=utf-8", key)));
+		System.out.println(Aes.parseByte2HexStr(Aes.encrypt("jdbc:mysql://10.162.103.166/itganhuo?useUnicode=true&characterEncoding=utf-8", key)));
 		System.out.println(Aes.parseByte2HexStr(Aes.encrypt("root", key)));
 		
 		//生成公共测试库连接信息

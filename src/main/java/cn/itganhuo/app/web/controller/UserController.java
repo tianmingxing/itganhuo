@@ -159,7 +159,7 @@ public class UserController {
 		RespMsg respMsg = new RespMsg();
 		//校验验证码：之所以采用手动校验是因为在集成shiro过滤器时发现诸多不便，同时手动验证灵活性大且应用方便直观。
 		String captcha = (String) request.getSession().getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
-		if (captcha != null && captcha.equalsIgnoreCase(securityCode)) {
+		if (captcha == null || !captcha.equalsIgnoreCase(securityCode)) {
 			respMsg.setMessage(ConfigPool.getString("respMsg.common.SecurityCodeError"));
 			respMsg.setStatus("1005");
 			return respMsg;

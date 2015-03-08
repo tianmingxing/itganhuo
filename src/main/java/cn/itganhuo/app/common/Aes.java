@@ -58,12 +58,14 @@ public class Aes {
 	public static byte[] encrypt(String content, String key) {
 		try {
 			KeyGenerator kgen = KeyGenerator.getInstance("AES");
-			kgen.init(128, new SecureRandom(key.getBytes()));
+			SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG");
+		    secureRandom.setSeed(key.getBytes("UTF-8"));
+			kgen.init(128, secureRandom);
 			SecretKey secretKey = kgen.generateKey();
 			byte[] enCodeFormat = secretKey.getEncoded();
 			SecretKeySpec secretKeySpec = new SecretKeySpec(enCodeFormat, "AES");
 			Cipher cipher = Cipher.getInstance("AES");// 创建密码器
-			byte[] byteContent = content.getBytes("utf-8");
+			byte[] byteContent = content.getBytes("UTF-8");
 			cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);// 初始化
 			byte[] result = cipher.doFinal(byteContent);
 			return result; // 加密
@@ -95,7 +97,9 @@ public class Aes {
 	public static byte[] decrypt(byte[] content, String key) {
 		try {
 			KeyGenerator kgen = KeyGenerator.getInstance("AES");
-			kgen.init(128, new SecureRandom(key.getBytes()));
+			SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG");
+		    secureRandom.setSeed(key.getBytes("UTF-8"));
+			kgen.init(128, secureRandom);
 			SecretKey secretKey = kgen.generateKey();
 			byte[] enCodeFormat = secretKey.getEncoded();
 			SecretKeySpec secretKeySpec = new SecretKeySpec(enCodeFormat, "AES");
@@ -112,6 +116,8 @@ public class Aes {
 		} catch (IllegalBlockSizeException e) {
 			e.printStackTrace();
 		} catch (BadPaddingException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
 		return null;
