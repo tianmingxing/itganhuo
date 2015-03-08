@@ -13,7 +13,7 @@
 	<mvc:resources location="/static/" mapping="/static/**"  />
 	
 	<!-- 默认首页 -->
-	<mvc:view-controller path="/" view-name="redirect:/articles/1/1" />
+	<mvc:view-controller path="/" view-name="redirect:/index" />
 
 	<!-- 自动扫描特定注解类并纳入容器管理 -->
 	<context:component-scan base-package="cn.itganhuo.app.web.controller">
