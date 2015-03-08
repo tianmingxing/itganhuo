@@ -528,7 +528,7 @@ public class UserController {
 		if (user == null || user.getId() <= 0) {
 			user = userService.loadByAccount(current_user.getPrincipal().toString());
 		}
-		String path = request.getSession().getServletContext().getRealPath("/static/upload/") + "photo" + "/" + user.getId() + ".jpg";
+		String path = request.getSession().getServletContext().getRealPath("/static/upload/") + "photos" + "/" + user.getId() + ".jpg";
 		File file = new File(path);
 		try {
 			if (file.exists())
