@@ -7,6 +7,7 @@
         	<li <#if servletPath?index_of('/index') != -1>class="current"</#if>><a href="${path}/index">首页</a></li>
             <li <#if servletPath?index_of('/article') != -1>class="current"</#if>><a href="${path}/articles/1/1">文章</a></li>
             <li <#if servletPath?index_of('/labels') != -1>class="current"</#if>><a href="${path}/labels">标签</a></li>
+            <li><a href="#">我给网站提建议</a></li>
         </ul>
         <@shiro.guest>
         	<ul class="user-nav">
