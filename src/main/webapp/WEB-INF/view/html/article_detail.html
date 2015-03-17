@@ -124,7 +124,7 @@ function showErrImg(obj) {
                 <#if user_model.id != article.userId>
 	                <form method="post" action="${path}/user/comment" onsubmit="return checkForm();">
 	                    <div id="wmd-button-bar">
-	                    	<input type="hidden" name="object_id" value="${article.id }">
+	                    	<input type="hidden" name="articleId" value="${article.id }">
 	                    	<input type="hidden" name="article_user_id" value="${article.userId }">
 	                    	<textarea placeholder="用词请文明" rows="8" cols="115" id="j_content" name="content" style="resize: none;overflow-y:auto;"></textarea>
 	                    	<input type="submit" id="j_sub" value="提交">
