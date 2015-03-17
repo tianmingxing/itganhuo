@@ -47,10 +47,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import cn.itganhuo.app.common.page.Pagination;
@@ -302,14 +299,19 @@ public class UserController {
 		if (StringUtil.hasText(account)) {
 			User user = userService.loadByAccount(account);
 			if (user != null) {
-				mav.addObject("user", user);
-				// 查询最近发布话题5篇文章
-				Map<String, Object> param = new HashMap<String, Object>();
-				param.put("userId", user.getId());
-				param.put("offrow", 0);
-				param.put("rows", 5);
+                Map<String, Object> param = new HashMap<String, Object>();
+                param.put("userId", user.getId());
+                param.put("offrow", 0);
+                param.put("rows", 5);
+
+                // 查询最近发布话题5篇文章
 				List<Article> articles = articleService.getArticleByUserId(param);
+                // 查询最近参与话题5篇文章
+                List<Article> dynamicArticles = articleService.getDynamicArticleByUserId(param);
+
+				mav.addObject("dynamicArticles", dynamicArticles);
 				mav.addObject("articles", articles);
+                mav.addObject("user", user);
 				mav.setViewName("user/center");
 			} else {
 				mav.setViewName("user/signin");
@@ -335,15 +337,15 @@ public class UserController {
 			User user = (User) current_user.getSession().getAttribute(ConstantPool.USER_SHIRO_SESSION_ID);
 			if (user != null) {
 				mav.addObject("user", user);
-				
+				int rows = 20;
 				Map<String, Object> param = new HashMap<String, Object>();
 				param.put("userId", user.getId());
-				param.put("offrow", StringUtil.getInt(now_page, 1));
-				param.put("rows", 20);
+				param.put("offrow", (StringUtil.getInt(now_page, 1) - 1) * rows);
+				param.put("rows", rows);
 				
 				List<Article> articles = articleService.getArticleByUserId(param);
 				int total = articleService.countArticleRows(param);
-				Pagination pagination = new Pagination(StringUtil.getInt(now_page, 1), 20, 5, total, request.getContextPath().concat("/articles"), "0000");
+				Pagination pagination = new Pagination(StringUtil.getInt(now_page, 1), rows, 5, total, request.getContextPath().concat("/articles"), "0000");
 				
 				mav.addObject("pagination", pagination);
 				mav.addObject("articles", articles);
@@ -744,4 +746,32 @@ public class UserController {
 		mailService.sendMail(user_model.getEmail(), template);
 		return "user/emailskip";
 	}
+
+    /**
+     * 根据条件翻页查询动态文章
+     * @param model 返回数据封装
+     * @return
+     */
+    @RequestMapping(value = "/dynamicArticles", method = RequestMethod.GET)
+    public String refurlDynamicArticles(Model model, @RequestParam(defaultValue = "1") String now_page, HttpServletRequest request) {
+        Subject current_user = SecurityUtils.getSubject();
+        User user_model = (User) current_user.getSession().getAttribute(ConstantPool.USER_SHIRO_SESSION_ID);
+        if (user_model != null) {
+            int rows = 20;
+            Map<String, Object> param = new HashMap<String, Object>();
+            param.put("userId", user_model.getId());
+            param.put("offrow", (StringUtil.getInt(now_page, 1) - 1) * rows);
+            param.put("rows", rows);
+            // 查询最近参与话题5篇文章
+            List<Article> dynamicArticles = articleService.getDynamicArticleByUserId(param);
+            int total = articleService.countDynamicArticleRows(param);
+            Pagination pagination = new Pagination(StringUtil.getInt(now_page, 1), rows, 5, total, request.getContextPath().concat("/dynamicArticles"), now_page);
+            model.addAttribute("pagination", pagination);
+            model.addAttribute("articles", dynamicArticles);
+            model.addAttribute("user", user_model);
+            return "user/dynamic_articles";
+        } else {
+            return "redirect:/user/signin";
+        }
+    }
 }

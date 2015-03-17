@@ -141,25 +141,32 @@ function showErrImg(obj) {
 			<div class="header">
 				<span class="col_fade">最近参与话题</span>
 			</div>
-			<div class="cell">
-				<a class="user_avatar pull-left" href="javascript:;;">
-					<img src="<%=path %>/static/upload/photos/<%=um.getId()%>.jpg" title="kingapple" onerror="showErrImg(this);">
-				</a>
-				<span class="reply_count pull-left">
-					<span class="count_of_replies" title="回复数">10</span>
-					<span class="count_seperator">/</span>
-					<span class="count_of_visits" title="点击数">376</span>
-				</span>
-				<a class="last_time pull-right" href="javascript:;;">
-					<img class="user_small_avatar" src="<%=path %>/static/upload/photos/<%=um.getId()%>.jpg" onerror="showErrImg(this);">
-					<span class="last_active_time">6-12 15:42</span>
-				</a>
-				<div class="topic_title_wrapper">
-					<a class="topic_title" href="javascript:;;">赶脚樯把狗彻底屏蔽了</a>
-				</div>
-			</div>
+            <c:choose>
+                <c:when  test="${dynamicArticles != null && dynamicArticles.size() > 0 }">
+                    <c:forEach items="${dynamicArticles}" var="article">
+                    <div class="cell">
+                        <a class="user_avatar pull-left" href="javascript:;;">
+                            <img src="<%=path %>/static/upload/photos/<%=um.getId()%>.jpg" title="kingapple" onerror="showErrImg(this);">
+                        </a>
+                        <span class="reply_count pull-left">
+                            <span class="count_of_replies" title="回复数">${article.comments.size() }</span>
+                            <span class="count_seperator">/</span>
+                            <span class="count_of_visits" title="点击数">${article.visitorNum }</span>
+                        </span>
+                        <a class="last_time pull-right" href="javascript:;;">
+                            <img class="user_small_avatar" src="<%=path %>/static/upload/photos/<%=um.getId()%>.jpg" onerror="showErrImg(this);">
+                            <span class="last_active_time">${article.postDate }</span>
+                        </a>
+                        <div class="topic_title_wrapper">
+                            <a class="topic_title" href="<%=path %>/article/${article.ymd}/${article.id}">${article.title }</a>
+                        </div>
+                    </div>
+                    </c:forEach>
+                </c:when>
+                <c:otherwise>遇到合适的你就嫁了吧！</c:otherwise>
+            </c:choose>
 			<div class="cell more">
-				<a class="dark" href="javascript:;;">查看更多»</a>
+				<a class="dark" href="<%=path%>/user/dynamicArticles">查看更多»</a>
 			</div>
 		</div>
 		

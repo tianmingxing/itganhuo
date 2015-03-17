@@ -19,6 +19,7 @@ package cn.itganhuo.app.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 import cn.itganhuo.app.entity.Article;
@@ -152,8 +153,22 @@ public interface ArticleDao {
 	
 	/**
 	 * 获取某个标签下对应的文章，默认按插入顺序，只取出5条。
-	 * @param labelId 标签ID
+	 * @param param 查询参数
 	 * @return 返回文章列表
 	 */
 	public List<Article> getArticleByLabelId(Map<String, Object> param);
+
+    /**
+     * 查询当前用户所参与过的文章，目前只查询它评论过的文章，对文章点踩和赞也算是一种特殊的评论行为。
+     * @param param 查询参数
+     * @return 返回文章列表
+     */
+    public List<Article> getDynamicArticleByUserId(Map<String, Object> param);
+
+    /**
+     * 查询当前用户所参与过的文章，目前只查询它评论过的文章，对文章点踩和赞也算是一种特殊的评论行为。
+     * @param param 查询参数
+     * @return 返回文章总行数
+     */
+    public int countDynamicArticleRows(Map<String, Object> param);
 }

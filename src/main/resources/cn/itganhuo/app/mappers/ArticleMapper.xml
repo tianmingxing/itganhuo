@@ -488,5 +488,19 @@
 		ORDER BY a.id DESC 
 		LIMIT 0, #{rows} 
 	</select>
+
+    <select id="getDynamicArticleByUserId" parameterType="Map" resultType="Article">
+        SELECT a.id,a.title,a.visitorNum,a.answerNum,a.ymd,a.hms FROM t_article a
+        LEFT JOIN t_comment b ON a.id = b.`articleId`
+        WHERE a.id IN (SELECT b.articleId FROM t_comment b WHERE b.`userId` = #{userId})
+        GROUP BY a.id DESC
+        LIMIT #{offrow}, #{rows}
+    </select>
+
+    <select id="countDynamicArticleRows" resultType="int" parameterType="Map">
+        SELECT count(1) FROM t_article a
+        LEFT JOIN t_comment b ON a.id = b.`articleId`
+        WHERE a.id IN (SELECT b.articleId FROM t_comment b WHERE b.`userId` = #{userId})
+    </select>
 	
 </mapper>
