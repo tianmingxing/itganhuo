@@ -1,15 +1,15 @@
 介绍
 ====
-这是[IT干货技术分享网](http://www.itganhuo.cn)整站开源项目，欢迎更多的爱好者参与进来帮助我们一起成长。同时也欢迎你加入私塾在线学习社区群329232140。
+这是 [IT干货技术分享网](http://www.itganhuo.cn) 整站开源项目。欢迎更多的爱好者参与进来帮助我们一起成长，同时也欢迎你加入私塾在线学习社区群 [329232140](http://shang.qq.com/wpa/qunwpa?idkey=2c2c4eb461fefa1763887c68a4658a6ff2bf7bd4c717332ebd0c21fc824454ae)。
 
 网站
 ====
-IT干货技术分享网 http://itganhuo.cn 是为开发人员提供一个工作经验交流和分享的社区平台，它的目标是降低大家准确获取信息的成本，在这个网站上面有别人分享的真正干货，其代码或解决方案拿来就可以使用。没有长篇大论的描述，因为你需要的是拿来即有，而不是在此刻详细了解，或许你之前有了解过，只是现在忘了具体的使用语法。社区的生成离不开你我他的参与，欢迎你也分享自己的工作经验，让更多的人受益。
+IT干货技术分享网 http://itganhuo.cn 是为开发人员提供一个工作经验交流和分享的社区平台，它的目标是降低大家准确获取信息的成本，在这个网站上面有别人分享的真正干货，其代码或解决方案拿来就可以使用。上面没有长篇大论的描述，因为你需要的只是拿来即用，并非在此刻详细的了解它。或许你之前有了解过，只是现在忘了具体的使用语法。社区的生成离不开你我他的参与，欢迎你也分享自己的工作经验，让更多的人受益。
 
 下载
 ====
 如果你想下载源码可以采用以下两种方式：
-* 单击项目主页右边"Download ZIP"下载zip文件（这种方法并不会含有版本信息）；
+* 单击项目主页右边"Download ZIP"下载zip文件，需要说明的是这种方法并不会含有版本信息；
 * 使用Git Bash或Torties Git下载，此时你需要先下载其中一个工具（具体百度之），然后克隆本项目地址https://github.com/xiaoxing598/itganhuo.git （这个地址可以在项目主页右边"clone URL"找到）；
 
 参与
@@ -42,38 +42,38 @@ File > Import > (Maven > Existring Maven Projects) > 选择项目所在路径即
 +app
 |  +src/main/java
 |  |  +cn.itganhuo.app
-|  |  |  +common
-|  |  |  +dao
-|  |  |  +entity
-|  |  |  +exception
-|  |  |  +service
-|  |  |  +web
+|  |  |  +common（工具类）
+|  |  |  +dao（数据层交互类）
+|  |  |  +entity（实体数据封装）
+|  |  |  +exception（自定义异常类）
+|  |  |  +service（服务层接口实现）
+|  |  |  +web（用户界面控制）
 |  +src/main/resources
-|  |  +cn
-|  |  -config-pool.properties
-|  |  -itganhuo.sql
-|  |  -jdbc.properties
-|  |  -log4j.xml
-|  |  -log4j2.xml
-|  |  -resources.properties
-|  |  -root-context.xml
-|  |  -servlet-context.xml
-|  |  -spring-javamail.xml
-|  |  -spring-shiro.xml
+|  |  +cn（包含DAO层的实现，这里采用了MyBatis框架）
+|  |  -config-pool.properties（变量文件配置）
+|  |  -itganhuo.sql（数据库建构语句）
+|  |  -jdbc.properties（数据库连接信息）
+|  |  -log4j.xml（1.x版本适用的日志框架，主要是第三方框架用）
+|  |  -log4j2.xml（2.x版本在本项目中采用，整体性能比前版本要高很多。）
+|  |  -resources.properties（资源配置）
+|  |  -root-context.xml（spring基本配置）
+|  |  -servlet-context.xml（MVC基本配置）
+|  |  -spring-javamail.xml（邮件基本配置）
+|  |  -spring-shiro.xml（权限基本配置）
 |  +src/test/java
-|  |  +cn.itganhuo.app
+|  |  +cn.itganhuo.app（单元测试类）
 |  +src/test/resources
-|  +logs
-|  +src
-|  +target
-|  -LICENSE
-|  -pom.xml
-|  -README.md
+|  +logs（日志输出文件夹）
+|  +src（存放用户界面的具体文件）
+|  +target（存放maven编译后的文件）
+|  -LICENSE（开源许可证）
+|  -pom.xml（maven项目构建配置）
+|  -README.md（本项目介绍说明）
 ```
 
 技术关键词
 ====
-springmvc, mybatis, mysql, shiro, maven, javamail， MVC, easyui, meituUI, (lucene or solr)
+Spring frame, Spring MVC, Apache Shiro, MyBatis, MySql, maven, jetty, JavaMail, easyui, meituUI, freemarker, git, druid, (lucene or solr)
 
 开发者说
 ====
