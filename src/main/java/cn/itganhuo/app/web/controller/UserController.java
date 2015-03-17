@@ -363,7 +363,6 @@ public class UserController {
 	 * @version 0.0.1-SNAPSHOT
 	 * @author 小朱，深圳-小兴
 	 * @param model
-	 * @param session
 	 * @return 跳转到用户信息修改页面
 	 */
 	@RequiresAuthentication
@@ -384,10 +383,11 @@ public class UserController {
 	 * 
 	 * @version 0.0.1-SNAPSHOT
 	 * @author 小朱，深圳-小兴
-	 * @param user
+	 * @param user 用户信息
 	 * @return
 	 */
 	@RequiresAuthentication
+    @Transactional
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public String update(User user) {
 		// 防止用户修改其关键信息
@@ -404,7 +404,7 @@ public class UserController {
 		if (this.userService.updateInfoByAccount(user) != 0) {
 			return "redirect:/user/center";
 		} else
-			return "redirect:update";
+			return "redirect:/user/update";
 	}
 
 	/**
@@ -560,10 +560,14 @@ public class UserController {
 	public String refurlShare() {
 		Subject current_user = SecurityUtils.getSubject();
 		User user = (User) current_user.getSession().getAttribute(ConstantPool.USER_SHIRO_SESSION_ID);
-		if (user != null && user.getIsValidateEmail() == 1) {
-			return "user/share";
+		if (user != null) {
+            User u = userService.loadByAccount(user.getAccount());
+            if (u.getIsValidateEmail() == 1) {
+                return "user/share";
+            }
+            return "redirect:/user/update";
 		}
-		return "redirect:/user/update";
+		return "redirect:/user/center";
 	}
 
 	/**
@@ -644,7 +648,7 @@ public class UserController {
 	 * 
 	 * @version 0.0.2-SNAPSHOT
 	 * @author 深圳-小兴，深圳-夕落
-	 * @param article_model
+	 * @param comment_model
 	 * @return
 	 */
 	@RequiresAuthentication
@@ -696,7 +700,7 @@ public class UserController {
 	 * 
 	 * @version 0.0.2-SNAPSHOT
 	 * @author 深圳-小兴
-	 * @param subjects 标签数据集合 
+	 * @param labels 标签数据集合
 	 * @return 返回转换好的AutoComplete对象集合
 	 */
 	private List<AutoComplete> label2AutoComplete(List<Label> labels) {

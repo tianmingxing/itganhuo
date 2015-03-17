@@ -46,6 +46,7 @@ public class ArticleServiceImpl implements ArticleService {
 	 */
 	@Override
 	public List<Article> findArticleByCondition(Map<String, Object> map) {
+        log.debug("offrow=" + map.get("offrow") + ", rows=" + map.get("rows"));
 		List<Article> articles = articleDao.findArticleByCondition(map);
 		for (int i = 0; i < articles.size(); i++) {
 			// 查询所属的标签

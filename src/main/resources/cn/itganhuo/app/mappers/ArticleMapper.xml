@@ -352,8 +352,11 @@
 		<include refid="article_user_column_list" />
 		FROM
 		t_article a
-		LEFT JOIN t_user c ON a.userId = c.id
-		<if test="paging != null and paging.sort != null and paging.order != null">
+        LEFT JOIN t_user c ON a.userId = c.id
+        <if test="labelId != null">
+        WHERE a.id IN (SELECT m.`articleId` FROM t_article_label m WHERE m.`labelId` = #{labelId})
+        </if>
+        <if test="paging != null and paging.sort != null and paging.order != null">
 			ORDER BY a.${paging.sort} ${paging.order}
 		</if>
 		<if test="paging != null and paging.rows > 0">
@@ -369,6 +372,9 @@
 		t_article a
 		<where>
 			<if test="userId != null">a.userId = #{userId}</if>
+            <if test="labelId != null">
+            a.id IN (SELECT m.`articleId` FROM t_article_label m WHERE m.`labelId` = #{labelId})
+            </if>
 		</where>
 	</select>
 

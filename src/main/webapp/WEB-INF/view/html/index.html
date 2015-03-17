@@ -94,7 +94,7 @@ font-size: 13px;
 				<section class="tag">
 			        <div class="widget-tag">
 			        	<div class="tag-title">
-			            	<h2><a href="#">${label.name}</a></h2>
+			            	<h2><a href="${path}/articles/1/1/${label.id}">${label.name}</a></h2>
 			            </div>
 			            <#list label.articles as article>
 			            <p><a href="${path}/article/${article.ymd}/${article.id}" title="${article.title }">${article.title}</a>${article.postDate}</p>

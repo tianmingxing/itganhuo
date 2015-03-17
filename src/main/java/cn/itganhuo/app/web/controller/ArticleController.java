@@ -60,278 +60,344 @@ import cn.itganhuo.app.service.ReplyService;
  * <dt>使用规范</dt>
  * <dd>无</dd>
  * </dl>
- * 
- * @version 0.0.1-SNAPSHOT
+ *
  * @author 深圳-小兴，深圳-夕落
+ * @version 0.0.1-SNAPSHOT
  */
 @Controller
 public class ArticleController {
 
-	private static final Logger log = LogManager.getLogger(ArticleController.class.getName());
+    private static final Logger log = LogManager.getLogger(ArticleController.class.getName());
 
-	@Autowired
-	private ArticleService articleService;
-	@Autowired
-	private CommentService commentService;
-	@Autowired
-	private ReplyService replyService;
+    @Autowired
+    private ArticleService articleService;
+    @Autowired
+    private CommentService commentService;
+    @Autowired
+    private ReplyService replyService;
 
-	/**
-	 * <h2>文章列表页</h2>
-	 * <dl>
-	 * <dt>功能描述</dt>
-	 * <dd>本控制器返回的页面做首页用</dd>
-	 * <dt>使用规范</dt>
-	 * <dd>无</dd>
-	 * </dl>
-	 * 
-	 * @version 0.0.1-SNAPSHOT
-	 * @author 深圳-小兴
-	 * @param article 对文章各个字段的查询条件
-	 * @param search_type 按字段排序类型（type=1（最新）、type=2（热门）、type=3（冷门））
-	 * @param now_page 当前页码（默认1）
-	 * @param request Http请求
-	 * @return 返回文章列表，包括文章标签和发布人信息
-	 */
-	@RequestMapping(value = "/articles/{search_type}/{now_page}", method = RequestMethod.GET)
-	public ModelAndView articles(Article article, @PathVariable String search_type, @PathVariable String now_page, HttpServletRequest request) {
-		// 请求路径
-		String request_get_context_path = request.getContextPath();
+    /**
+     * <h2>文章列表页</h2>
+     * <dl>
+     * <dt>功能描述</dt>
+     * <dd>本控制器返回的页面做首页用</dd>
+     * <dt>使用规范</dt>
+     * <dd>无</dd>
+     * </dl>
+     *
+     * @param article     对文章各个字段的查询条件
+     * @param search_type 按字段排序类型（type=1（最新）、type=2（热门）、type=3（冷门））
+     * @param now_page    当前页码（默认1）
+     * @param request     Http请求
+     * @return 返回文章列表，包括文章标签和发布人信息
+     * @version 0.0.1-SNAPSHOT
+     * @author 深圳-小兴
+     */
+    @RequestMapping(value = "/articles/{search_type}/{now_page}", method = RequestMethod.GET)
+    public ModelAndView articles(Article article, @PathVariable String search_type, @PathVariable String now_page, HttpServletRequest request) {
+        // 请求路径
+        String request_get_context_path = request.getContextPath();
 
-		// 组织分页参数
-		Paging paging = new Paging();
-		if (!search_type.matches("^[123]?$")) {
-			search_type = "1";
-		}
-		if ("1".equalsIgnoreCase(search_type)) { // 最新查询
-			paging.setSort("id");
-			paging.setOrder("DESC");
-		} else if ("2".equalsIgnoreCase(search_type)) { // 热门查询
-			paging.setSort("visitorNum");
-			paging.setOrder("DESC");
-		} else if ("3".equalsIgnoreCase(search_type)) { // 冷门查询
-			paging.setSort("visitorNum");
-			paging.setOrder("ASC");
-		}
-		if (now_page.matches("^([1-9]|[1-9][0-9]+)+$")) {
-			paging.setPage(StringUtil.getInt(now_page, 1));
-		}
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("article", article);
-		map.put("paging", paging);
-		
-		// 根据条件查询文章列表
-		List<Article> articles = articleService.findArticleByCondition(map);
-		int total = articleService.countArticleRows(null);
-		Pagination pagination = new Pagination(StringUtil.getInt(now_page, 1), 10, 5, total, request_get_context_path.concat("/articles"), search_type);
-		
-		// 返回数据
-		ModelAndView mav = new ModelAndView();
-		mav.addObject("articles", articles);
-		mav.addObject("pagination", pagination);
-		mav.addObject("search_type", search_type);
-		mav.addObject("path", request.getContextPath());
-		mav.addObject("servletPath", request.getServletPath());
-		mav.setViewName("article_list");
-		return mav;
-	}
+        // 组织分页参数
+        Paging paging = new Paging();
+        if (!search_type.matches("^[123]?$")) {
+            search_type = "1";
+        }
+        if ("1".equalsIgnoreCase(search_type)) { // 最新查询
+            paging.setSort("id");
+            paging.setOrder("DESC");
+        } else if ("2".equalsIgnoreCase(search_type)) { // 热门查询
+            paging.setSort("visitorNum");
+            paging.setOrder("DESC");
+        } else if ("3".equalsIgnoreCase(search_type)) { // 冷门查询
+            paging.setSort("visitorNum");
+            paging.setOrder("ASC");
+        }
+        if (now_page.matches("^([1-9]|[1-9][0-9]+)+$")) {
+            paging.setPage(StringUtil.getInt(now_page, 1));
+        }
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("article", article);
+        map.put("paging", paging);
 
-	/**
-	 * <h2>进入文章详情页</h2>
-	 * <dl>
-	 * <dt>功能描述</dt>
-	 * <dd>无</dd>
-	 * <dt>使用规范</dt>
-	 * <dd>无</dd>
-	 * </dl>
-	 * 
-	 * @version 0.0.1-SNAPSHOT
-	 * @author 深圳-小兴
-	 * @param id 文章ID
-	 * @return 转发到文章详情页
-	 */
-	@RequestMapping(value = "/article/{ymd}/{id}", method = RequestMethod.GET)
-	public ModelAndView getArticleById(@PathVariable(value = "ymd") String ymd, @PathVariable(value = "id") Integer id, HttpServletRequest request) {
-		ModelAndView mav = new ModelAndView();
-		// 查询文章详细信息，包括作者、补充、补充人信息、评论、评论人信息、回复、回复人信息、标签
-		Map<String, Object> param = new HashMap<String, Object>();
-		param.put("id", id);
-		param.put("ymd", ymd);
-		Article article_detail = articleService.getArticleDetailById(param);
-		if (article_detail != null && article_detail.getId() > 0) {
-			// 统计并更新文章访问人数
-			articleService.addVisitorNumById(id);
-			
-			// 获取当前登录用户信息
-			Subject current_user = SecurityUtils.getSubject();
-			User user = (User) current_user.getSession().getAttribute(ConstantPool.USER_SHIRO_SESSION_ID);
-	
-			// 查询当前文章相关联的其它文章
-			List<Article> related_article = articleService.getSameLabelArticleById(id);
-	
-			// 返回封装数据到控制器
-			mav.addObject("article", article_detail);
-			mav.addObject("user", user);
-			mav.addObject("path", request.getContextPath());
-			mav.addObject("related_article", related_article);
-			mav.setViewName("article_detail");
-		} else {
-			mav.setViewName("error/error");
-		}
-		return mav;
-	}
+        // 根据条件查询文章列表
+        List<Article> articles = articleService.findArticleByCondition(map);
+        int total = articleService.countArticleRows(null);
+        Pagination pagination = new Pagination(StringUtil.getInt(now_page, 1), paging.getRows(), 5, total,
+                request_get_context_path.concat("/articles"), search_type);
 
-	/**
-	 * 对用户回复别人的评论保存到数据库回复表（t_reply）
-	 * 
-	 * @author 深圳-小兴(504487927)
-	 * @version 2014-11-21
-	 * @param reply
-	 * @return 返回JSON格式的处理信息
-	 */
-	@RequiresAuthentication
-	@Transactional
-	@RequestMapping(value = "/article/saveReply")
-	@ResponseBody
-	public RespMsg saveReply(Reply reply, @RequestParam Integer comment_id) {
-		// 过滤并替换特殊字符
-		String content = StringUtil.ifContainsSpecialStrReplace(reply.getContent());
-		reply.setContent(content);
-		// 获取当前登录用户信息
-		Subject current_user = SecurityUtils.getSubject(); User user_model = (User)
-		current_user.getSession().getAttribute(ConstantPool.USER_SHIRO_SESSION_ID);
-		// 重新组织回复数据
-		reply.setUserId(user_model.getId());
-		reply.setCommentId(comment_id);
-		reply.setPostDate(DateUtil.getNowDateTimeStr(null));
-		reply.setParentId(0);
-		RespMsg respMsg = new RespMsg();
-		if (replyService.addReply(reply) > 0) {
-			respMsg.setStatus("0000");
-			respMsg.setMessage(ConfigPool.getString("respMsg.reply.SaveReplySuccess"));
-		} else {
-			respMsg.setStatus("9999");
-			respMsg.setMessage(ConfigPool.getString("respMsg.reply.SaveReplyFailure"));
-		}
-		return respMsg;
-	}
+        // 返回数据
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("articles", articles);
+        mav.addObject("pagination", pagination);
+        mav.addObject("search_type", search_type);
+        mav.addObject("path", request.getContextPath());
+        mav.addObject("servletPath", request_get_context_path);
+        mav.setViewName("article_list");
+        return mav;
+    }
 
-	/**
-	 * <h2>文章点赞</h2>
-	 * <dl>
-	 * <dt>功能描述</dt>
-	 * <dd>无</dd>
-	 * <dt>使用规范</dt>
-	 * <dd>无</dd>
-	 * </dl>
-	 * 
-	 * @version 0.0.1-SNAPSHOT
-	 * @author 深圳-夕落
-	 * @param id 文章ID
-	 * @return
-	 */
-	@RequiresAuthentication
-	@Transactional
-	@RequestMapping(value = "/article/addUsefulById/{article_id}", method = RequestMethod.GET)
-	@ResponseBody
-	public RespMsg addUsefulById(@PathVariable(value = "article_id") Integer article_id) {
-		RespMsg respMsg = new RespMsg();
-		// 获取登陆用户
-		Subject current_user = SecurityUtils.getSubject();
-		User user = (User) current_user.getSession().getAttribute(ConstantPool.USER_SHIRO_SESSION_ID);
-		// 获取该文章对象
-		Article article = articleService.getArticleById(article_id);
-		// 用户不能对自己发表的文章进行点赞
-		if (!article.getUserId().equals(user.getId())) {
-			// 检查当前用户是否已经有过对这篇文章的点评
-			if (!commentService.isInvolvedComment(article_id, user.getId())) {
-				// 增加点赞记录
-				Comment comment_model = new Comment();
-				comment_model.setType(2);
-				comment_model.setArticleId(article_id);
-				comment_model.setUserId(user.getId());
-				comment_model.setContent("为文章点赞");
-				comment_model.setPostDate(DateUtil.getNowDateTimeStr(null));
-				commentService.addComment(comment_model);
-				// 更新文章被赞次数
-				articleService.addPraiseNum(article_id);
-			} else {
-				respMsg.setStatus("1001");
-				respMsg.setMessage(ConfigPool.getString("respMsg.comment.AddUsefulOrUseless.RepetitiveOperation"));
-			}
-		} else {
-			respMsg.setStatus("1000");
-			respMsg.setMessage(ConfigPool.getString("respMsg.comment.AddUsefulOrUseless.SamePerson"));
-		}
-		return respMsg;
-	}
+    /**
+     * <h2>文章列表页，根据标签进行区分查询。也就是说只查询某一个标签下的所有文章列表。</h2>
+     * <dl>
+     * <dt>功能描述</dt>
+     * <dd>本控制器返回的页面做首页用</dd>
+     * <dt>使用规范</dt>
+     * <dd>无</dd>
+     * </dl>
+     *
+     * @param article     对文章各个字段的查询条件
+     * @param search_type 按字段排序类型（type=1（最新）、type=2（热门）、type=3（冷门））
+     * @param now_page    当前页码（默认1）
+     * @param label_id    标签ID
+     * @param request     Http请求
+     * @return 返回文章列表，包括文章标签和发布人信息
+     * @version 0.0.1-SNAPSHOT
+     * @author 深圳-小兴
+     */
+    @RequestMapping(value = "/articles/{search_type}/{now_page}/{label_id}", method = RequestMethod.GET)
+    public ModelAndView articlesByLabelId(Article article, @PathVariable String search_type, @PathVariable String now_page,
+                                          @PathVariable String label_id, HttpServletRequest request) {
+        // 请求路径
+        String request_get_context_path = request.getContextPath();
 
-	/**
-	 * <h2>文章点踩</h2>
-	 * <dl>
-	 * <dt>功能描述</dt>
-	 * <dd>无</dd>
-	 * <dt>使用规范</dt>
-	 * <dd>无</dd>
-	 * </dl>
-	 * 
-	 * @version 0.0.1-SNAPSHOT
-	 * @author 深圳-夕落
-	 * @param id
-	 * @return
-	 */
-	@RequiresAuthentication
-	@Transactional
-	@RequestMapping(value = "/article/addUselessById/{article_id}", method = RequestMethod.GET)
-	@ResponseBody
-	public RespMsg addUselessById(@PathVariable(value = "article_id") Integer article_id) {
-		RespMsg respMsg = new RespMsg();
-		// 获取登陆用户
-		Subject current_user = SecurityUtils.getSubject();
-		User user = (User) current_user.getSession().getAttribute(ConstantPool.USER_SHIRO_SESSION_ID);
-		// 获取该文章对象
-		Article article = articleService.getArticleById(article_id);
-		// 用户不能对自己发表的文章进行点踩
-		if (!article.getUserId().equals(user.getId())) {
-			// 检查当前用户是否已经有过对这篇文章的点评
-			if (!commentService.isInvolvedComment(article_id, user.getId())) {
-				// 增加点踩记录
-				Comment comment_model = new Comment();
-				comment_model.setType(3);
-				comment_model.setArticleId(article_id);
-				comment_model.setUserId(user.getId());
-				comment_model.setContent("为文章点踩");
-				comment_model.setPostDate(DateUtil.getNowDateTimeStr(null));
-				commentService.addComment(comment_model);
-				// 更新文章被踩次数
-				articleService.addTrampleNum(article_id);
-			} else {
-				respMsg.setStatus("1001");
-				respMsg.setMessage(ConfigPool.getString("respMsg.comment.AddUsefulOrUseless.RepetitiveOperation"));
-			}
-		} else {
-			respMsg.setStatus("1000");
-			respMsg.setMessage(ConfigPool.getString("respMsg.comment.AddUsefulOrUseless.SamePerson"));
-		}
-		return respMsg;
-	}
+        // 组织分页参数
+        Paging paging = new Paging();
+        if (!search_type.matches("^[123]?$")) {
+            search_type = "1";
+        }
+        if ("1".equalsIgnoreCase(search_type)) { // 最新查询
+            paging.setSort("id");
+            paging.setOrder("DESC");
+        } else if ("2".equalsIgnoreCase(search_type)) { // 热门查询
+            paging.setSort("visitorNum");
+            paging.setOrder("DESC");
+        } else if ("3".equalsIgnoreCase(search_type)) { // 冷门查询
+            paging.setSort("visitorNum");
+            paging.setOrder("ASC");
+        }
+        if (now_page.matches("^([1-9]|[1-9][0-9]+)+$")) {
+            paging.setPage(StringUtil.getInt(now_page, 1));
+        }
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("article", article);
+        map.put("paging", paging);
+        map.put("labelId", label_id);
 
-	/**
-	 * 评论点赞
-	 * 
-	 * @author Java私塾在线学习社区（329232140）深圳-夕落946594780 2014年10月7日 下午4:33:47
-	 * @since itganhuo1.0
-	 * @param id
-	 *            评论id
-	 * @return
-	 */
-	@RequiresAuthentication
-	@Transactional
-	@RequestMapping(value = "/article/addPraiseById/{id}", method = RequestMethod.GET)
-	@ResponseBody
-	public String addPraiseById(@PathVariable(value = "id") String id) {
-		/*
-		 * logger.info("into addPraiseById method"); // 获取登陆用户 Subject current_user = SecurityUtils.getSubject(); User user_model = (User)
+        // 根据条件查询文章列表
+        List<Article> articles = articleService.findArticleByCondition(map);
+        int total = articleService.countArticleRows(map);
+        Pagination pagination = new Pagination(StringUtil.getInt(now_page, 1), paging.getRows(), 5, total, request_get_context_path.concat("/articles"),
+                search_type, label_id);
+
+        // 返回数据
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("articles", articles);
+        mav.addObject("pagination", pagination);
+        mav.addObject("search_type", search_type);
+        mav.addObject("path", request.getContextPath());
+        mav.addObject("servletPath", request_get_context_path);
+        mav.addObject("label_id", label_id);
+        mav.setViewName("article_list");
+        return mav;
+    }
+
+    /**
+     * <h2>进入文章详情页</h2>
+     * <dl>
+     * <dt>功能描述</dt>
+     * <dd>无</dd>
+     * <dt>使用规范</dt>
+     * <dd>无</dd>
+     * </dl>
+     *
+     * @param id 文章ID
+     * @return 转发到文章详情页
+     * @version 0.0.1-SNAPSHOT
+     * @author 深圳-小兴
+     */
+    @RequestMapping(value = "/article/{ymd}/{id}", method = RequestMethod.GET)
+    public ModelAndView getArticleById(@PathVariable(value = "ymd") String ymd, @PathVariable(value = "id") Integer id, HttpServletRequest request) {
+        ModelAndView mav = new ModelAndView();
+        // 查询文章详细信息，包括作者、补充、补充人信息、评论、评论人信息、回复、回复人信息、标签
+        Map<String, Object> param = new HashMap<String, Object>();
+        param.put("id", id);
+        param.put("ymd", ymd);
+        Article article_detail = articleService.getArticleDetailById(param);
+        if (article_detail != null && article_detail.getId() > 0) {
+            // 统计并更新文章访问人数
+            articleService.addVisitorNumById(id);
+
+            // 获取当前登录用户信息
+            Subject current_user = SecurityUtils.getSubject();
+            User user = (User) current_user.getSession().getAttribute(ConstantPool.USER_SHIRO_SESSION_ID);
+
+            // 查询当前文章相关联的其它文章
+            List<Article> related_article = articleService.getSameLabelArticleById(id);
+
+            // 返回封装数据到控制器
+            mav.addObject("article", article_detail);
+            mav.addObject("user", user);
+            mav.addObject("path", request.getContextPath());
+            mav.addObject("related_article", related_article);
+            mav.setViewName("article_detail");
+        } else {
+            mav.setViewName("error/error");
+        }
+        return mav;
+    }
+
+    /**
+     * 对用户回复别人的评论保存到数据库回复表（t_reply）
+     *
+     * @param reply
+     * @return 返回JSON格式的处理信息
+     * @author 深圳-小兴(504487927)
+     * @version 2014-11-21
+     */
+    @RequiresAuthentication
+    @Transactional
+    @RequestMapping(value = "/article/saveReply")
+    @ResponseBody
+    public RespMsg saveReply(Reply reply, @RequestParam Integer comment_id) {
+        // 过滤并替换特殊字符
+        String content = StringUtil.ifContainsSpecialStrReplace(reply.getContent());
+        reply.setContent(content);
+        // 获取当前登录用户信息
+        Subject current_user = SecurityUtils.getSubject();
+        User user_model = (User)
+                current_user.getSession().getAttribute(ConstantPool.USER_SHIRO_SESSION_ID);
+        // 重新组织回复数据
+        reply.setUserId(user_model.getId());
+        reply.setCommentId(comment_id);
+        reply.setPostDate(DateUtil.getNowDateTimeStr(null));
+        reply.setParentId(0);
+        RespMsg respMsg = new RespMsg();
+        if (replyService.addReply(reply) > 0) {
+            respMsg.setStatus("0000");
+            respMsg.setMessage(ConfigPool.getString("respMsg.reply.SaveReplySuccess"));
+        } else {
+            respMsg.setStatus("9999");
+            respMsg.setMessage(ConfigPool.getString("respMsg.reply.SaveReplyFailure"));
+        }
+        return respMsg;
+    }
+
+    /**
+     * <h2>文章点赞</h2>
+     * <dl>
+     * <dt>功能描述</dt>
+     * <dd>无</dd>
+     * <dt>使用规范</dt>
+     * <dd>无</dd>
+     * </dl>
+     *
+     * @param article_id 文章ID
+     * @return
+     * @version 0.0.1-SNAPSHOT
+     * @author 深圳-夕落
+     */
+    @RequiresAuthentication
+    @Transactional
+    @RequestMapping(value = "/article/addUsefulById/{article_id}", method = RequestMethod.GET)
+    @ResponseBody
+    public RespMsg addUsefulById(@PathVariable(value = "article_id") Integer article_id) {
+        RespMsg respMsg = new RespMsg();
+        // 获取登陆用户
+        Subject current_user = SecurityUtils.getSubject();
+        User user = (User) current_user.getSession().getAttribute(ConstantPool.USER_SHIRO_SESSION_ID);
+        // 获取该文章对象
+        Article article = articleService.getArticleById(article_id);
+        // 用户不能对自己发表的文章进行点赞
+        if (!article.getUserId().equals(user.getId())) {
+            // 检查当前用户是否已经有过对这篇文章的点评
+            if (!commentService.isInvolvedComment(article_id, user.getId())) {
+                // 增加点赞记录
+                Comment comment_model = new Comment();
+                comment_model.setType(2);
+                comment_model.setArticleId(article_id);
+                comment_model.setUserId(user.getId());
+                comment_model.setContent("为文章点赞");
+                comment_model.setPostDate(DateUtil.getNowDateTimeStr(null));
+                commentService.addComment(comment_model);
+                // 更新文章被赞次数
+                articleService.addPraiseNum(article_id);
+            } else {
+                respMsg.setStatus("1001");
+                respMsg.setMessage(ConfigPool.getString("respMsg.comment.AddUsefulOrUseless.RepetitiveOperation"));
+            }
+        } else {
+            respMsg.setStatus("1000");
+            respMsg.setMessage(ConfigPool.getString("respMsg.comment.AddUsefulOrUseless.SamePerson"));
+        }
+        return respMsg;
+    }
+
+    /**
+     * <h2>文章点踩</h2>
+     * <dl>
+     * <dt>功能描述</dt>
+     * <dd>无</dd>
+     * <dt>使用规范</dt>
+     * <dd>无</dd>
+     * </dl>
+     *
+     * @param article_id
+     * @return
+     * @version 0.0.1-SNAPSHOT
+     * @author 深圳-夕落
+     */
+    @RequiresAuthentication
+    @Transactional
+    @RequestMapping(value = "/article/addUselessById/{article_id}", method = RequestMethod.GET)
+    @ResponseBody
+    public RespMsg addUselessById(@PathVariable(value = "article_id") Integer article_id) {
+        RespMsg respMsg = new RespMsg();
+        // 获取登陆用户
+        Subject current_user = SecurityUtils.getSubject();
+        User user = (User) current_user.getSession().getAttribute(ConstantPool.USER_SHIRO_SESSION_ID);
+        // 获取该文章对象
+        Article article = articleService.getArticleById(article_id);
+        // 用户不能对自己发表的文章进行点踩
+        if (!article.getUserId().equals(user.getId())) {
+            // 检查当前用户是否已经有过对这篇文章的点评
+            if (!commentService.isInvolvedComment(article_id, user.getId())) {
+                // 增加点踩记录
+                Comment comment_model = new Comment();
+                comment_model.setType(3);
+                comment_model.setArticleId(article_id);
+                comment_model.setUserId(user.getId());
+                comment_model.setContent("为文章点踩");
+                comment_model.setPostDate(DateUtil.getNowDateTimeStr(null));
+                commentService.addComment(comment_model);
+                // 更新文章被踩次数
+                articleService.addTrampleNum(article_id);
+            } else {
+                respMsg.setStatus("1001");
+                respMsg.setMessage(ConfigPool.getString("respMsg.comment.AddUsefulOrUseless.RepetitiveOperation"));
+            }
+        } else {
+            respMsg.setStatus("1000");
+            respMsg.setMessage(ConfigPool.getString("respMsg.comment.AddUsefulOrUseless.SamePerson"));
+        }
+        return respMsg;
+    }
+
+    /**
+     * 评论点赞
+     *
+     * @param id 评论id
+     * @return
+     * @author Java私塾在线学习社区（329232140）深圳-夕落946594780 2014年10月7日 下午4:33:47
+     * @since itganhuo1.0
+     */
+    @RequiresAuthentication
+    @Transactional
+    @RequestMapping(value = "/article/addPraiseById/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public String addPraiseById(@PathVariable(value = "id") String id) {
+        /*
+         * logger.info("into addPraiseById method"); // 获取登陆用户 Subject current_user = SecurityUtils.getSubject(); User user_model = (User)
 		 * current_user.getSession().getAttribute( ConstantPool.USER_SHIRO_SESSION_ID); // 执行该操作限制登陆 if (null == user_model) { logger.info("unlogin"); return
 		 * "{\"msg\":\"unlogin\", \"status\": \"0\"}"; } // 获取该评论对象 Comment comment_model = commentService.getCommentById(id); // 用户不能对自己发表的评论进行点赞 if
 		 * (comment_model.getUser_id().equals(user_model.getId())) { logger.info("addUsefulOrUseless_onOwn"); return
@@ -344,23 +410,22 @@ public class ArticleController {
 		 * "\"}"; } else { logger.info("addFailure"); msg = "{\"msg\":\"addFailure\", \"status\": \"0\"}"; } } else { logger.info("addFailure"); msg =
 		 * "{\"msg\":\"addFailure\", \"status\": \"0\"}"; } return msg;
 		 */
-		return null;
-	}
+        return null;
+    }
 
-	/**
-	 * 评论点踩
-	 * 
-	 * @author Java私塾在线学习社区（329232140）深圳-夕落946594780 2014年10月7日 下午4:33:47
-	 * @since itganhuo1.0
-	 * @param id
-	 *            评论id
-	 * @return
-	 */
-	@RequiresAuthentication
-	@Transactional
-	@RequestMapping(value = "/article/addTrampleById/{id}", method = RequestMethod.GET)
-	@ResponseBody
-	public String addTrampleById(@PathVariable(value = "id") String id) {
+    /**
+     * 评论点踩
+     *
+     * @param id 评论id
+     * @return
+     * @author Java私塾在线学习社区（329232140）深圳-夕落946594780 2014年10月7日 下午4:33:47
+     * @since itganhuo1.0
+     */
+    @RequiresAuthentication
+    @Transactional
+    @RequestMapping(value = "/article/addTrampleById/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public String addTrampleById(@PathVariable(value = "id") String id) {
 		/*
 		 * logger.info("into addPraiseById method"); // 获取登陆用户 Subject current_user = SecurityUtils.getSubject(); User user_model = (User)
 		 * current_user.getSession().getAttribute( ConstantPool.USER_SHIRO_SESSION_ID); // 执行该操作限制登陆 if (null == user_model) { logger.info("unlogin"); return
@@ -375,7 +440,7 @@ public class ArticleController {
 		 * "\"}"; } else { logger.info("addFailure"); msg = "{\"msg\":\"addFailure\", \"status\": \"0\"}"; } } else { logger.info("addFailure"); msg =
 		 * "{\"msg\":\"addFailure\", \"status\": \"0\"}"; } return msg;
 		 */
-		return null;
-	}
+        return null;
+    }
 
 }
