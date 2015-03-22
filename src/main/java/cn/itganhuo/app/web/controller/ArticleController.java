@@ -22,6 +22,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import cn.itganhuo.app.entity.*;
+import cn.itganhuo.app.service.AttentionService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
@@ -30,6 +32,7 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -42,12 +45,6 @@ import cn.itganhuo.app.common.pool.ConfigPool;
 import cn.itganhuo.app.common.pool.ConstantPool;
 import cn.itganhuo.app.common.utils.DateUtil;
 import cn.itganhuo.app.common.utils.StringUtil;
-import cn.itganhuo.app.entity.Article;
-import cn.itganhuo.app.entity.Comment;
-import cn.itganhuo.app.entity.Paging;
-import cn.itganhuo.app.entity.Reply;
-import cn.itganhuo.app.entity.RespMsg;
-import cn.itganhuo.app.entity.User;
 import cn.itganhuo.app.service.ArticleService;
 import cn.itganhuo.app.service.CommentService;
 import cn.itganhuo.app.service.ReplyService;
@@ -75,6 +72,8 @@ public class ArticleController {
     private CommentService commentService;
     @Autowired
     private ReplyService replyService;
+    @Autowired
+    private AttentionService attentionService;
 
     /**
      * <h2>文章列表页</h2>
@@ -426,8 +425,8 @@ public class ArticleController {
     @RequestMapping(value = "/article/addTrampleById/{id}", method = RequestMethod.GET)
     @ResponseBody
     public String addTrampleById(@PathVariable(value = "id") String id) {
-		/*
-		 * logger.info("into addPraiseById method"); // 获取登陆用户 Subject current_user = SecurityUtils.getSubject(); User user_model = (User)
+        /*
+         * logger.info("into addPraiseById method"); // 获取登陆用户 Subject current_user = SecurityUtils.getSubject(); User user_model = (User)
 		 * current_user.getSession().getAttribute( ConstantPool.USER_SHIRO_SESSION_ID); // 执行该操作限制登陆 if (null == user_model) { logger.info("unlogin"); return
 		 * "{\"msg\":\"unlogin\", \"status\": \"0\"}"; } // 获取该评论对象 Comment comment_model = commentService.getCommentById(id); // 用户不能对自己发表的评论进行点踩 if
 		 * (comment_model.getUser_id().equals(user_model.getId())) { logger.info("addUsefulOrUseless_onOwn"); return
@@ -441,6 +440,43 @@ public class ArticleController {
 		 * "{\"msg\":\"addFailure\", \"status\": \"0\"}"; } return msg;
 		 */
         return null;
+    }
+
+
+    /**
+     * 这是一个通用的用来保存关注信息的请求处理方法
+     *
+     * @param attention 关注信息
+     * @return 返回处理状态信息
+     */
+    @RequiresAuthentication
+    @Transactional
+    @RequestMapping(value = "/article/saveAttentionInfo", method = RequestMethod.POST)
+    @ResponseBody
+    public RespMsg saveAttentionInfo(Attention attention) {
+        RespMsg respMsg = new RespMsg();
+        Subject current_user = SecurityUtils.getSubject();
+        User user_model = (User) current_user.getSession().getAttribute(ConstantPool.USER_SHIRO_SESSION_ID);
+        if (user_model != null) {
+            // 判断用户是否有关注过该标签
+            Map<String, Object> param = new HashMap<String, Object>();
+            param.put("userId", user_model.getId());
+            param.put("labelId", attention.getLabelId());
+            List<Attention> attentions = attentionService.find(param);
+            if (attentions == null || attentions.size() == 0) {
+                attention.setUserId(user_model.getId());
+                if (!attentionService.save(attention)) {
+                    respMsg.setStatus("9999");
+                    respMsg.setMessage(ConfigPool.getString("respMsg.attention.SaveConcernInfoFailed"));
+                }
+            } else {
+                respMsg.setStatus("2000");
+                respMsg.setMessage(ConfigPool.getString("respMsg.attention.YouBeenConcernedAboutLabel"));
+            }
+        } else {
+            respMsg.setStatus("1000");
+        }
+        return respMsg;
     }
 
 }

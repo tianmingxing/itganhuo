@@ -1,68 +1,122 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>标签-IT干货技术分享网</title>
-<link rel="stylesheet" href="${path}/static/css/style.css" />
-<link rel="stylesheet" href="${path}/static/css/responsive.css" />
-<style type="text/css">
-.tag {
-	padding-left: 7px;
-	padding-right: 7px;
-	border-radius: 3px;
-	width: 25%;
-	float: left;
-	margin-top: 20px;
-}
-.widget-tag {
-	position: relative;
-	height: 170px;
-	overflow: hidden;
-	border: 1px solid #ddd;
-	margin-bottom: 14px;
-}
-.widget-tag h2 {
-	margin: 12px;
-	font-size: 16px;
-}
-.widget-ta_action {
-	position: absolute;
-	bottom: 0;
-	width: 100%;
-	padding: 8px 12px;
-	background-color: #f6f6f6;
-}
-</style>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>标签-IT干货技术分享网</title>
+    <link rel="stylesheet" href="${path}/static/css/style.css"/>
+    <link rel="stylesheet" href="${path}/static/css/responsive.css"/>
+    <style type="text/css">
+        .tag {
+            padding-left: 7px;
+            padding-right: 7px;
+            border-radius: 3px;
+            width: 25%;
+            float: left;
+            margin-top: 20px;
+        }
+
+        .widget-tag {
+            position: relative;
+            height: 170px;
+            overflow: hidden;
+            border: 1px solid #ddd;
+            margin-bottom: 14px;
+        }
+
+        .widget-tag h2 {
+            margin: 12px;
+            font-size: 16px;
+        }
+
+        .widget-ta_action {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            padding: 8px 12px;
+            background-color: #f6f6f6;
+        }
+    </style>
 </head>
 
 <body id="body">
 
 <#include "common/header1.html">
 
-<div class="container">
-	<#list ls as l>
-	<section class="tag">
-        <div class="widget-tag">
-            <h2>
-                <a href="#">${l.name}</a>
-            </h2>
-            <p>
-            <#if l.description?length gt 85>
-            	${l.description[0..85]}...
-       		<#else>
-       			${l.description}
-       		</#if>
-            </p>
-            <div class="widget-ta_action">
-                <button class="btn btn-default btn-xs mr5 tagfollow" data-id="1040000000089436">加关注</button>
-                <strong class="follows">1200</strong> <span class="text-muted">关注</span>
-            </div>
-        </div>
-    </section>
-	</#list>
-</div>
+    <div class="container">
+        <#if ls??>
+            <#list ls as l>
+                <section class="tag">
+                    <div class="widget-tag">
+                        <h2>
+                            <a href="#">${l.name}</a>
+                        </h2>
 
-<#include "common/footer.html">
+                        <p>
+                            <#if l.description?length gt 85>
+                                ${l.description[0..85]}...
+                                <#else>
+                                    ${l.description}
+                            </#if>
+                        </p>
+                        <div class="widget-ta_action">
+                            <button class="btn btn-default btn-xs mr5 tagfollow" onclick="addAttention('${l.id}');">加关注
+                            </button>
+                            <strong class="follows">${l.attentionNumber}</strong> <span class="text-muted">关注</span>
+                        </div>
+                    </div>
+                </section>
+            </#list>
+        <#else>
+            <#list lists as map>
+                <section class="tag">
+                    <div class="widget-tag">
+                        <h2>
+                            <a href="#">${map['name']}</a>
+                        </h2>
+
+                        <p>
+                            <#if map['description']?length gt 85>
+                                ${map['description'][0..85]}...
+                            <#else>
+                                    ${map['description']}
+                            </#if>
+                        </p>
+                        <div class="widget-ta_action">
+                            <#if map['isAttention']?number gt 0>
+                                <button class="btn btn-default btn-xs mr5 tagfollow" style="background: #CCC;">已关注</button>
+                            <#else>
+                                <button class="btn btn-default btn-xs mr5 tagfollow" onclick="addAttention('${l.id}');">加关注</button>
+                            </#if>
+                            <strong class="follows">${map['attentionNumber']}</strong> <span class="text-muted">关注</span>
+                        </div>
+                    </div>
+                </section>
+            </#list>
+        </#if>
+    </div>
+
+    <#include "common/footer.html">
 
 </body>
+<script type="text/javascript" src="${path}/static/js/plugin/jquery-1.8.3.min.js"></script>
+<script type="text/javascript">
+    function addAttention(id) {
+        if (id == null || id == '') {
+            alert('没有获取到标签编号请刷新页面后重试。');
+            return;
+        }
+        $.post('${path}/article/saveAttentionInfo', {
+            type: 1, labelId: id
+        }, function (data) {
+            if (data.status == '0000') {
+                alert('恭喜你后续就可以关注所有关于这个标签的动态啦！');
+            } else if (data.status == '1000') {
+                window.location.href = '${path}/user/signin';
+            } else {
+                alert(data.message);
+            }
+        });
+    }
+
+</script>
 </html>
