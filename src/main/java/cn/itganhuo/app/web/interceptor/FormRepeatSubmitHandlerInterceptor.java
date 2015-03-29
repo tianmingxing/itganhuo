@@ -60,7 +60,7 @@ public class FormRepeatSubmitHandlerInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		log.debug("request_path => " + request.getRequestURI() + " | parameter => " + request.getQueryString());
 
-		// 防止表单重复提交
+		// 防止表单重复提交，注意：如果页面上有链接写了#号，那么springMVC内部会多次请求，带来的后果是本功能失效且前端提交不了数据。
 		String request_token = request.getParameter(ConstantPool.REQUEST_TOKEN);
         // 1、判断页面上是否请求拦截表单重复提交
 		if (StringUtil.hasText(request_token)) {
