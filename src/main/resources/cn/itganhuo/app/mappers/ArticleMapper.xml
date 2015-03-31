@@ -78,7 +78,7 @@
 	<sql id="comment_column_list">
 		d.id             d_id,
 		d.type           d_type,
-		d.articleId     d_articleId,
+		d.objId     d_objId,
 		d.userId        d_userId,
 		d.content        d_content,
 		d.postDate      d_postDate,
@@ -226,7 +226,7 @@
 	<resultMap id="comment_result" type="Comment">
 		<id property="id" column="d_id" />
 		<result property="type" column="d_type" />
-		<result property="articleId" column="d_articleId" />
+		<result property="objId" column="d_objId" />
 		<result property="userId" column="d_userId" />
 		<result property="content" column="d_content" />
 		<result property="postDate" column="d_postDate" />
@@ -330,7 +330,7 @@
 		LEFT JOIN t_user            c  ON a.userId    = c.id
 		LEFT JOIN t_article_line    b  ON a.id         = b.articleId
 		LEFT JOIN t_user            c2 ON b.userId    = c2.id
-		LEFT JOIN t_comment         d  ON a.id         = d.articleId
+		LEFT JOIN t_comment         d  ON a.id         = d.objId
 		LEFT JOIN t_user            c3 ON d.userId    = c3.id
 		LEFT JOIN t_reply           e  ON d.id         = e.commentId
 		LEFT JOIN t_user            c4 ON e.userId    = c4.id
@@ -491,16 +491,16 @@
 
     <select id="getDynamicArticleByUserId" parameterType="Map" resultType="Article">
         SELECT a.id,a.title,a.visitorNum,a.answerNum,a.ymd,a.hms FROM t_article a
-        LEFT JOIN t_comment b ON a.id = b.`articleId`
-        WHERE a.id IN (SELECT b.articleId FROM t_comment b WHERE b.`userId` = #{userId})
+        LEFT JOIN t_comment b ON a.id = b.`objId`
+        WHERE a.id IN (SELECT b.objId FROM t_comment b WHERE b.`userId` = #{userId})
         GROUP BY a.id DESC
         LIMIT #{offrow}, #{rows}
     </select>
 
     <select id="countDynamicArticleRows" resultType="int" parameterType="Map">
         SELECT count(1) FROM t_article a
-        LEFT JOIN t_comment b ON a.id = b.`articleId`
-        WHERE a.id IN (SELECT b.articleId FROM t_comment b WHERE b.`userId` = #{userId})
+        LEFT JOIN t_comment b ON a.id = b.`objId`
+        WHERE a.id IN (SELECT b.objId FROM t_comment b WHERE b.`userId` = #{userId})
     </select>
 	
 </mapper>

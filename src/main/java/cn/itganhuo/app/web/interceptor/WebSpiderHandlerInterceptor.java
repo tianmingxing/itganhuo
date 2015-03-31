@@ -20,8 +20,8 @@ import java.util.Date;
  * <dl>
  * <dt>功能描述</dt>
  * <dd>在一定程度上对蜘蛛爬行造成防碍，实现思路：
- * <ol><li>如果在3秒钟内被监测的路径有重复访问则认为是非正常访问，因为正常人浏览文章时不会单击这么频繁；</li>
- * <li>如果在会话期内同一用户累计发起了超过50个请求则认为非正常访问，如果他超过了会话期(30m)再访问计数重新开始。</li></ol></dd>
+ * <ol><li>如果在3秒钟(可配置)内被监测的路径有重复访问则认为是非正常访问，因为正常人浏览文章时不会单击这么频繁；</li>
+ * <li>如果在会话期内同一用户累计发起了超过50个（可配置）请求则认为非正常访问，如果他超过了会话期(30m)再访问计数重新开始。</li></ol></dd>
  * <dt>使用规范</dt>
  * <dd>在配置文件中已经注册，目前只拦截进入文章详情页的请求。</dd>
  * </dl>
@@ -46,13 +46,13 @@ public class WebSpiderHandlerInterceptor implements HandlerInterceptor {
             httpServletResponse.setHeader("Content-Type", "text/html;charset=UTF-8");
             log.debug("lastRequestTime={} - currentTime={}, visitsDuringSession={}.", lastRequestTime.toString(),
                     currentTime.toString(), visitsDuringSession);
-            if (currentTime.getTime() - lastRequestTime.getTime() <= 3000) {
+            if (currentTime.getTime() - lastRequestTime.getTime() <= Integer.valueOf(ConfigPool.getString("parameter.SpecifiedRangeSeconds"))) {
                 PrintWriter out = httpServletResponse.getWriter();
                 out.print(ConfigPool.getString("respMsg.FoundSiteReptileTips"));
                 out.flush();
                 out.close();
                 return false;
-            } else if (visitsDuringSession >= 50) {
+            } else if (visitsDuringSession >= Integer.valueOf(ConfigPool.getString("parameter.requestNumber"))) {
                 PrintWriter out = httpServletResponse.getWriter();
                 out.print(ConfigPool.getString("respMsg.MoreSpecifiedNumberTimesDuringSessionRequest"));
                 out.flush();

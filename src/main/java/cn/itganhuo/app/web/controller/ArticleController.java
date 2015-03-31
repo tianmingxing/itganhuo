@@ -224,8 +224,11 @@ public class ArticleController {
         param.put("ymd", ymd);
         Article article_detail = articleService.getArticleDetailById(param);
         if (article_detail != null && article_detail.getId() > 0) {
-            // 统计并更新文章访问人数
-            articleService.addVisitorNumById(id);
+            // 统计并更新文章访问人数，同一个会话期内只统计一次。
+            Object obj = request.getSession().getAttribute(ConstantPool.VISITS_FLAG);
+            if (obj == null) {
+                articleService.addVisitorNumById(id);
+            }
 
             // 获取当前登录用户信息
             Subject current_user = SecurityUtils.getSubject();
@@ -283,7 +286,7 @@ public class ArticleController {
     }
 
     /**
-     * <h2>文章点赞</h2>
+     * <h2>文章或评论点赞和点踩的通用方法</h2>
      * <dl>
      * <dt>功能描述</dt>
      * <dd>无</dd>
@@ -291,155 +294,76 @@ public class ArticleController {
      * <dd>无</dd>
      * </dl>
      *
-     * @param article_id 文章ID
+     * @param id   文章或评论ID
+     * @param type 评价类型：1文章评价,2文章点赞,3文章点踩,4评论点赞,5评论点踩
      * @return
      * @version 0.0.1-SNAPSHOT
      * @author 深圳-夕落
      */
     @RequiresAuthentication
     @Transactional
-    @RequestMapping(value = "/article/addUsefulById/{article_id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/article/appraise", method = RequestMethod.POST)
     @ResponseBody
-    public RespMsg addUsefulById(@PathVariable(value = "article_id") Integer article_id) {
+    public RespMsg addUsefulById(@RequestParam Integer id, @RequestParam Integer type) {
         RespMsg respMsg = new RespMsg();
-        // 获取登陆用户
+        // 获取当前登陆用户
         Subject current_user = SecurityUtils.getSubject();
+        if (current_user == null) {
+            respMsg.setStatus("9000");
+            return respMsg;
+        }
         User user = (User) current_user.getSession().getAttribute(ConstantPool.USER_SHIRO_SESSION_ID);
-        // 获取该文章对象
-        Article article = articleService.getArticleById(article_id);
-        // 用户不能对自己发表的文章进行点赞
-        if (!article.getUserId().equals(user.getId())) {
-            // 检查当前用户是否已经有过对这篇文章的点评
-            if (!commentService.isInvolvedComment(article_id, user.getId())) {
-                // 增加点赞记录
-                Comment comment_model = new Comment();
-                comment_model.setType(2);
-                comment_model.setArticleId(article_id);
-                comment_model.setUserId(user.getId());
-                comment_model.setContent("为文章点赞");
-                comment_model.setPostDate(DateUtil.getNowDateTimeStr(null));
-                commentService.addComment(comment_model);
-                // 更新文章被赞次数
-                articleService.addPraiseNum(article_id);
+        if (user == null) {
+            respMsg.setStatus("9000");
+            return respMsg;
+        }
+        // 判断评价类型
+        if (2 == type || 3 == type || 4 == type || 5 == type) {
+            // 获取该文章对象
+            Article article = articleService.getArticleById(id);
+            // 用户不能对自己发表的文章进行点赞
+            if (!article.getUserId().equals(user.getId())) {
+                // 检查当前用户是否已经有过对这篇文章的点评
+                if (!commentService.isInvolvedComment(id, user.getId())) {
+                    // 增加点赞记录
+                    Comment comment_model = new Comment();
+                    comment_model.setType(type);
+                    comment_model.setObjId(id);
+                    comment_model.setUserId(user.getId());
+                    comment_model.setPostDate(DateUtil.getNowDateTimeStr(null));
+                    if (2 == type) {
+                        comment_model.setContent("文章点赞");
+                    } else if (3 == type) {
+                        comment_model.setContent("文章点踩");
+                    } else if (4 == type) {
+                        comment_model.setContent("评论点赞");
+                    } else if (5 == type) {
+                        comment_model.setContent("评论点踩");
+                    }
+                    commentService.addComment(comment_model);
+                    // 更新被赞或被踩次数
+                    if (2 == type) {
+                        articleService.addPraiseNum(id);
+                    } else if (3 == type) {
+                        articleService.addTrampleNum(id);
+                    } else if (4 == type) {
+                        commentService.addPraiseById(id);
+                    } else if (5 == type) {
+                        commentService.addTrampleById(id);
+                    }
+                } else {
+                    respMsg.setStatus("1001");
+                    respMsg.setMessage(ConfigPool.getString("respMsg.comment.AddUsefulOrUseless.RepetitiveOperation"));
+                }
             } else {
-                respMsg.setStatus("1001");
-                respMsg.setMessage(ConfigPool.getString("respMsg.comment.AddUsefulOrUseless.RepetitiveOperation"));
+                respMsg.setStatus("1000");
+                respMsg.setMessage(ConfigPool.getString("respMsg.comment.AddUsefulOrUseless.SamePerson"));
             }
         } else {
-            respMsg.setStatus("1000");
-            respMsg.setMessage(ConfigPool.getString("respMsg.comment.AddUsefulOrUseless.SamePerson"));
+            respMsg.setStatus("9999");
+            respMsg.setMessage(ConfigPool.getString("respMsg.EvaluationTypeIncorrect"));
         }
         return respMsg;
-    }
-
-    /**
-     * <h2>文章点踩</h2>
-     * <dl>
-     * <dt>功能描述</dt>
-     * <dd>无</dd>
-     * <dt>使用规范</dt>
-     * <dd>无</dd>
-     * </dl>
-     *
-     * @param article_id
-     * @return
-     * @version 0.0.1-SNAPSHOT
-     * @author 深圳-夕落
-     */
-    @RequiresAuthentication
-    @Transactional
-    @RequestMapping(value = "/article/addUselessById/{article_id}", method = RequestMethod.GET)
-    @ResponseBody
-    public RespMsg addUselessById(@PathVariable(value = "article_id") Integer article_id) {
-        RespMsg respMsg = new RespMsg();
-        // 获取登陆用户
-        Subject current_user = SecurityUtils.getSubject();
-        User user = (User) current_user.getSession().getAttribute(ConstantPool.USER_SHIRO_SESSION_ID);
-        // 获取该文章对象
-        Article article = articleService.getArticleById(article_id);
-        // 用户不能对自己发表的文章进行点踩
-        if (!article.getUserId().equals(user.getId())) {
-            // 检查当前用户是否已经有过对这篇文章的点评
-            if (!commentService.isInvolvedComment(article_id, user.getId())) {
-                // 增加点踩记录
-                Comment comment_model = new Comment();
-                comment_model.setType(3);
-                comment_model.setArticleId(article_id);
-                comment_model.setUserId(user.getId());
-                comment_model.setContent("为文章点踩");
-                comment_model.setPostDate(DateUtil.getNowDateTimeStr(null));
-                commentService.addComment(comment_model);
-                // 更新文章被踩次数
-                articleService.addTrampleNum(article_id);
-            } else {
-                respMsg.setStatus("1001");
-                respMsg.setMessage(ConfigPool.getString("respMsg.comment.AddUsefulOrUseless.RepetitiveOperation"));
-            }
-        } else {
-            respMsg.setStatus("1000");
-            respMsg.setMessage(ConfigPool.getString("respMsg.comment.AddUsefulOrUseless.SamePerson"));
-        }
-        return respMsg;
-    }
-
-    /**
-     * 评论点赞
-     *
-     * @param id 评论id
-     * @return
-     * @author Java私塾在线学习社区（329232140）深圳-夕落946594780 2014年10月7日 下午4:33:47
-     * @since itganhuo1.0
-     */
-    @RequiresAuthentication
-    @Transactional
-    @RequestMapping(value = "/article/addPraiseById/{id}", method = RequestMethod.GET)
-    @ResponseBody
-    public String addPraiseById(@PathVariable(value = "id") String id) {
-        /*
-         * logger.info("into addPraiseById method"); // 获取登陆用户 Subject current_user = SecurityUtils.getSubject(); User user_model = (User)
-		 * current_user.getSession().getAttribute( ConstantPool.USER_SHIRO_SESSION_ID); // 执行该操作限制登陆 if (null == user_model) { logger.info("unlogin"); return
-		 * "{\"msg\":\"unlogin\", \"status\": \"0\"}"; } // 获取该评论对象 Comment comment_model = commentService.getCommentById(id); // 用户不能对自己发表的评论进行点赞 if
-		 * (comment_model.getUser_id().equals(user_model.getId())) { logger.info("addUsefulOrUseless_onOwn"); return
-		 * "{\"msg\":\"addUsefulOrUseless_onOwn\", \"status\": \"0\"}"; } Comment comment = commentService.getCommentModelBySomeThing(id, "3",
-		 * user_model.getId()); if (null != comment) { logger.info("addUsefulOrUseless_again"); return
-		 * "{\"msg\":\"addUsefulOrUseless_again\", \"status\": \"0\"}"; } // 增加评论点赞记录 comment_model = new Comment();
-		 * comment_model.setUser_id(user_model.getId()); comment_model.setObject_id(id); comment_model.setOperation_type("1"); comment_model.setType(3); boolean
-		 * res = commentService.addComment(comment_model); String msg = ""; if (res) { // 增加评论点赞次数 res = commentService.addPraiseById(id); if (res) { Comment
-		 * comment2 = commentService.getCommentById(id); logger.info("addSuccess"); msg = "{\"msg\":\"addSuccess\", \"status\": \"" + comment2.getPraise() +
-		 * "\"}"; } else { logger.info("addFailure"); msg = "{\"msg\":\"addFailure\", \"status\": \"0\"}"; } } else { logger.info("addFailure"); msg =
-		 * "{\"msg\":\"addFailure\", \"status\": \"0\"}"; } return msg;
-		 */
-        return null;
-    }
-
-    /**
-     * 评论点踩
-     *
-     * @param id 评论id
-     * @return
-     * @author Java私塾在线学习社区（329232140）深圳-夕落946594780 2014年10月7日 下午4:33:47
-     * @since itganhuo1.0
-     */
-    @RequiresAuthentication
-    @Transactional
-    @RequestMapping(value = "/article/addTrampleById/{id}", method = RequestMethod.GET)
-    @ResponseBody
-    public String addTrampleById(@PathVariable(value = "id") String id) {
-        /*
-         * logger.info("into addPraiseById method"); // 获取登陆用户 Subject current_user = SecurityUtils.getSubject(); User user_model = (User)
-		 * current_user.getSession().getAttribute( ConstantPool.USER_SHIRO_SESSION_ID); // 执行该操作限制登陆 if (null == user_model) { logger.info("unlogin"); return
-		 * "{\"msg\":\"unlogin\", \"status\": \"0\"}"; } // 获取该评论对象 Comment comment_model = commentService.getCommentById(id); // 用户不能对自己发表的评论进行点踩 if
-		 * (comment_model.getUser_id().equals(user_model.getId())) { logger.info("addUsefulOrUseless_onOwn"); return
-		 * "{\"msg\":\"addUsefulOrUseless_onOwn\", \"status\": \"0\"}"; } Comment comment = commentService.getCommentModelBySomeThing(id, "3",
-		 * user_model.getId()); if (null != comment) { logger.info("addUsefulOrUseless_again"); return
-		 * "{\"msg\":\"addUsefulOrUseless_again\", \"status\": \"0\"}"; } // 增加评论点踩记录 comment_model = new Comment();
-		 * comment_model.setUser_id(user_model.getId()); comment_model.setObject_id(id); comment_model.setOperation_type("0"); comment_model.setType(3); boolean
-		 * res = commentService.addComment(comment_model); String msg = ""; if (res) { // 增加评论点踩次数 res = commentService.addTrampleById(id); if (res) { Comment
-		 * comment3 = commentService.getCommentById(id); logger.info("addSuccess"); msg = "{\"msg\":\"addSuccess\", \"status\": \"" + comment3.getTrample() +
-		 * "\"}"; } else { logger.info("addFailure"); msg = "{\"msg\":\"addFailure\", \"status\": \"0\"}"; } } else { logger.info("addFailure"); msg =
-		 * "{\"msg\":\"addFailure\", \"status\": \"0\"}"; } return msg;
-		 */
-        return null;
     }
 
 

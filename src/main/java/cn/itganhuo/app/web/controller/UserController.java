@@ -664,7 +664,7 @@ public class UserController {
 				comment_model.setUserId(user_model.getId());
 				comment_model.setType(1);
 				commentService.addComment(comment_model);
-				return "redirect:/article/" + comment_model.getArticleId();
+				return "redirect:/article/" + comment_model.getObjId();
 			}
 		}
 		return "redirect:/articles";

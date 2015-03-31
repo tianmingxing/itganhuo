@@ -74,5 +74,9 @@ public class ConstantPool {
      * 存放到本次会话期内访问次数标识
      */
     public final static String VISITS_DURING_SESSION = "visits_during_session";
+    /**
+     * 访问者标识，它的存在与否用来决定在会话期内是否统计文章访问量
+     */
+    public final static String VISITS_FLAG = "visits_flag";
 
 }
