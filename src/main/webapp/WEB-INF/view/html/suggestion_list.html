@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="UTF-8" />
+<title>工作经验分享列表-IT干货技术分享网</title>
+<link rel="stylesheet" href="${path}/static/css/style.css" />
+<link rel="stylesheet" href="${path}/static/css/responsive.css" />
+<script type="text/javascript" src="${path}/static/js/plugin/jquery-1.8.3.min.js"></script>
+<script type="text/javascript">
+function showErrImg(obj) {
+    var errorimg = "${path}/static/imgs/default_image.jpg";
+    obj.src = errorimg;
+}
+$(document).ready(function() {
+    $('html').click(function() {
+        $(".has-dropdown, #site-nav-btn").removeClass('active');
+        $('.site-nav').addClass('hidden-xs');
+    });
+    $(document).scroll(function() {
+        if ($(this).scrollTop() > 720) {
+            $('#backtop').removeClass('hidden');
+        } else {
+            $('#backtop').addClass('hidden');
+        }
+    });
+});
+function submit(){
+	var title = $('#title').val();
+	var committer = $('#committer').val();
+	var comment = $('#comment').val();
+	if(title == ''){
+		alert("写个主题吧");
+		return;
+	} else if (title.length > 50){
+		alert("主题太罗嗦啦");
+		return;
+	} 
+	if (comment == ''){
+		alert("填写意见吧");
+		return;
+	} else if (comment.length > 5000){
+		alert("意见太多啦");
+		return;
+	} 
+	$.post('${path}/suggestion/commit', 
+	{ title : title,
+	  committer : committer, 
+	  comment : comment}, 
+	  function(data) {
+		 if (data.status == "1000"){
+		 	alert("意见提交成功，感谢您对本网站的关心与帮助");
+			window.location.reload();
+		 } else {
+		 	alert("系统繁忙，请稍后再试");
+		 }
+	  },"json");
+
+}
+</script>
+</head>
+<body id="body">
+
+<#include "common/header1.html">
+
+<div class="container wrap">
+	<div class="row inner edge">
+		<div style="width: 20%">写个主题：<input id="title" name="title"></div><br/>
+		<div style="width: 20%">留个称呼：<input id="committer" name="committer"></div><br/>
+		<div style="width: 20%">说点什么：<textarea id="comment" name="comment" rows="5" cols="22"></textarea></div>
+		<div style="width: 20%"><input type="button" value="吐槽一下" onclick="submit();"/> </div>
+	</div>
+</div>
+
+
+<div class="container">
+    <div class="row edge">
+	        <div id="content">
+	        	<#if suggestions?if_exists>
+	        		<#list suggestions as suggestion>
+			        	<article class="post">
+							<div class="p-summary">
+								<h2 style="color: green;">
+									${suggestion.committer}:${suggestion.title} 
+								</h2>
+								<div style="color: blue;">${suggestion.comment}</div> 
+								<div style="color: grey;">${suggestion.treatmentSuggestion}</div>
+								<div class="meta">
+									<span class="views">
+										<span class="datetime"><i class="i-time"></i> ${suggestion.commitDate } </span>
+								</div>
+							</div>
+						</article>
+	                </#list>
+	                ${pagination.getTurnPage() }
+               	<#else>
+               		<h2>没有提交过的意见。</h2>
+                </#if>
+            </div>
+        </div>
+    </div>
+</div>
+
+<#include "common/footer.html">
+
+<a id="backtop" class="mobi-hide hidden" href="#body">回顶部</a>
+</body>
+<script>
+	window._bd_share_config = {
+		common : {
+			bdText : 'IT干货技术分享网',	
+			bdDesc : '我发现了一个值得收藏的网站，它们是一家专注提供IT工作经验分享社区的网站',	
+			bdUrl : 'http://www.itganhuo.cn', 	
+			bdPic : 'http://www.itganhuo.cn/static/imgs/default_image.jpg'
+		},
+		share : [{
+			"bdSize" : 16
+		}],
+		slide : [{	   
+			bdImg : 0,
+			bdPos : "right",
+			bdTop : 100
+		}],
+		image : [{
+			viewType : 'list',
+			viewPos : 'top',
+			viewColor : 'black',
+			viewSize : '16',
+			viewList : ['qzone','tsina','huaban','tqq','renren']
+		}],
+		selectShare : [{
+			"bdselectMiniList" : ['qzone','tqq','kaixin001','bdxc','tqf']
+		}]
+	}
+	with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+</html>

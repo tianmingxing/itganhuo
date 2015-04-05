@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.itganhuo.app.dao.SuggestionDao">
+
+	<cache />
+
+	<resultMap id="suggestionResultMap" type="Suggestion">
+		<id property="id" column="id" />
+		<result property="committer" column="committer" />
+		<result property="commitDate" column="commitDate" />
+		<result property="title" column="title" />
+		<result property="comment" column="comment" />
+		<result property="treatmentSuggestion" column="treatmentSuggestion" />
+	</resultMap>
+
+	<sql id="suggestionColumnList">
+		id, committer, commitDate, title, comment, treatmentSuggestion
+	</sql>
+
+	<insert id="insertSuggestion" parameterType="Suggestion" useGeneratedKeys="true" keyProperty="id">
+		insert into t_suggestion
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="committer != null">committer,</if>
+			<if test="commitDate != null">commitDate,</if>
+			<if test="title != null">title,</if>
+			<if test="comment != null">comment,</if>
+			<if test="treatmentSuggestion != null">treatmentSuggestion,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="committer != null">#{committer},</if>
+			<if test="commitDate != null">#{commitDate},</if>
+			<if test="title != null">#{title},</if>
+			<if test="comment != null">#{comment},</if>
+			<if test="treatmentSuggestion != null">#{treatmentSuggestion},</if>
+		</trim>
+	</insert>
+
+	<select id="loadSuggestionById" resultMap="suggestionResultMap" parameterType="Integer">
+		select
+		<include refid="suggestionColumnList" />
+		from t_suggestion
+		where id = #{id}
+	</select>
+
+	<update id="updateInfoById" parameterType="Suggestion">
+		update t_suggestion
+		<set>
+			<trim suffixOverrides=",">
+				<if test="committer != null">committer = #{committer},</if>
+				<if test="commitDate != null">commitDate = #{commitDate},</if>
+				<if test="title != null">title = #{title},</if>
+				<if test="comment != null">comment = #{comment},</if>
+				<if test="treatmentSuggestion != null">treatmentSuggestion = #{treatmentSuggestion},</if>
+			</trim>
+		</set>
+		where id = #{id}
+	</update>
+
+	<select id="getSuggestionList" resultMap="suggestionResultMap" parameterType="Map">
+		select
+		<include refid="suggestionColumnList" />
+		from t_suggestion
+		<choose>
+			<when test="paging != null and paging.sort != null and paging.order != null">
+				order by ${paging.sort} ${paging.order}
+			</when>
+			<otherwise>
+				order by commitDate desc
+			</otherwise>
+		</choose>
+		<if test="paging.page &gt; 0 and paging.rows &gt; 0">limit #{paging.offrow}, #{paging.rows}</if>
+	</select>
+	
+	<select id="countSuggestionList" resultType="int" parameterType="Map">
+		select count(1) from t_suggestion
+	</select>
+</mapper>
