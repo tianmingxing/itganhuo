@@ -17,6 +17,7 @@
 package cn.itganhuo.app.service.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,9 +50,9 @@ public class CommentServiceImpl implements CommentService {
 	public int addComment(Comment comment) {
 		comment.setPostDate(DateUtil.getNowDateTimeStr(null));
 		if (comment.getType() == 2) {
-			articleDao.addPraiseNumById(comment.getArticleId());
+			articleDao.addPraiseNumById(comment.getObjId());
 		} else if (comment.getType() == 3) {
-			articleDao.addTrampleNumById(comment.getArticleId());
+			articleDao.addTrampleNumById(comment.getObjId());
 		}
 		return commentDao.insert(comment);
 	}
@@ -87,10 +88,10 @@ public class CommentServiceImpl implements CommentService {
 	public boolean isInvolvedComment(int articleId, int userId) {
 		Map<String, Object> param = new HashMap<String, Object>();
 		param.put("type", 1);
-		param.put("articleId", articleId);
+		param.put("objId", articleId);
 		param.put("userId", userId);
-		Comment comment = commentDao.isInvolvedComment(param);
-		if (comment == null || comment.getId() <= 0)
+		List<Comment> comments = commentDao.isInvolvedComment(param);
+		if (comments == null || comments.size() <= 0)
 			return false;
 		else
 			return true;

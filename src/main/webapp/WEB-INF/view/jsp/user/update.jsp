@@ -10,7 +10,6 @@
 <meta name="author" content="IT干货技术分享网-会员信息修改">
 <meta content="_csrf" name="csrf-param">
 <meta content="gqpb25GFirs5rHHq/KylANDoUyNTk46Ey0Dng=" name="csrf-token">
-<link rel="icon" href="#">
 <link href="<%=request.getContextPath()%>/static/css/min.css" rel="stylesheet" type="text/css" media="all">
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/js/analytics.js"></script>
 <title>会员注册</title>
@@ -48,7 +47,7 @@
 				<form id="update_form" action="<%=request.getContextPath()%>/user/update" class="form-horizontal" method="post">
 					<input type="hidden" name="request_token" value="<%=HttpUtil.getToken(session)%>">
 					<div class="control-group">
-						<label class="control-label" for="account">账号：</label>
+						<label class="control-label">账号：</label>
 						<div class="controls">
 							<input type="hidden" name="account" value="${user.account}">${user.account}
 						</div>
@@ -56,7 +55,7 @@
 					<div class="control-group">
 						<label class="control-label" for="name">昵称：</label>
 						<div class="controls">
-							<input class="input-xlarge" id="name" name="name" size="30" type="text" value="${user.nickname}"/>
+							<input class="input-xlarge" id="name" name="nickname" size="30" type="text" value="${user.nickname}"/>
 						</div>
 					</div>
 					<div class="control-group">
@@ -71,13 +70,12 @@
 						<label class="control-label" for="email">电子邮箱：</label>
 						<div class="controls">
 							<c:choose>
-								<c:when test="${user.email != null}">
+								<c:when test="${user.email != null && user.isValidateEmail == 0}">
 									<input class="input-xlarge" id="email" name="email" size="30" value="${user.email}">
 									<a href="<%=request.getContextPath()%>/user/emailskip/${user.account}">认证邮箱</a>
 								</c:when>
-								<c:when test="${user.isValidateEmail == 1}">
-									<input type="button" class="input-xlarge" size="30" value="${user.email}">
-									<a href="#" style="color: red;">已认证</a>
+								<c:when test="${user.email != null && user.isValidateEmail == 1}">
+									${user.email}<span style="color: red;">已认证</span>
 								</c:when>
 								<c:otherwise>
 									<input class="input-xlarge" id="email" name="email" size="30" value="">
@@ -125,7 +123,7 @@
 	var email = $("#email").val();
 	var name = $("#name").val();
 	var email_reg = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
-	if (!email_reg.test(email)) {
+	if (email != '' && !email_reg.test(email)) {
 		$(".alert.alert-error").show();
 		$("#j_msg").text("邮箱格式不正确");
 		$("#email").focus();
