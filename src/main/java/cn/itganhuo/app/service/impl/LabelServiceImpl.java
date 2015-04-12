@@ -17,6 +17,7 @@
 package cn.itganhuo.app.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -88,5 +89,10 @@ public class LabelServiceImpl implements LabelService {
 	public List<Label> getLabelByCondition(Label label) {
 		return labelDao.getLabelByCondition(label);
 	}
+
+    @Override
+    public List<Map<String, String>> getLabelByCondition2(int userId) {
+        return labelDao.getLabelByCondition2(userId);
+    }
 
 }

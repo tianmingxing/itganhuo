@@ -16,6 +16,7 @@
  */
 package cn.itganhuo.app.dao;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Repository;
@@ -79,14 +80,8 @@ public interface CommentDao {
 	 * 
 	 * @version 0.0.1-SNAPSHOT
 	 * @author 深圳-夕落
-	 * @param type
-	 *            该字段值为1时表示过滤掉文章评论的情况，即只查询用户是否有赞踩过该文章的记录。
-	 * @param id
-	 *            文章ID
-	 * @param user_id
-	 *            用户ID
 	 * @return 一条评论数据
 	 */
-	public Comment isInvolvedComment(Map<String, Object> param);
+	public List<Comment> isInvolvedComment(Map<String, Object> param);
 
 }

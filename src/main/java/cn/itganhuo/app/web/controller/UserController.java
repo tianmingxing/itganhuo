@@ -47,10 +47,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import cn.itganhuo.app.common.page.Pagination;
@@ -302,14 +299,19 @@ public class UserController {
 		if (StringUtil.hasText(account)) {
 			User user = userService.loadByAccount(account);
 			if (user != null) {
-				mav.addObject("user", user);
-				// 查询最近发布话题5篇文章
-				Map<String, Object> param = new HashMap<String, Object>();
-				param.put("userId", user.getId());
-				param.put("offrow", 0);
-				param.put("rows", 5);
+                Map<String, Object> param = new HashMap<String, Object>();
+                param.put("userId", user.getId());
+                param.put("offrow", 0);
+                param.put("rows", 5);
+
+                // 查询最近发布话题5篇文章
 				List<Article> articles = articleService.getArticleByUserId(param);
+                // 查询最近参与话题5篇文章
+                List<Article> dynamicArticles = articleService.getDynamicArticleByUserId(param);
+
+				mav.addObject("dynamicArticles", dynamicArticles);
 				mav.addObject("articles", articles);
+                mav.addObject("user", user);
 				mav.setViewName("user/center");
 			} else {
 				mav.setViewName("user/signin");
@@ -335,15 +337,15 @@ public class UserController {
 			User user = (User) current_user.getSession().getAttribute(ConstantPool.USER_SHIRO_SESSION_ID);
 			if (user != null) {
 				mav.addObject("user", user);
-				
+				int rows = 20;
 				Map<String, Object> param = new HashMap<String, Object>();
 				param.put("userId", user.getId());
-				param.put("offrow", StringUtil.getInt(now_page, 1));
-				param.put("rows", 20);
+				param.put("offrow", (StringUtil.getInt(now_page, 1) - 1) * rows);
+				param.put("rows", rows);
 				
 				List<Article> articles = articleService.getArticleByUserId(param);
 				int total = articleService.countArticleRows(param);
-				Pagination pagination = new Pagination(StringUtil.getInt(now_page, 1), 20, 5, total, request.getContextPath().concat("/articles"), "0000");
+				Pagination pagination = new Pagination(StringUtil.getInt(now_page, 1), rows, 5, total, request.getContextPath().concat("/articles"), "0000");
 				
 				mav.addObject("pagination", pagination);
 				mav.addObject("articles", articles);
@@ -363,7 +365,6 @@ public class UserController {
 	 * @version 0.0.1-SNAPSHOT
 	 * @author 小朱，深圳-小兴
 	 * @param model
-	 * @param session
 	 * @return 跳转到用户信息修改页面
 	 */
 	@RequiresAuthentication
@@ -384,10 +385,11 @@ public class UserController {
 	 * 
 	 * @version 0.0.1-SNAPSHOT
 	 * @author 小朱，深圳-小兴
-	 * @param user
+	 * @param user 用户信息
 	 * @return
 	 */
 	@RequiresAuthentication
+    @Transactional
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public String update(User user) {
 		// 防止用户修改其关键信息
@@ -404,7 +406,7 @@ public class UserController {
 		if (this.userService.updateInfoByAccount(user) != 0) {
 			return "redirect:/user/center";
 		} else
-			return "redirect:update";
+			return "redirect:/user/update";
 	}
 
 	/**
@@ -528,8 +530,12 @@ public class UserController {
 		if (user == null || user.getId() <= 0) {
 			user = userService.loadByAccount(current_user.getPrincipal().toString());
 		}
+<<<<<<< HEAD
 		String path = request.getSession().getServletContext().getRealPath("/static/upload/") + "/photo" + "/" + user.getId() + ".jpg";
 		System.out.println(path);
+=======
+		String path = request.getSession().getServletContext().getRealPath("/static/upload/") + "/photos/" + user.getId() + ".jpg";
+>>>>>>> origin/dev
 		File file = new File(path);
 		try {
 			if (file.exists())
@@ -540,7 +546,7 @@ public class UserController {
 			msg = "success";
 			log.debug(user.getAccount() + "Path modified image=" + path);
 		} catch (IOException e) {
-			throw new InternalException(log, e);
+			throw new InternalException(log, "file path=" + path, e);
 		}
 		log.debug(msg + "," + user.getAccount());
 		return msg + "," + user.getAccount();
@@ -561,10 +567,14 @@ public class UserController {
 	public String refurlShare() {
 		Subject current_user = SecurityUtils.getSubject();
 		User user = (User) current_user.getSession().getAttribute(ConstantPool.USER_SHIRO_SESSION_ID);
-		if (user != null && user.getIsValidateEmail() == 1) {
-			return "user/share";
+		if (user != null) {
+            User u = userService.loadByAccount(user.getAccount());
+            if (u.getIsValidateEmail() == 1) {
+                return "user/share";
+            }
+            return "redirect:/user/update";
 		}
-		return "redirect:/user/update";
+		return "redirect:/user/center";
 	}
 
 	/**
@@ -642,10 +652,10 @@ public class UserController {
 
 	/**
 	 * 新增一条用户评论
-	 * 
+	 *
 	 * @version 0.0.2-SNAPSHOT
 	 * @author 深圳-小兴，深圳-夕落
-	 * @param article_model
+	 * @param comment_model
 	 * @return
 	 */
 	@RequiresAuthentication
@@ -659,7 +669,7 @@ public class UserController {
 				comment_model.setUserId(user_model.getId());
 				comment_model.setType(1);
 				commentService.addComment(comment_model);
-				return "redirect:/article/" + comment_model.getArticleId();
+				return "redirect:/article/" + comment_model.getObjId();
 			}
 		}
 		return "redirect:/articles";
@@ -697,7 +707,7 @@ public class UserController {
 	 * 
 	 * @version 0.0.2-SNAPSHOT
 	 * @author 深圳-小兴
-	 * @param subjects 标签数据集合 
+	 * @param labels 标签数据集合
 	 * @return 返回转换好的AutoComplete对象集合
 	 */
 	private List<AutoComplete> label2AutoComplete(List<Label> labels) {
@@ -741,4 +751,32 @@ public class UserController {
 		mailService.sendMail(user_model.getEmail(), template);
 		return "user/emailskip";
 	}
+
+    /**
+     * 根据条件翻页查询动态文章
+     * @param model 返回数据封装
+     * @return
+     */
+    @RequestMapping(value = "/dynamicArticles", method = RequestMethod.GET)
+    public String refurlDynamicArticles(Model model, @RequestParam(defaultValue = "1") String now_page, HttpServletRequest request) {
+        Subject current_user = SecurityUtils.getSubject();
+        User user_model = (User) current_user.getSession().getAttribute(ConstantPool.USER_SHIRO_SESSION_ID);
+        if (user_model != null) {
+            int rows = 20;
+            Map<String, Object> param = new HashMap<String, Object>();
+            param.put("userId", user_model.getId());
+            param.put("offrow", (StringUtil.getInt(now_page, 1) - 1) * rows);
+            param.put("rows", rows);
+            // 查询最近参与话题5篇文章
+            List<Article> dynamicArticles = articleService.getDynamicArticleByUserId(param);
+            int total = articleService.countDynamicArticleRows(param);
+            Pagination pagination = new Pagination(StringUtil.getInt(now_page, 1), rows, 5, total, request.getContextPath().concat("/dynamicArticles"), now_page);
+            model.addAttribute("pagination", pagination);
+            model.addAttribute("articles", dynamicArticles);
+            model.addAttribute("user", user_model);
+            return "user/dynamic_articles";
+        } else {
+            return "redirect:/user/signin";
+        }
+    }
 }

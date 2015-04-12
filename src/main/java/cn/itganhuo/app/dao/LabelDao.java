@@ -17,6 +17,7 @@
 package cn.itganhuo.app.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
@@ -64,4 +65,12 @@ public interface LabelDao {
 	 * @return
 	 */
 	public List<Label> getLabelByCondition(Label label);
+
+    /**
+	 * 按条件查询标签
+	 *
+	 * @param userId
+	 * @return
+	 */
+	public List<Map<String, String>> getLabelByCondition2(int userId);
 }
