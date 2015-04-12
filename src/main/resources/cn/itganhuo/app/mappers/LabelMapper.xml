@@ -7,25 +7,19 @@
 	<cache />
 
 	<sql id="labelColumnLlist">
-		id, userId, name, description, postDate,(SELECT COUNT(1) FROM t_attention b WHERE b.type = 1 AND b.labelId = a.`id`) AS attentionNumber
+		id, userId, name, description, postDate
 	</sql>
 
 	<select id="getLabelByCondition" resultType="Label" parameterType="Label">
 		select
 		<include refid="labelColumnLlist" />
-		from t_label a
+		from t_label
 		<where>
-			<if test="userId != null and userId != ''">a.userId = #{userId}</if>
-			<if test="name != null and name != ''">a.name like "%"#{name}"%"</if>
-			<if test="description != null and description != ''">a.description like "%"#{description}"%"</if>
+			<if test="userId != null and userId != ''">userId = #{userId}</if>
+			<if test="name != null and name != ''">name like "%"#{name}"%"</if>
+			<if test="description != null and description != ''">description like "%"#{description}"%"</if>
 		</where>
 	</select>
-
-    <select id="getLabelByCondition2" resultType="Map" parameterType="int">
-        SELECT a.*, (SELECT COUNT(1) FROM t_attention b WHERE b.userId = #{userId} AND b.type = 1 AND b.labelId = a.`id`) AS isAttention
-        ,(SELECT COUNT(1) FROM t_attention b WHERE b.type = 1 AND b.labelId = a.`id`) AS attentionNumber
-        FROM t_label a
-    </select>
 	
 	<insert id="insert" parameterType="Label" useGeneratedKeys="true" keyProperty="id">
 		insert into t_label

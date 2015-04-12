@@ -15,6 +15,7 @@
 <meta name="author" content="JAVA私塾在线学习社区（1000人群329232140）">
 <meta content="_csrf" name="csrf-param">
 <meta content="gqpb25GFirs5rHHq/KylANDoUyNTk46Ey0Dng=" name="csrf-token">
+<link rel="icon" href="#">
 <link href="<%=path %>/static/css/min.css" rel="stylesheet" type="text/css" media="all">
 <script type="text/javascript" src="<%=path %>/static/js/plugin/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="<%=path %>/static/js/analytics.js"></script>
@@ -37,17 +38,17 @@ function showErrImg(obj) {
 				<div class="user_card">
 					<div>
 						<a class="user_avatar" href="#">
-							<img src="<%=path %>/static/upload/photos/<%=um.getId()%>.jpg" title="<%=um.getAccount()%>" onerror="showErrImg(this);">
+							<img src="<%=path %>/static/upload/photos/<%=um.getAccount()%>.jpg" title="<%=um.getAccount()%>" onerror="showErrImg(this);">
 						</a>
 						<span class="user_name"><a class="dark" href="#"><%=um.getAccount()%></a></span>&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/user/update">设置</a> 
 						<div class="board clearfix">
 							<div class="floor">
-								<a href="javascript:;;"><span class="big">196</span> 收藏</a>
+								<a href="#"><span class="big">196</span> 收藏</a>
 							</div>
 							<div class="floor">
-								<a href="javascript:;;"><span class="big">36</span> 关注</a>
+								<a href="#"><span class="big">36</span> 关注</a>
 								<div class="space"></div>
-								<a href="javascript:;;"><span class="big">52</span> 粉丝</a>
+								<a href="#"><span class="big">52</span> 粉丝</a>
 								<div class="space"></div>
 								<span class="big"><%=um.getCredits()%></span> 积分
 							</div>
@@ -71,7 +72,7 @@ function showErrImg(obj) {
 			</div>
 			<div class="inner userinfo">
 				<div class="user_big_avatar">
-					<img src="<%=path %>/static/upload/photos/<%=um.getId()%>.jpg" class="user_avatar" title="<%=um.getAccount()%>" onerror="showErrImg(this);">
+					<img src="<%=path %>/static/upload/photos/<%=um.getAccount()%>.jpg" class="user_avatar" title="<%=um.getAccount()%>" onerror="showErrImg(this);">
 				</div>
 				<a class="dark"><%=um.getAccount()%></a>
 				<div class="col_fade">
@@ -85,15 +86,15 @@ function showErrImg(obj) {
 					<ul class="unstyled">
 						<li>
 							<img class="user_icon" src="<%=path %>/static/imgs/05.png">
-							<a class="dark" href="javascript:;;" target="_blank">http://#</a>
+							<a class="dark" href="#" target="_blank">http://#</a>
 						</li>
 						<li>
 							<img class="user_icon" src="<%=path %>/static/imgs/06.png">
-							<a class="dark" href="javascript:;;" target="_blank">@you</a>
+							<a class="dark" href="#" target="_blank">@you</a>
 						</li>		
 						<li>
 							<img class="user_icon" src="<%=path %>/static/imgs/07.png">
-							<a class="dark" href="javascript:;;" target="_blank">http://</a>
+							<a class="dark" href="#" target="_blank">http://#</a>
 						</li>
 									
 					</ul>
@@ -110,20 +111,20 @@ function showErrImg(obj) {
 				<c:when test="${articles != null && articles.size() > 0 }">
 					<c:forEach items="${articles}" var="article">
 						<div class="cell">
-							<a class="user_avatar pull-left" href="javascript:;;">
-								<img src="<%=path %>/static/upload/photos/<%=um.getId()%>.jpg" title="<%=um.getAccount()%>" onerror="showErrImg(this);">
+							<a class="user_avatar pull-left" href="#">
+								<img src="<%=path %>/static/upload/photos/<%=um.getAccount()%>.jpg" title="<%=um.getAccount()%>" onerror="showErrImg(this);">
 							</a>
 							<span class="reply_count pull-left">
 								<span class="count_of_replies" title="回复数">${article.comments.size() }</span>
 								<span class="count_seperator">/</span>
 								<span class="count_of_visits" title="点击数">${article.visitorNum }</span>
 							</span>
-							<a class="last_time pull-right" href="javascript:;;">
+							<a class="last_time pull-right" href="#">
 								<img class="user_small_avatar" src="<%=path %>/static/upload/photos/${article.user.account}.jpg" onerror="showErrImg(this);">
 								<span class="last_active_time">${article.postDate }</span>
 							</a>
 							<div class="topic_title_wrapper">
-								<a class="topic_title" href="<%=path %>/article/${article.ymd}/${article.id}">${article.title }</a>
+								<a class="topic_title" href="<%=path %>/article/${article.id}">${article.title }</a>
 							</div>
 						</div>
 					</c:forEach>
@@ -141,32 +142,25 @@ function showErrImg(obj) {
 			<div class="header">
 				<span class="col_fade">最近参与话题</span>
 			</div>
-            <c:choose>
-                <c:when  test="${dynamicArticles != null && dynamicArticles.size() > 0 }">
-                    <c:forEach items="${dynamicArticles}" var="article">
-                    <div class="cell">
-                        <a class="user_avatar pull-left" href="javascript:;;">
-                            <img src="<%=path %>/static/upload/photos/<%=um.getId()%>.jpg" title="kingapple" onerror="showErrImg(this);">
-                        </a>
-                        <span class="reply_count pull-left">
-                            <span class="count_of_replies" title="回复数">${article.comments.size() }</span>
-                            <span class="count_seperator">/</span>
-                            <span class="count_of_visits" title="点击数">${article.visitorNum }</span>
-                        </span>
-                        <a class="last_time pull-right" href="javascript:;;">
-                            <img class="user_small_avatar" src="<%=path %>/static/upload/photos/<%=um.getId()%>.jpg" onerror="showErrImg(this);">
-                            <span class="last_active_time">${article.postDate }</span>
-                        </a>
-                        <div class="topic_title_wrapper">
-                            <a class="topic_title" href="<%=path %>/article/${article.ymd}/${article.id}">${article.title }</a>
-                        </div>
-                    </div>
-                    </c:forEach>
-                </c:when>
-                <c:otherwise>遇到合适的你就嫁了吧！</c:otherwise>
-            </c:choose>
+			<div class="cell">
+				<a class="user_avatar pull-left" href="#">
+					<img src="<%=path %>/static/upload/photos/<%=um.getAccount()%>.jpg" title="kingapple" onerror="showErrImg(this);">
+				</a>
+				<span class="reply_count pull-left">
+					<span class="count_of_replies" title="回复数">10</span>
+					<span class="count_seperator">/</span>
+					<span class="count_of_visits" title="点击数">376</span>
+				</span>
+				<a class="last_time pull-right" href="#">
+					<img class="user_small_avatar" src="<%=path %>/static/imgs/03.png" onerror="showErrImg(this);">
+					<span class="last_active_time">6-12 15:42</span>
+				</a>
+				<div class="topic_title_wrapper">
+					<a class="topic_title" href="#">赶脚樯把狗彻底屏蔽了</a>
+				</div>
+			</div>
 			<div class="cell more">
-				<a class="dark" href="<%=path%>/user/dynamicArticles">查看更多»</a>
+				<a class="dark" href="#">查看更多»</a>
 			</div>
 		</div>
 		

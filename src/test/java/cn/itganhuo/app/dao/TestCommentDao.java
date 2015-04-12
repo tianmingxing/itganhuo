@@ -46,7 +46,7 @@ public class TestCommentDao extends AbstractContextControllerTests {
 	public void testInsert() {
 		Comment comment = new Comment();
 		comment.setType(1);
-		comment.setObjId(1);
+		comment.setArticleId(1);
 		comment.setUserId(1);
 		comment.setContent("你的经验分享的太棒了");
 		comment.setPostDate("2014-1-2 12:43:32");

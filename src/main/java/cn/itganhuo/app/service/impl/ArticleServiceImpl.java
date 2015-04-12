@@ -19,7 +19,6 @@ package cn.itganhuo.app.service.impl;
 import java.util.List;
 import java.util.Map;
 
-import cn.itganhuo.app.common.utils.StringUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +46,6 @@ public class ArticleServiceImpl implements ArticleService {
 	 */
 	@Override
 	public List<Article> findArticleByCondition(Map<String, Object> map) {
-        log.debug("offrow=" + map.get("offrow") + ", rows=" + map.get("rows"));
 		List<Article> articles = articleDao.findArticleByCondition(map);
 		for (int i = 0; i < articles.size(); i++) {
 			// 查询所属的标签
@@ -154,19 +152,5 @@ public class ArticleServiceImpl implements ArticleService {
 	public List<Article> getArticleByLabelId(Map<String, Object> param) {
 		return articleDao.getArticleByLabelId(param);
 	}
-
-    @Override
-    public List<Article> getDynamicArticleByUserId(Map<String, Object> param) {
-        if (!StringUtil.hasText(String.valueOf(param.get("userId")))) {
-            log.warn("Query failed! Because do not get to the current user number.");
-            return null;
-        }
-        return articleDao.getDynamicArticleByUserId(param);
-    }
-
-    @Override
-    public int countDynamicArticleRows(Map<String, Object> param) {
-        return articleDao.countDynamicArticleRows(param);
-    }
 
 }

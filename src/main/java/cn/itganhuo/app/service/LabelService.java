@@ -17,7 +17,6 @@
 package cn.itganhuo.app.service;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -105,21 +104,4 @@ public interface LabelService {
 	 * @return 标签集合
 	 */
 	public List<Label> getLabelByCondition(Label label);
-
-    /**
-     * <h2>按条件查询标签列表</h2>
-     * <dl>
-     * <dt>功能描述</dt>
-     * <dd>无</dd>
-     * <dt>使用规范</dt>
-     * <dd>无</dd>
-     * </dl>
-     *
-     * @version 0.0.1-SNAPSHOT
-     * @author 深圳-小兴
-     * @param userId
-     *            当前用户编号
-     * @return 标签集合
-     */
-    public List<Map<String, String>> getLabelByCondition2(int userId);
 }
