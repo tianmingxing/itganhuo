@@ -29,59 +29,60 @@ import cn.itganhuo.app.exception.InternalException;
 /**
  * 容器启动时通过PropertyPlaceholderConfigurer类读取jdbc.properties文件里的数据库加密配置信息，
  * 使用自定义一个继承PropertyPlaceholderConfigurer的类实现解密。
- *
- * @author 深圳-小兴
+ * 
  * @version 0.0.1-SNAPSHOT
+ * @author 深圳-小兴
+ *
  */
 public class EncryptablePropertyPlaceholderConfigurer extends
-        PropertyPlaceholderConfigurer {
+		PropertyPlaceholderConfigurer {
 
-    private final static Logger log = LogManager
-            .getLogger(EncryptablePropertyPlaceholderConfigurer.class.getName());
+	private final static Logger log = LogManager
+			.getLogger(EncryptablePropertyPlaceholderConfigurer.class.getName());
 
-    private String key = "http://www.itganhuo.cn";
+	private String key = "http://www.itganhuo.cn";
 
-    public EncryptablePropertyPlaceholderConfigurer(String key) {
-        log.debug("key={}", key);
-        this.key = key;
-    }
+	public EncryptablePropertyPlaceholderConfigurer(String key) {
+		log.debug("key={}", key);
+		this.key = key;
+	}
 
-    protected void processProperties(
-            ConfigurableListableBeanFactory beanFactory, Properties props)
-            throws BeansException {
-        try {
-            String DriverClassName = props.getProperty("jdbc.driverClassName");
-            if (DriverClassName != null) {
-                props.setProperty(
-                        "jdbc.driverClassName",
-                        new String(Aes.decrypt(
-                                Aes.parseHexStr2Byte(DriverClassName), key)));
-            }
-            String Url = props.getProperty("jdbc.url");
-            if (Url != null) {
-                props.setProperty("jdbc.url",
-                        new String(Aes.decrypt(Aes.parseHexStr2Byte(Url), key)));
-            }
-            String Username = props.getProperty("jdbc.username");
-            if (Username != null) {
-                props.setProperty(
-                        "jdbc.username",
-                        new String(Aes.decrypt(Aes.parseHexStr2Byte(Username),
-                                key)));
-            }
-            String Password = props.getProperty("jdbc.password");
-            if (Password != null) {
-                props.setProperty(
-                        "jdbc.password",
-                        new String(Aes.decrypt(Aes.parseHexStr2Byte(Password),
-                                key)));
-            }
+	protected void processProperties(
+			ConfigurableListableBeanFactory beanFactory, Properties props)
+			throws BeansException {
+		try {
+			String DriverClassName = props.getProperty("jdbc.driverClassName");
+			if (DriverClassName != null) {
+				props.setProperty(
+						"jdbc.driverClassName",
+						new String(Aes.decrypt(
+								Aes.parseHexStr2Byte(DriverClassName), key)));
+			}
+			String Url = props.getProperty("jdbc.url");
+			if (Url != null) {
+				props.setProperty("jdbc.url",
+						new String(Aes.decrypt(Aes.parseHexStr2Byte(Url), key)));
+			}
+			String Username = props.getProperty("jdbc.username");
+			if (Username != null) {
+				props.setProperty(
+						"jdbc.username",
+						new String(Aes.decrypt(Aes.parseHexStr2Byte(Username),
+								key)));
+			}
+			String Password = props.getProperty("jdbc.password");
+			if (Password != null) {
+				props.setProperty(
+						"jdbc.password",
+						new String(Aes.decrypt(Aes.parseHexStr2Byte(Password),
+								key)));
+			}
 
-            super.processProperties(beanFactory, props);
+			super.processProperties(beanFactory, props);
 
-        } catch (Exception e) {
-            throw new InternalException(log, e);
-        }
-    }
+		} catch (Exception e) {
+			throw new InternalException(log, e);
+		}
+	}
 
 }

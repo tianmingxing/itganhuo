@@ -23,5 +23,3 @@ target
 /logs
 /src/main/resources/jdbc.properties
 jdbc.properties
-/.idea
-/*.iml

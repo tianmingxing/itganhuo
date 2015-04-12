@@ -35,39 +35,21 @@ $(document).ready(function() {
         <div id="main" class="col-md-9">
             <div class="tab-nav">
                 <h2 class="common-title">最新的分享</h2>
-                <#if label_id??>
-                    <nav class="sub-tab">
-                        <#if search_type = 2>
-                                <a href="${path}/articles/1/1/${label_id}">最新的</a>
-                                <a class="current" href="${path}/articles/2/1/${label_id}">热门的</a>
-                                <a href="${path}/articles/3/1/${label_id}">未被发现的</a>
-                        <#elseif search_type = 3>
-                                <a href="${path}/articles/1/1/${label_id}">最新的</a>
-                                <a href="${path}/articles/2/1/${label_id}">热门的</a>
-                                <a class="current" href="${path}/articles/3/1/${label_id}">未被发现的</a>
-                        <#else>
-                                <a class="current" href="${path}/articles/1/1/${label_id}">最新的</a>
-                                <a href="${path}/articles/2/1/${label_id}">热门的</a>
-                                <a href="${path}/articles/3/1/${label_id}">未被发现的</a>
-                        </#if>
-                    </nav>
-                <#else>
-                    <nav class="sub-tab">
-                        <#if search_type = 2>
-                                <a href="${path}/articles/1/1">最新的</a>
-                                <a class="current" href="${path}/articles/2/1">热门的</a>
-                                <a href="${path}/articles/3/1">未被发现的</a>
-                        <#elseif search_type = 3>
-                                <a href="${path}/articles/1/1">最新的</a>
-                                <a href="${path}/articles/2/1">热门的</a>
-                                <a class="current" href="${path}/articles/3/1">未被发现的</a>
-                        <#else>
-                                <a class="current" href="${path}/articles/1/1">最新的</a>
-                                <a href="${path}/articles/2/1">热门的</a>
-                                <a href="${path}/articles/3/1">未被发现的</a>
-                        </#if>
-                    </nav>
-                </#if>
+                <nav class="sub-tab">
+                	<#if search_type = 2>
+                			<a href="${path}/articles/1/1">最新的</a>
+                			<a class="current" href="${path}/articles/2/1">热门的</a>
+                			<a href="${path}/articles/3/1">未被发现的</a>
+                	<#elseif search_type = 3>
+                			<a href="${path}/articles/1/1">最新的</a>
+                			<a href="${path}/articles/2/1">热门的</a>
+                			<a class="current" href="${path}/articles/3/1">未被发现的</a>
+                	<#else>
+                			<a class="current" href="${path}/articles/1/1">最新的</a>
+                			<a href="${path}/articles/2/1">热门的</a>
+                			<a href="${path}/articles/3/1">未被发现的</a>
+                	</#if>
+                </nav>
             </div>
             
 	        <div id="content">
@@ -80,7 +62,7 @@ $(document).ready(function() {
 							</div>
 							<div class="p-summary">
 								<a class="author" data-toggle="tooltip" data-placement="bottom" rel="tooltip" href="${path}/user/${article.user.account}" title="${article.user.account}">
-									<img class="avatar-40" src="${path}/static/upload/photos/${article.user.id}.jpg" alt="${article.user.account}" onerror="showErrImg(this);"/>
+									<img class="avatar-40" src="${path}/static/upload/photo/${article.user.account}.jpg" alt="${article.user.account}" onerror="showErrImg(this);"/>
 								</a>
 								<h2>
 									<a href="${path}/article/${article.ymd}/${article.id}" title="${article.title }">${article.title }</a>

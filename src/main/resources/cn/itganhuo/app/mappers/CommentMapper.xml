@@ -7,9 +7,9 @@
 	<cache />
 
 	<sql id="comment_column_list">
-		d.id d_id,
+		D.ID D_ID,
 		d.type d_type,
-		d.objId d_objId,
+		d.articleId d_articleId,
 		d.userId d_userId,
 		d.content d_content,
 		d.postDate d_postDate,
@@ -72,7 +72,7 @@
 	<resultMap id="comment_result" type="Comment">
 		<id property="id" column="d_id" />
 		<result property="type" column="d_type" />
-		<result property="objId" column="d_objId" />
+		<result property="articleId" column="d_articleId" />
 		<result property="userId" column="d_userId" />
 		<result property="content" column="d_content" />
 		<result property="postDate" column="d_postDate" />
@@ -135,14 +135,14 @@
 		INSERT INTO t_comment
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="type != null">type,</if>
-			<if test="objId != null">objId,</if>
+			<if test="articleId != null">articleId,</if>
 			<if test="userId != null">userId,</if>
 			<if test="content != null">content,</if>
 			<if test="postDate != null">postDate,</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="type != null">#{type},</if>
-			<if test="objId != null">#{objId},</if>
+			<if test="articleId != null">#{articleId},</if>
 			<if test="userId != null">#{userId},</if>
 			<if test="content != null">#{content},</if>
 			<if test="postDate != null">#{postDate},</if>
@@ -182,14 +182,14 @@
 
 	<!-- 评论点赞 -->
 	<update id="addPraise" parameterType="Integer">
-		UPDATE t_comment a SET
+		UPDATE t_comment a
 		a.praise = a.praise + 1
 		WHERE a.id = #{id}
 	</update>
 
 	<!-- 评论点踩 -->
 	<update id="addTrample" parameterType="Integer">
-		UPDATE t_comment a SET
+		UPDATE t_comment a
 		a.trample = a.trample + 1
 		WHERE a.id = #{id}
 	</update>
@@ -198,12 +198,7 @@
 		SELECT
 		<include refid="comment_column_list" />
 		FROM t_comment d
-		WHERE d.userId = #{userId} AND d.objId = #{objId}
-        <choose>
-            <when test="type == 1">AND d.type = 1</when>
-            <when test="type == 2 or type == 3">AND d.type = 2 AND d.type = 3</when>
-            <when test="type == 4 or type == 5">AND d.type = 4 AND d.type = 5</when>
-        </choose>
+		WHERE d.userId = #{userId} AND d.articleId = #{articleId} AND d.type != #{type}
 	</select>
 
 </mapper>

@@ -21,137 +21,124 @@ import java.util.List;
 
 /**
  * 文章标签表数据封装类
- *
- * @author 深圳-小兴
+ * 
  * @version 0.0.1-SNAPSHOT
+ * @author 深圳-小兴
  */
 public class Label implements Serializable {
 
-    private static final long serialVersionUID = -8517086867295673481L;
-    /*
-     * ID
-     */
-    private Integer id;
-    /*
-     * 标签添加人主键
-     */
-    private Integer userId;
-    /*
-     * 标签名称
-     */
-    private String name;
-    /*
-     * 标签介绍
-     */
-    private String description;
-    /*
-     * 标签添加时间
-     */
-    private String postDate;
-    /*
-     * 标签添加人信息
-     */
-    private User user;
+	private static final long serialVersionUID = -8517086867295673481L;
+	/*
+	 * ID
+	 */
+	private Integer id;
+	/*
+	 * 标签添加人主键
+	 */
+	private Integer userId;
+	/*
+	 * 标签名称
+	 */
+	private String name;
+	/*
+	 * 标签介绍
+	 */
+	private String description;
+	/*
+	 * 标签添加时间
+	 */
+	private String postDate;
+	/*
+	 * 标签添加人信息
+	 */
+	private User user;
+	
+	private List<Article> articles;
+	
+	public List<Article> getArticles() {
+		return articles;
+	}
 
-    private List<Article> articles;
+	public void setArticles(List<Article> articles) {
+		this.articles = articles;
+	}
 
-    public List<Article> getArticles() {
-        return articles;
-    }
+	public Integer getId() {
+		return id;
+	}
 
-    public void setArticles(List<Article> articles) {
-        this.articles = articles;
-    }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    public Integer getId() {
-        return id;
-    }
+	public Integer getUserId() {
+		return userId;
+	}
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
 
-    public Integer getUserId() {
-        return userId;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getDescription() {
+		return description;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    public String getDescription() {
-        return description;
-    }
+	public String getPostDate() {
+		return postDate;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public void setPostDate(String postDate) {
+		this.postDate = postDate;
+	}
 
-    public String getPostDate() {
-        return postDate;
-    }
+	public User getUser() {
+		return user;
+	}
 
-    public void setPostDate(String postDate) {
-        this.postDate = postDate;
-    }
+	public void setUser(User user) {
+		this.user = user;
+	}
 
-    public User getUser() {
-        return user;
-    }
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
 
-    public void setUser(User user) {
-        this.user = user;
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Label other = (Label) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
 
-    /**
-     * 统计本标签关注数量，此字段并不在表中出现
-     */
-    private Integer attentionNumber;
-
-    public Integer getAttentionNumber() {
-        return attentionNumber;
-    }
-
-    public void setAttentionNumber(Integer attentionNumber) {
-        this.attentionNumber = attentionNumber;
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Label other = (Label) obj;
-        if (id == null) {
-            if (other.id != null)
-                return false;
-        } else if (!id.equals(other.id))
-            return false;
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "Label [id=" + id + ", userId=" + userId + ", name=" + name + ", description=" + description + ", postDate=" + postDate + ", user=" + user + "]";
-    }
+	@Override
+	public String toString() {
+		return "Label [id=" + id + ", userId=" + userId + ", name=" + name + ", description=" + description + ", postDate=" + postDate + ", user=" + user + "]";
+	}
 
 }

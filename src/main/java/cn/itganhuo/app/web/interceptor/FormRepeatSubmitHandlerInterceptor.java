@@ -60,15 +60,14 @@ public class FormRepeatSubmitHandlerInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		log.debug("request_path => " + request.getRequestURI() + " | parameter => " + request.getQueryString());
 
-		// 防止表单重复提交，注意：如果页面上有链接写了#号，那么springMVC内部会多次请求，带来的后果是本功能失效且前端提交不了数据。
+		// 防止表单重复提交
 		String request_token = request.getParameter(ConstantPool.REQUEST_TOKEN);
-        // 1、判断页面上是否请求拦截表单重复提交
+		// 1、判断页面上是否请求拦截表单重复提交
 		if (StringUtil.hasText(request_token)) {
 			// 2、如果会话中存在令牌并且与页面上一致，那就表示这是表单第一次提交，此时重新给会话中令牌赋值。
 			String session_token = HttpUtil.getString(request.getSession(), ConstantPool.SESSION_TOKEN);
-            log.debug("request_token:{}, session_token:{}", request_token, session_token);
-            if (StringUtil.hasText(session_token) && request_token.equals(session_token)) {
-				HttpUtil.setValue(request.getSession(), ConstantPool.SESSION_TOKEN, StringUtil.getMD5Shiro(UUID.randomUUID().toString()));
+			if (StringUtil.hasText(session_token) && request_token.equals(session_token)) {
+				HttpUtil.setValue(request.getSession(), ConstantPool.SESSION_TOKEN, UUID.randomUUID().toString());
 			} else { // 3、两值不一致则进行拦截，造成此种情况可能是表单重复提交或是页面上没有正确取出会话中令牌的值。
 				log.warn("Form Repeat Submit.");
 				return false;

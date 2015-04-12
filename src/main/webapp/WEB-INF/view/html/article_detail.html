@@ -27,9 +27,9 @@ function showErrImg(obj) {
             <div id="question">
                 <article class="q-post" >
                     <div class="post-cell">
-                        <a href="javascript:appraise('2', '${article.id}');" class="post-big-vote"><span id="${article.id}_zan_article">${article.praiseNum}</span>赞</a>
-                        <a href="javascript:appraise('3', '${article.id}');" class="post-big-hate" data-toggle="tooltip" data-placement="right" rel="tooltip" title="谨慎使用"><span id="${article.id}_cai_article">${article.trampleNum}</span>踩</a>
-                        <a href="javascript:;;" class="post-fav" data-toggle="tooltip" data-placement="right" rel="tooltip" title="关注并收藏">收藏</a>
+                        <a href="javascript:addUseful('${article.id}','article');" class="post-big-vote"><span id="${article.id}_zan_article">${article.praiseNum}</span>赞</a>
+                        <a href="javascript:addUseless('${article.id}','article');" class="post-big-hate" data-toggle="tooltip" data-placement="right" rel="tooltip" title="谨慎使用"><span id="${article.id}_cai_article">${article.trampleNum}</span>踩</a>
+                        <a href="###" class="post-fav" data-toggle="tooltip" data-placement="right" rel="tooltip" title="关注并收藏">收藏</a>
                     </div>
                     <div class="fmt post-content">
                         <p>${article.content}</p>
@@ -39,7 +39,7 @@ function showErrImg(obj) {
                         <table class="post-parter">
                             <tr>
                                 <td>
-                                    <a href="${path}/user/${article.user.account}" tabindex="-1"><img class="avatar-32" src="${path}/static/upload/photos/${article.user.id}.jpg" alt="${article.user.account}" onerror="showErrImg(this);"/></a>
+                                    <a href="${path}/user/${article.user.account}" tabindex="-1"><img class="avatar-32" src="${path}/photo/${article.user.account}.jpg" alt="${article.user.account}" onerror="showErrImg(this);"/></a>
                                 </td>
                                 <td class="post-author">
                                     <h4><a href="${path}/user/${article.user.account}">${article.user.account}</a><strong>6</strong></h4>${article.postDate}<br />
@@ -53,9 +53,9 @@ function showErrImg(obj) {
             <!-- 评论开始 -->
             <div id="answer">
                 <div class="hor-tabs right">
-                    <a class="current by-votes" href="javascript:;;">得票数</a>
+                    <a class="current by-votes" href="#">得票数</a>
                     <i></i>
-                    <a class="by-created" href="javascript:;;">时间先后</a>
+                    <a class="by-created" href="#">时间先后</a>
                 </div>
                 <h2 class="a-title"> ${article.comments?size} 个回答</h2>
                
@@ -63,8 +63,8 @@ function showErrImg(obj) {
 	            	<#list article.comments as comment>
 		                <article class="a-post accepted" >
 		                    <div class="post-cell">
-		                        <a href="javascript:appraise('4', '${comment.id}');" class="post-big-vote"><span id="${comment.id}_zan_comment">${comment.praise }</span>赞</a>
-		                        <a href="javascript:appraise('5', '${comment.id}');" class="post-big-hate" data-toggle="tooltip" data-placement="right" rel="tooltip" title="谨慎使用"><span id="${comment.id}_cai_comment">${comment.trample}</span>踩</a>
+		                        <a href="javascript:addUseful('${comment.id}','comment');" class="post-big-vote"><span id="${comment.id}_zan_comment">${comment.praise }</span>赞</a>
+		                        <a href="javascript:addUseless('${comment.id}','comment');" class="post-big-hate" data-toggle="tooltip" data-placement="right" rel="tooltip" title="谨慎使用"><span id="${comment.id}_cai_comment">${comment.trample}</span>踩</a>
 		                        <div class="accept-mark" title="采纳答案">采纳</div>
 		                    </div>
 		                    <div class="fmt post-content">
@@ -72,10 +72,10 @@ function showErrImg(obj) {
 		                    </div>
 		                    <div class="post-foot">
 		                        <div class="hor-tabs post-action">
-		                            <a class="btn btn-default btn-sm active btn-s btn-accept" data-cancel="1" href="javascript:;;">取消采纳</a>
+		                            <a class="btn btn-default btn-sm active btn-s btn-accept" data-cancel="1" href="###">取消采纳</a>
 		                            <i></i>
-		                            <a href="javascript:;;" class="i-link">链接</a>
-		                            <a class="i-ignore ignore" href="javascript:;;" data-cancel="0">忽略</a>
+		                            <a href="#" class="i-link">链接</a> 
+		                            <a class="i-ignore ignore" href="#" data-cancel="0">忽略</a>
 		                        </div>
 		                        <table class="post-parter">
 		                            <tr>
@@ -124,7 +124,7 @@ function showErrImg(obj) {
                 <#if user_model.id != article.userId>
 	                <form method="post" action="${path}/user/comment" onsubmit="return checkForm();">
 	                    <div id="wmd-button-bar">
-	                    	<input type="hidden" name="articleId" value="${article.id }">
+	                    	<input type="hidden" name="object_id" value="${article.id }">
 	                    	<input type="hidden" name="article_user_id" value="${article.userId }">
 	                    	<textarea placeholder="用词请文明" rows="8" cols="115" id="j_content" name="content" style="resize: none;overflow-y:auto;"></textarea>
 	                    	<input type="submit" id="j_sub" value="提交">
@@ -220,23 +220,60 @@ function submitReply(id,comment_id) {
 	},"json");
 	window.location.reload();
 }
-function appraise(type, id) {
-    if (type == null || id == null) {
-        alert('网络异常请刷新页面后重试。');
-        return;
-    }
-    jQuery.post('${path}/article/appraise', {type:type, id:id}, function(data) {
-        if (data != null && data.status == '0000') {
-            alert('感谢你的评论。');
-            window.location.reload();
-        } else if (data.status == '9000') {
-           window.location.href = '${path}/user/signin';
-        } else {
-            alert(data.message);
-        }
-    },"json");
+//文章或者评论点赞 类型为article表示文章 类型为 comment表示评论
+function addUseful(id,type){
+	var url = "";
+	if(type == "article"){
+		url = "${path}/article/addUsefulById/"+id;
+	}else if(type ="comment"){
+		url = "${path}/article/addPraiseById/"+id;
+	}else ;
+	$.get(url,function(data){
+		var json = jQuery.parseJSON(data);
+		if(json.status > 0){
+			if(type == "article"){
+				$("#"+id+"_zan_article").html(json.status);
+			}else if(type ="comment"){
+				$("#"+id+"_zan_comment").html(json.status);
+			}else ;
+		}else{
+				alterMsg(json.msg);
+		}
+	});
 }
-
+//文章或者评论点踩 类型为article表示文章 类型为 comment表示评论
+function addUseless(id,type){
+	var url = "";
+	if(type == "article"){
+		url = "${path}/article/addUselessById/"+id;
+	}else if(type ="comment"){
+		url = "${path}/article/addTrampleById/"+id;
+	}else ;
+	$.get(url,function(data){
+		var json = jQuery.parseJSON(data);
+		if(json.status > 0){
+			if(type == "article"){
+				$("#"+id+"_cai_article").html(json.status);
+			}else if(type ="comment"){
+				$("#"+id+"_cai_comment").html(json.status);
+			}else ;
+		}else{
+			alterMsg(json.msg);
+		}
+	});
+}
+function alterMsg(msg){
+	if(msg =="unlogin"){
+		alert("该操作需要先登录哦~亲！！");
+		location.href='${path}/user/signin';
+	}else if(msg =="addUsefulOrUseless_onOwn"){
+		alert("不能对自己发表的文章或者评论执行该操作哦~亲！！");
+	}else if(msg == "addUsefulOrUseless_again"){
+		alert("不能重复对文章或者评论执行该操作哦~亲！！");
+	}else if(msg == "addFailure"){
+		alert("服务器正忙，请稍后再试~");
+	}
+}
 </script>
 <script>
 	window._bd_share_config = {

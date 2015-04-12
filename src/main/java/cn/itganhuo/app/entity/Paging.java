@@ -65,7 +65,7 @@ public class Paging implements Serializable {
 	}
 
 	public Integer getOffrow() {
-		return (page - 1) * rows;
+		return offrow;
 	}
 
 	public void setOffrow(Integer offrow) {
