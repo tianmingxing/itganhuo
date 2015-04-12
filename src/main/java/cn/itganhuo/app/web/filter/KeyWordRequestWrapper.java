@@ -23,6 +23,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
+import cn.itganhuo.app.common.pool.ConstantPool;
 import org.apache.commons.lang.StringUtils;
 
 import cn.itganhuo.app.common.pool.KeywordPool;
@@ -100,10 +101,25 @@ public class KeyWordRequestWrapper extends HttpServletRequestWrapper {
 		String retStr = String.valueOf(str);
 		for (String key : KeywordPool.getKeys()) {
 			if (str.contains(key)) {
-				retStr = retStr.replaceAll(key, "*");
+				retStr = retStr.replaceAll(key, genStr(key.length()));
 			}
 		}
 		return retStr;
 	}
+
+    /**
+     * 生成对应字符个数的替换字符
+     * @param length 敏感字符长度
+     * @return 返回生成的替换字符
+     */
+    private String genStr(int length) {
+        String ret = "";
+        if (length > 0) {
+            for (int i = 0; i < length; i++) {
+                ret += ConstantPool.REPLACEMENT_CHARACTER;
+            }
+        }
+        return ret;
+    }
 
 }

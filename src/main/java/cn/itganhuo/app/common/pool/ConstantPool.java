@@ -78,5 +78,9 @@ public class ConstantPool {
      * 访问者标识，它的存在与否用来决定在会话期内是否统计文章访问量
      */
     public final static String VISITS_FLAG = "visits_flag";
+    /**
+     * 替换字符，用来在检测到敏感字符后进行替换
+     */
+    public final static String REPLACEMENT_CHARACTER = "*";
 
 }
