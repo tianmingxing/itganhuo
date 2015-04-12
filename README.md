@@ -74,7 +74,11 @@ File > Import > (Maven > Existring Maven Projects) > 选择项目所在路径即
 
 技术关键词
 ====
+<<<<<<< HEAD
 Spring frame, Spring MVC, Apache Shiro, MyBatis, MySql, maven, jetty, JavaMail, easyui, meituUI, freemarker, git, druid, (lucene or solr)
+=======
+springmvc, mybatis, shiro, maven, javamail， MVC, easyui, meituUI, (lucene or solr)
+>>>>>>> note
 
 开发者说
 ====
@@ -84,5 +88,8 @@ Spring frame, Spring MVC, Apache Shiro, MyBatis, MySql, maven, jetty, JavaMail, 
 最后祝各位身体健康，工作顺利，学业有成，万事如意！
 
 Thanks!
+<<<<<<< HEAD
 
+=======
+>>>>>>> note
 IT干货技术分享网:heart:开发团队
