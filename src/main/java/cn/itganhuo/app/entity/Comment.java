@@ -39,7 +39,7 @@ public class Comment implements Serializable {
 	/*
 	 * 用来记录文章的主键，前提是对评论点赞或点踩，根据TYPE来判断数据类型
 	 */
-	private Integer articleId;
+	private Integer objId;
 	/*
 	 * 评论发布人主键
 	 */
@@ -93,12 +93,12 @@ public class Comment implements Serializable {
 		this.type = type;
 	}
 
-	public Integer getArticleId() {
-		return articleId;
+	public Integer getObjId() {
+		return objId;
 	}
 
-	public void setArticleId(Integer articleId) {
-		this.articleId = articleId;
+	public void setObjId(Integer objId) {
+		this.objId = objId;
 	}
 
 	public String getContent() {
@@ -176,7 +176,7 @@ public class Comment implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Comment [id=" + id + ", userId=" + userId + ", type=" + type + ", articleId=" + articleId + ", content=" + content
+		return "Comment [id=" + id + ", userId=" + userId + ", type=" + type + ", objId=" + objId + ", content=" + content
 				+ ", postDate=" + postDate + ", praiseNum=" + praiseNum + ", trampleNum=" + trampleNum + ", user=" + user
 				+ ", replys=" + replys + "]";
 	}
