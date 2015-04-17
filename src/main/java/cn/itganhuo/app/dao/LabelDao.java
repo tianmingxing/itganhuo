@@ -73,4 +73,11 @@ public interface LabelDao {
 	 * @return
 	 */
 	public List<Map<String, String>> getLabelByCondition2(int userId);
+
+    /**
+     * 统计标签使用率最高的列表
+     * @param limit 返回列表最大行数
+     * @return
+     */
+    List<Label> queryPopularTags(int limit);
 }

@@ -1,61 +1,77 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.itganhuo.app.dao.LabelDao">
 
-	<cache />
+    <cache/>
 
-	<sql id="labelColumnLlist">
+    <sql id="labelColumnLlist">
 		id, userId, name, description, postDate,(SELECT COUNT(1) FROM t_attention b WHERE b.type = 1 AND b.labelId = a.`id`) AS attentionNumber
 	</sql>
 
-	<select id="getLabelByCondition" resultType="Label" parameterType="Label">
-		select
-		<include refid="labelColumnLlist" />
-		from t_label a
-		<where>
-			<if test="userId != null and userId != ''">a.userId = #{userId}</if>
-			<if test="name != null and name != ''">a.name like "%"#{name}"%"</if>
-			<if test="description != null and description != ''">a.description like "%"#{description}"%"</if>
-		</where>
-	</select>
+    <select id="getLabelByCondition" resultType="Label" parameterType="Label">
+        select
+        <include refid="labelColumnLlist"/>
+        from t_label a
+        <where>
+            <if test="userId != null and userId != ''">a.userId = #{userId}</if>
+            <if test="name != null and name != ''">a.name like "%"#{name}"%"</if>
+            <if test="description != null and description != ''">a.description like "%"#{description}"%"</if>
+        </where>
+    </select>
 
     <select id="getLabelByCondition2" resultType="Map" parameterType="int">
         SELECT a.*, (SELECT COUNT(1) FROM t_attention b WHERE b.userId = #{userId} AND b.type = 1 AND b.labelId = a.`id`) AS isAttention
         ,(SELECT COUNT(1) FROM t_attention b WHERE b.type = 1 AND b.labelId = a.`id`) AS attentionNumber
         FROM t_label a
     </select>
-	
-	<insert id="insert" parameterType="Label" useGeneratedKeys="true" keyProperty="id">
-		insert into t_label
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-			<if test="userId != null">userId,</if>
-			<if test="name != null">name,</if>
-			<if test="description != null">description,</if>
-			<if test="postDate != null">postDate,</if>
-		</trim>
-		<trim prefix="values (" suffix=")" suffixOverrides=",">
-			<if test="userId != null">#{userId},</if>
-			<if test="name != null">#{name},</if>
-			<if test="description != null">#{description},</if>
-			<if test="postDate != null">#{postDate},</if>
-		</trim>
-	</insert>
 
-	<delete id="delById" parameterType="Integer">
+    <insert id="insert" parameterType="Label" useGeneratedKeys="true" keyProperty="id">
+        insert into t_label
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">userId,</if>
+            <if test="name != null">name,</if>
+            <if test="description != null">description,</if>
+            <if test="postDate != null">postDate,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="name != null">#{name},</if>
+            <if test="description != null">#{description},</if>
+            <if test="postDate != null">#{postDate},</if>
+        </trim>
+    </insert>
+
+    <delete id="delById" parameterType="Integer">
 		delete from t_label where id = #{id}
 	</delete>
-	
-	<update id="updateById" parameterType="Label">
-		update t_label
-		<set>
-			<if test="userId != null">userId = #{userId},</if>
-			<if test="name != null">name = #{name},</if>
-			<if test="description != null">description = #{description},</if>
-			<if test="postDate != null">postDate = #{postDate},</if>
-		</set>
-		where id = #{id}
-	</update>
-	
+
+    <update id="updateById" parameterType="Label">
+        update t_label
+        <set>
+            <if test="userId != null">userId = #{userId},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="postDate != null">postDate = #{postDate},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="queryPopularTags" resultType="Label" parameterType="int">
+          SELECT
+              a.labelId,
+              COUNT(1) AS num,
+              b.`id`,
+              b.`name`,
+              b.`description`,
+              b.`postDate`
+            FROM
+              t_article_label AS a
+              LEFT JOIN t_label AS b
+                ON a.`labelId` = b.`id`
+            GROUP BY a.labelId
+            ORDER BY num DESC
+            LIMIT #{limit};
+	</select>
 </mapper>

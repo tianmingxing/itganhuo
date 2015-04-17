@@ -122,4 +122,18 @@ public interface LabelService {
      * @return 标签集合
      */
     public List<Map<String, String>> getLabelByCondition2(int userId);
+
+    /**
+     * <h2>统计标签使用率最高的列表，现在默认只查询前10个。</h2>
+     * <dl>
+     * <dt>功能描述</dt>
+     * <dd>无</dd>
+     * <dt>使用规范</dt>
+     * <dd>无</dd>
+     * </dl>
+     *
+     * @author 深圳-小兴
+     * @return 标签集合
+     */
+    List<Label> queryPopularTags(int limit);
 }

@@ -95,4 +95,10 @@ public class LabelServiceImpl implements LabelService {
         return labelDao.getLabelByCondition2(userId);
     }
 
+    @Override
+    public List<Label> queryPopularTags(int limit) {
+        limit = (limit == 0) ? 10 : limit;
+        return labelDao.queryPopularTags(limit);
+    }
+
 }

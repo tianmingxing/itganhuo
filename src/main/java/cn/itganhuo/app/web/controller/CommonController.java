@@ -269,6 +269,10 @@ public class CommonController {
                 ls.get(i).setArticles(articles);
             }
         }
+        //查询热门标签
+        List<Label> popularTags = labelService.queryPopularTags(10);
+
+        model.addAttribute("popularTags", popularTags);
         model.addAttribute("labels", ls);
         model.addAttribute("path", request.getContextPath());
         model.addAttribute("servletPath", request.getServletPath());

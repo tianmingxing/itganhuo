@@ -130,10 +130,12 @@ font-size: 13px;
         <div class="widget-box">
             <h2 class="h4 widget-box__title">热门标签</h2>
             <ul class="taglist--block">
+                <#list popularTags as tag>
              	<li class="mb10 tagPopup">
-                    <a href="/t/javascript/blogs" data-id="1040000000089436" class="tag" data-original-title="javascript">javascript</a>
-                    <span class="text-muted">× 973</span>
+                        <a href="${path}/articles/1/1/${tag.id}" data-id="1040000000089436" class="tag" data-original-title="javascript">${tag.name}</a>
+                        <span class="text-muted">× 973</span>
                 </li>
+                </#list>
             </ul>
 		</div> 
     </div>
