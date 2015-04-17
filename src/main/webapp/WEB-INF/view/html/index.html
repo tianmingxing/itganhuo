@@ -5,6 +5,13 @@
 <title>首页-IT干货技术分享网</title>
 <link rel="stylesheet" href="${path}/static/css/style.css" />
 <link rel="stylesheet" href="${path}/static/css/responsive.css" />
+<script type="text/javascript">
+    //当图片丢失时显示默认图片
+    function showErrImg(obj) {
+        var errorimg = "${path}/static/imgs/default_image.jpg";
+        obj.src = errorimg;
+    }
+</script>
 <style type="text/css">
 .tag {
 	padding-left: 7px;
@@ -81,7 +88,6 @@ font-size: 13px;
 }
 </style>
 </head>
-
 <body id="body">
 
 <#include "common/header1.html">
@@ -109,35 +115,44 @@ font-size: 13px;
 		    <h2 style="color: #D0021B;">工作经验分享平台</h2>
 		    <p>欢迎大家分享自己在工作中的经验，帮助更多的人最准确、便捷的找到自己想要的解决方案。</p>
 		    <ul class="list-unstyled">
-		        <li><a href="#" class="btn-sn-qq"><span class="icon-sn-qq"></span> QQ 账号登录</a></li>
-		        <li><a href="#" class="btn-sn-weibo"><span class="icon-sn-weibo"></span> 微博账号登录</a></li>
+		        <li><a href="javascript:;;" class="btn-sn-qq"><span class="icon-sn-qq"></span> QQ 账号登录</a></li>
 		    </ul>
 		</aside>
 		<div class="widget-box">
               <h2 class="h4 widget-box__title">热门作者</h2>
               <ul class="list-unstyled list-unstyled">
-               <li class="widget-user media">
-                   <a class="pull-left" href="/blog/seanlook">
-                       <img class="media-object avatar-40" src="http://sfault-avatar.b0.upaiyun.com/262/226/2622265737-54781334bc458_big64">
+                <#if popularAuthors??&&popularAuthors?size gt 0>
+                    <#list popularAuthors as map>
+                <li class="widget-user media">
+                   <a class="pull-left" href="javascript:;;">
+                       <img class="media-object avatar-40" src="${path}/static/upload/photos/${map['id']}.jpg"  alt="头像" onerror="showErrImg(this);" >
                    </a>
                    <div class="media-object">
-                       <strong><a href="/blog/seanlook">seanlook</a></strong>
-                       <p class="text-muted">最近获得 27 投票</p>
+                       <strong><a href="/blog/seanlook"><#if map['nickname'] != null>${map['nickname']}<#else>${map['account']}</#if></a></strong>
+                       <p class="text-muted">总共获得 ${map['num']} 人气</p>
                    </div>
                </li>
+                    </#list>
+                  <#else>
+                      <li class="widget-user media">还等什么？赶快分享吧！</li>
+                  </#if>
        		</ul>
         </div>
         <div class="widget-box">
             <h2 class="h4 widget-box__title">热门标签</h2>
             <ul class="taglist--block">
+                <#if popularTags?exists>
                 <#list popularTags as tag>
              	<li class="mb10 tagPopup">
-                        <a href="${path}/articles/1/1/${tag.id}" data-id="1040000000089436" class="tag" data-original-title="javascript">${tag.name}</a>
-                        <span class="text-muted">× 973</span>
+                    <a href="${path}/articles/1/1/${tag.id}" data-id="1040000000089436" class="tag" data-original-title="javascript">${tag.name}</a>
+                    <span class="text-muted">× 0</span>
                 </li>
                 </#list>
+                    <#else>
+                        <li class="mb10 tagPopup">这里是空的</li>
+                </#if>
             </ul>
-		</div> 
+		</div>
     </div>
 </div>
 
@@ -147,15 +162,15 @@ font-size: 13px;
 <script>
 	window._bd_share_config = {
 		common : {
-			bdText : 'IT干货技术分享网',	
-			bdDesc : '我发现了一个值得收藏的网站，它们是一家专注提供IT工作经验分享社区的网站',	
-			bdUrl : 'http://www.itganhuo.cn', 	
+			bdText : 'IT干货技术分享网',
+			bdDesc : '我发现了一个值得收藏的网站，它们是一家专注提供IT工作经验分享社区的网站',
+			bdUrl : 'http://www.itganhuo.cn',
 			bdPic : 'http://www.itganhuo.cn/static/imgs/default_image.jpg'
 		},
 		share : [{
 			"bdSize" : 16
 		}],
-		slide : [{	   
+		slide : [{
 			bdImg : 0,
 			bdPos : "right",
 			bdTop : 100

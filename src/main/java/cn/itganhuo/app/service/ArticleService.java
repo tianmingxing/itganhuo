@@ -169,4 +169,18 @@ public interface ArticleService {
      * @return 返回符合条件的总行数
      */
     public int countDynamicArticleRows(Map<String, Object> param);
+
+    /**
+     * <h2>统计最热门的作者列表，现在默认只查询前10个。</h2>
+     * <dl>
+     * <dt>功能描述</dt>
+     * <dd>计算规则：统计文章被点赞次数 + 文章被点踩次数 + 文章被浏览次数 + 文章主评论数量最高的列表。</dd>
+     * <dt>使用规范</dt>
+     * <dd>取值的时候要循环列表Map，并从中开始取值。</dd>
+     * </dl>
+     *
+     * @return Map集合
+     * @author 深圳-小兴
+     */
+    List<Map<String, Object>> queryPopularAuthors(int limit);
 }

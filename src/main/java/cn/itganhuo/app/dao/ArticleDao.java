@@ -171,4 +171,11 @@ public interface ArticleDao {
      * @return 返回文章总行数
      */
     public int countDynamicArticleRows(Map<String, Object> param);
+
+    /**
+     * 统计最热门的作者列表，现在默认只查询前10个。
+     * @param limit 返回列表最大行数
+     * @return
+     */
+    List<Map<String,Object>> queryPopularAuthors(int limit);
 }

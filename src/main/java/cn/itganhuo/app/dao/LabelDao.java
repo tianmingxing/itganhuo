@@ -80,4 +80,5 @@ public interface LabelDao {
      * @return
      */
     List<Label> queryPopularTags(int limit);
+
 }

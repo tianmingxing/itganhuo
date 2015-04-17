@@ -16,12 +16,11 @@
  */
 package cn.itganhuo.app.service;
 
-import java.util.List;
-import java.util.Map;
-
+import cn.itganhuo.app.entity.Label;
 import org.springframework.stereotype.Service;
 
-import cn.itganhuo.app.entity.Label;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <h2>标签服务层接口</h2>
@@ -31,80 +30,60 @@ import cn.itganhuo.app.entity.Label;
  * <dt>使用规范</dt>
  * <dd>无</dd>
  * </dl>
- * 
- * @version 0.0.1-SNAPSHOT
+ *
  * @author 深圳-小兴
+ * @version 0.0.1-SNAPSHOT
  */
 @Service
 public interface LabelService {
 
-	/**
-	 * <h2>保存一个标签</h2>
-	 * <dl>
-	 * <dt>功能描述</dt>
-	 * <dd>无</dd>
-	 * <dt>使用规范</dt>
-	 * <dd>无</dd>
-	 * </dl>
-	 * 
-	 * @version 0.0.1-SNAPSHOT
-	 * @author 深圳-小兴
-	 * @param label
-	 *            标签数据
-	 * @return 返回主键
-	 */
-	public int saveLabel(Label label);
+    /**
+     * <h2>保存一个标签</h2>
+     * <dl>
+     * <dt>功能描述</dt>
+     * <dd>无</dd>
+     * <dt>使用规范</dt>
+     * <dd>无</dd>
+     * </dl>
+     *
+     * @param label 标签数据
+     * @return 返回主键
+     * @version 0.0.1-SNAPSHOT
+     * @author 深圳-小兴
+     */
+    public int saveLabel(Label label);
 
-	/**
-	 * <h2>根据主键删除标签</h2>
-	 * <dl>
-	 * <dt>功能描述</dt>
-	 * <dd>无</dd>
-	 * <dt>使用规范</dt>
-	 * <dd>无</dd>
-	 * </dl>
-	 * 
-	 * @version 0.0.1-SNAPSHOT
-	 * @author 深圳-小兴
-	 * @param id
-	 *            标签主键
-	 * @return 删除成功返回true，否则返回false。
-	 */
-	public boolean delLabelById(int id);
+    /**
+     * <h2>根据主键删除标签</h2>
+     * <dl>
+     * <dt>功能描述</dt>
+     * <dd>无</dd>
+     * <dt>使用规范</dt>
+     * <dd>无</dd>
+     * </dl>
+     *
+     * @param id 标签主键
+     * @return 删除成功返回true，否则返回false。
+     * @version 0.0.1-SNAPSHOT
+     * @author 深圳-小兴
+     */
+    public boolean delLabelById(int id);
 
-	/**
-	 * <h2>根据主键修改标签</h2>
-	 * <dl>
-	 * <dt>功能描述</dt>
-	 * <dd>无</dd>
-	 * <dt>使用规范</dt>
-	 * <dd>无</dd>
-	 * </dl>
-	 * 
-	 * @version 0.0.1-SNAPSHOT
-	 * @author 深圳-小兴
-	 * @param label
-	 *            标签数据
-	 * @return 修改成功返回true，否则返回false。
-	 */
-	public boolean updateLabelById(Label label);
-
-	/**
-	 * <h2>按条件查询标签列表</h2>
-	 * <dl>
-	 * <dt>功能描述</dt>
-	 * <dd>无</dd>
-	 * <dt>使用规范</dt>
-	 * <dd>无</dd>
-	 * </dl>
-	 * 
-	 * @version 0.0.1-SNAPSHOT
-	 * @author 深圳-小兴
-	 * @param label
-	 *            查询条件
-	 * @return 标签集合
-	 */
-	public List<Label> getLabelByCondition(Label label);
+    /**
+     * <h2>根据主键修改标签</h2>
+     * <dl>
+     * <dt>功能描述</dt>
+     * <dd>无</dd>
+     * <dt>使用规范</dt>
+     * <dd>无</dd>
+     * </dl>
+     *
+     * @param label 标签数据
+     * @return 修改成功返回true，否则返回false。
+     * @version 0.0.1-SNAPSHOT
+     * @author 深圳-小兴
+     */
+    public boolean updateLabelById(Label label);
 
     /**
      * <h2>按条件查询标签列表</h2>
@@ -115,11 +94,26 @@ public interface LabelService {
      * <dd>无</dd>
      * </dl>
      *
+     * @param label 查询条件
+     * @return 标签集合
      * @version 0.0.1-SNAPSHOT
      * @author 深圳-小兴
-     * @param userId
-     *            当前用户编号
+     */
+    public List<Label> getLabelByCondition(Label label);
+
+    /**
+     * <h2>按条件查询标签列表</h2>
+     * <dl>
+     * <dt>功能描述</dt>
+     * <dd>无</dd>
+     * <dt>使用规范</dt>
+     * <dd>无</dd>
+     * </dl>
+     *
+     * @param userId 当前用户编号
      * @return 标签集合
+     * @version 0.0.1-SNAPSHOT
+     * @author 深圳-小兴
      */
     public List<Map<String, String>> getLabelByCondition2(int userId);
 
@@ -132,8 +126,9 @@ public interface LabelService {
      * <dd>无</dd>
      * </dl>
      *
-     * @author 深圳-小兴
      * @return 标签集合
+     * @author 深圳-小兴
      */
     List<Label> queryPopularTags(int limit);
+
 }

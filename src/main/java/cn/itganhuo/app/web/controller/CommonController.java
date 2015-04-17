@@ -271,7 +271,9 @@ public class CommonController {
         }
         //查询热门标签
         List<Label> popularTags = labelService.queryPopularTags(10);
-
+        //查询热门作者
+        List<Map<String, Object>> popularAuthors = articleService.queryPopularAuthors(10);
+        model.addAttribute("popularAuthors", popularAuthors);
         model.addAttribute("popularTags", popularTags);
         model.addAttribute("labels", ls);
         model.addAttribute("path", request.getContextPath());
