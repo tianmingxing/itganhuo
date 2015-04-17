@@ -1,6 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<meta property="qc:admins" content="5404206507614716057636" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>首页-IT干货技术分享网</title>
 <link rel="stylesheet" href="${path}/static/css/style.css" />
@@ -115,7 +116,7 @@ font-size: 13px;
 		    <h2 style="color: #D0021B;">工作经验分享平台</h2>
 		    <p>欢迎大家分享自己在工作中的经验，帮助更多的人最准确、便捷的找到自己想要的解决方案。</p>
 		    <ul class="list-unstyled">
-		        <li><a href="javascript:;;" class="btn-sn-qq"><span class="icon-sn-qq"></span> QQ 账号登录</a></li>
+		        <li><span id="qqLoginBtn"></span></li>
 		    </ul>
 		</aside>
 		<div class="widget-box">
@@ -128,7 +129,7 @@ font-size: 13px;
                        <img class="media-object avatar-40" src="${path}/static/upload/photos/${map['id']}.jpg"  alt="头像" onerror="showErrImg(this);" >
                    </a>
                    <div class="media-object">
-                       <strong><a href="/blog/seanlook"><#if map['nickname'] != null>${map['nickname']}<#else>${map['account']}</#if></a></strong>
+                       <strong><a href="javascript:;;"><#if map['nickname'] != null>${map['nickname']}<#else>${map['account']}</#if></a></strong>
                        <p class="text-muted">总共获得 ${map['num']} 人气</p>
                    </div>
                </li>
@@ -159,6 +160,29 @@ font-size: 13px;
 <#include "common/footer.html">
 
 </body>
+<script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" data-appid="101210014" data-redirecturi="http://www.itganhuo.cn" charset="utf-8"></script>
+<script type="text/javascript">
+    QC.Login({
+        btnId:"qqLoginBtn",
+        size: "A_M"
+    }, function(reqData, opts){
+        QC.Login.getMe(function(openId, accessToken) {
+            // 往数据库中查询信息是否存在
+            jQuery.post('${path}/user/qqSignin', {'openId':openId, 'accessToken':accessToken}, function(data){
+                //查询信息是否存在，如果有则帮助用户自动登录否则跳转到信息绑定页面。
+                if (data.status == '0000') {
+                    window.location.reload();
+                } else if (data.status == '1000') {
+                    window.location.href = "/user/bind";
+                } else {
+                    alert(data.message);
+                }
+            });
+        });
+    },function(opts){
+        alert('注销成功');
+    });
+</script>
 <script>
 	window._bd_share_config = {
 		common : {

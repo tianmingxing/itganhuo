@@ -26,11 +26,13 @@
 		<result property="emailValidateCode" column="emailValidateCode" />
 		<result property="emailValidateDate" column="emailValidateDate" />
 		<result property="credits" column="credits" />
+		<result property="openid" column="openid" />
+		<result property="accessToken" column="accessToken" />
 	</resultMap>
 
 	<sql id="userColumnList">
 		id, account, password, salt, isLock, nickname, sex, email, qq, phone, tel, postDate, type, lastLoginIp, lastLoginDate, isValidateEmail,
-		emailValidateCode, emailValidateDate, credits
+		emailValidateCode, emailValidateDate, credits, openid, accessToken
 	</sql>
 
 	<insert id="insert" parameterType="User" useGeneratedKeys="true" keyProperty="id">
@@ -54,6 +56,8 @@
 			<if test="emailValidateCode != null">emailValidateCode,</if>
 			<if test="emailValidateDate != null">emailValidateDate,</if>
 			<if test="credits != null">credits,</if>
+			<if test="openid != null">openid,</if>
+			<if test="accessToken != null">accessToken,</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="account != null">#{account},</if>
@@ -74,6 +78,8 @@
 			<if test="emailValidateCode != null">#{emailValidateCode},</if>
 			<if test="emailValidateDate != null">#{emailValidateDate},</if>
 			<if test="credits != null">#{credits},</if>
+			<if test="openid != null">#{openid},</if>
+			<if test="accessToken != null">#{accessToken},</if>
 		</trim>
 	</insert>
 

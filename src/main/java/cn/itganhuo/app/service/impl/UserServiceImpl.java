@@ -138,4 +138,9 @@ public class UserServiceImpl implements UserService {
 		return map;
 	}
 
+    @Override
+    public User loadbyOpenId(String openId) {
+        return userDao.loadbyOpenId(openId);
+    }
+
 }

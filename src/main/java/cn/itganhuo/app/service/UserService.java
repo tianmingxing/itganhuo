@@ -106,4 +106,14 @@ public interface UserService {
 	 */
 	public Map<String, List<Object>> getUserList(Map<Object, Object> condition);
 
+    /**
+     * <h2>根据身份编号查询用户列表信息</h2>
+     *
+     * @version 0.0.1-SNAPSHOT
+     * @author 深圳-小兴
+     * @param openId 身份编号
+     * @return 经过筛选后的用户集合
+     */
+    User loadbyOpenId(String openId);
+
 }

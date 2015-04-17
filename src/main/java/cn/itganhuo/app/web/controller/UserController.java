@@ -284,6 +284,39 @@ public class UserController {
 		return respMsg;
 	}
 
+    /**
+     * 通过第三方QQ完成登录功能
+     *
+     * @version 0.0.1-SNAPSHOT
+     * @author 深圳-小兴
+     * @return 返回登录状态码
+     */
+    @Transactional
+    @RequestMapping(value = "/qqSignin", method = RequestMethod.POST)
+    @ResponseBody
+    public RespMsg qqSignin(@RequestParam String openId, @RequestParam String accessToken) {
+        RespMsg respMsg = new RespMsg();
+        //如果唯一用户编号存在则给用户自动登录
+        User user = userService.loadbyOpenId(openId);
+        if (user == null) {
+            respMsg.setStatus("1000");
+            respMsg.setMessage("用户未绑定过信息");
+            return respMsg;
+        }
+        Subject current_user = SecurityUtils.getSubject();
+        // 判断当前用户是否已经登录过，避免重新为它登录。
+        if (!current_user.isAuthenticated()) {
+            // 组织登录参数
+            UsernamePasswordToken token = new UsernamePasswordToken(user.getAccount(), openId);
+            token.setRememberMe(true);
+            // 用户登录
+            current_user.login(token);
+            // 登录成功后将用户信息放到HTTP会话中
+            current_user.getSession().setAttribute(ConstantPool.USER_SHIRO_SESSION_ID, user);
+        }
+        return respMsg;
+    }
+
 	/**
 	 * 进入用户中心页面
 	 * 
@@ -773,5 +806,14 @@ public class UserController {
         } else {
             return "redirect:/user/signin";
         }
+    }
+
+    /**
+     * 通过第三方登录后进入用户信息绑定页面
+     * @return
+     */
+    @RequestMapping(value = "/bind", method = RequestMethod.GET)
+    public String refurlInfoBind() {
+        return "user/bind";
     }
 }

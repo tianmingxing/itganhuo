@@ -19,6 +19,7 @@ package cn.itganhuo.app.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
@@ -134,4 +135,11 @@ public interface UserDao {
 	 */
 	public int countUserList(Map<Object, Object> condition);
 
+    /**
+     * 根据openId查询一名用户信息
+     * @param openId
+     * @return
+     */
+    @Select("select * from t_user openId = #{openId}")
+    User loadbyOpenId(String openId);
 }

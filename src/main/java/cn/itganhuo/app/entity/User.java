@@ -20,280 +20,315 @@ import java.io.Serializable;
 
 /**
  * 用户数据封装类
- * 
- * @version 0.0.1-SNAPSHOT
+ *
  * @author 深圳-小兴
+ * @version 0.0.1-SNAPSHOT
  */
 public class User implements Serializable {
 
-	private static final long serialVersionUID = -5147036028865697127L;
-	/*
-	 * ID
-	 */
-	private Integer id;
-	/*
-	 * 登录账户
-	 */
-	private String account;
-	/*
-	 * 登录密码
-	 */
-	private String password;
-	/*
-	 * 密码加盐字段
-	 */
-	private String salt;
-	/*
-	 * 账号是否锁定，默认新注册账号是锁定状态（0不锁定，1锁定）
-	 */
-	private Integer isLock;
-	/*
-	 * 昵称
-	 */
-	private String nickname;
-	/*
-	 * 性别（1男，2女，3保密）
-	 */
-	private Integer sex;
-	/*
-	 * 邮箱地址
-	 */
-	private String email;
-	/*
-	 * QQ
-	 */
-	private Integer qq;
-	/*
-	 * 手机
-	 */
-	private String phone;
-	/*
-	 * 座机
-	 */
-	private String tel;
-	/*
-	 * 账号注册时间
-	 */
-	private String postDate;
-	/*
-	 * 账号类型（1会员，999管理员）
-	 */
-	private Integer type = 1;
-	/*
-	 * 账号最后登录时的IP地址
-	 */
-	private String lastLoginIp;
-	/*
-	 * 账号最后一次登录时间
-	 */
-	private String lastLoginDate;
-	/*
-	 * 邮箱地址是否认证（0未认证，1已认证）
-	 */
-	private Integer isValidateEmail;
-	/*
-	 * 邮箱认证码
-	 */
-	private String emailValidateCode;
-	/*
-	 * 邮箱认证开始时间，如果认证成功则修改为验证成功时的时间。
-	 */
-	private String emailValidateDate;
-	/*
-	 * 用户积分
-	 */
-	private Double credits;
+    private static final long serialVersionUID = -5147036028865697127L;
+    /**
+     * ID
+     */
+    private Integer id;
+    /**
+     * 登录账户
+     */
+    private String account;
+    /**
+     * 登录密码
+     */
+    private String password;
+    /**
+     * 密码加盐字段
+     */
+    private String salt;
+    /**
+     * 账号是否锁定，默认新注册账号是锁定状态（0不锁定，1锁定）
+     */
+    private Integer isLock;
+    /**
+     * 昵称
+     */
+    private String nickname;
+    /**
+     * 性别（1男，2女，3保密）
+     */
+    private Integer sex;
+    /**
+     * 邮箱地址
+     */
+    private String email;
+    /**
+     * QQ
+     */
+    private Integer qq;
+    /**
+     * 手机
+     */
+    private String phone;
+    /**
+     * 座机
+     */
+    private String tel;
+    /**
+     * 账号注册时间
+     */
+    private String postDate;
+    /**
+     * 账号类型（1会员，999管理员）
+     */
+    private Integer type = 1;
+    /**
+     * 账号最后登录时的IP地址
+     */
+    private String lastLoginIp;
+    /**
+     * 账号最后一次登录时间
+     */
+    private String lastLoginDate;
+    /**
+     * 邮箱地址是否认证（0未认证，1已认证）
+     */
+    private Integer isValidateEmail;
+    /**
+     * 邮箱认证码
+     */
+    private String emailValidateCode;
+    /**
+     * 邮箱认证开始时间，如果认证成功则修改为验证成功时的时间。
+     */
+    private String emailValidateDate;
+    /**
+     * 用户积分
+     */
+    private Double credits;
+    /**
+     * QQ唯一对应用户身份的标识
+     */
+    private String openid;
+    /**
+     * QQ用户访问者标识，有效期三个月
+     */
+    private String accessToken;
 
-	public Double getCredits() {
-		return credits;
-	}
+    public Double getCredits() {
+        return credits;
+    }
 
-	public void setCredits(Double credits) {
-		this.credits = credits;
-	}
+    public void setCredits(Double credits) {
+        this.credits = credits;
+    }
 
-	public Integer getId() {
-		return id;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public String getAccount() {
-		return account;
-	}
+    public String getAccount() {
+        return account;
+    }
 
-	public void setAccount(String account) {
-		this.account = account;
-	}
+    public void setAccount(String account) {
+        this.account = account;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public String getSalt() {
-		return salt;
-	}
+    public String getSalt() {
+        return salt;
+    }
 
-	public void setSalt(String salt) {
-		this.salt = salt;
-	}
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
 
-	
+    public Integer getIsLock() {
+        return isLock;
+    }
 
-	public Integer getIsLock() {
-		return isLock;
-	}
+    public void setIsLock(Integer isLock) {
+        this.isLock = isLock;
+    }
 
-	public void setIsLock(Integer isLock) {
-		this.isLock = isLock;
-	}
+    public String getNickname() {
+        return nickname;
+    }
 
-	public String getNickname() {
-		return nickname;
-	}
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
 
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
-	}
+    public Integer getSex() {
+        return sex;
+    }
 
-	public Integer getSex() {
-		return sex;
-	}
+    public void setSex(Integer sex) {
+        this.sex = sex;
+    }
 
-	public void setSex(Integer sex) {
-		this.sex = sex;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public Integer getQq() {
+        return qq;
+    }
 
-	public Integer getQq() {
-		return qq;
-	}
+    public void setQq(Integer qq) {
+        this.qq = qq;
+    }
 
-	public void setQq(Integer qq) {
-		this.qq = qq;
-	}
+    public String getPhone() {
+        return phone;
+    }
 
-	public String getPhone() {
-		return phone;
-	}
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
+    public String getTel() {
+        return tel;
+    }
 
-	public String getTel() {
-		return tel;
-	}
+    public void setTel(String tel) {
+        this.tel = tel;
+    }
 
-	public void setTel(String tel) {
-		this.tel = tel;
-	}
+    public String getPostDate() {
+        return postDate;
+    }
 
-	public String getPostDate() {
-		return postDate;
-	}
+    public void setPostDate(String postDate) {
+        this.postDate = postDate;
+    }
 
-	public void setPostDate(String postDate) {
-		this.postDate = postDate;
-	}
+    public Integer getType() {
+        return type;
+    }
 
-	public Integer getType() {
-		return type;
-	}
+    public void setType(Integer type) {
+        this.type = type;
+    }
 
-	public void setType(Integer type) {
-		this.type = type;
-	}
+    public String getLastLoginIp() {
+        return lastLoginIp;
+    }
 
-	public String getLastLoginIp() {
-		return lastLoginIp;
-	}
+    public void setLastLoginIp(String lastLoginIp) {
+        this.lastLoginIp = lastLoginIp;
+    }
 
-	public void setLastLoginIp(String lastLoginIp) {
-		this.lastLoginIp = lastLoginIp;
-	}
+    public String getLastLoginDate() {
+        return lastLoginDate;
+    }
 
-	public String getLastLoginDate() {
-		return lastLoginDate;
-	}
+    public void setLastLoginDate(String lastLoginDate) {
+        this.lastLoginDate = lastLoginDate;
+    }
 
-	public void setLastLoginDate(String lastLoginDate) {
-		this.lastLoginDate = lastLoginDate;
-	}
+    public Integer getIsValidateEmail() {
+        return isValidateEmail;
+    }
 
-	public Integer getIsValidateEmail() {
-		return isValidateEmail;
-	}
+    public void setIsValidateEmail(Integer isValidateEmail) {
+        this.isValidateEmail = isValidateEmail;
+    }
 
-	public void setIsValidateEmail(Integer isValidateEmail) {
-		this.isValidateEmail = isValidateEmail;
-	}
+    public String getEmailValidateCode() {
+        return emailValidateCode;
+    }
 
-	public String getEmailValidateCode() {
-		return emailValidateCode;
-	}
+    public void setEmailValidateCode(String emailValidateCode) {
+        this.emailValidateCode = emailValidateCode;
+    }
 
-	public void setEmailValidateCode(String emailValidateCode) {
-		this.emailValidateCode = emailValidateCode;
-	}
+    public String getEmailValidateDate() {
+        return emailValidateDate;
+    }
 
-	public String getEmailValidateDate() {
-		return emailValidateDate;
-	}
+    public void setEmailValidateDate(String emailValidateDate) {
+        this.emailValidateDate = emailValidateDate;
+    }
 
-	public void setEmailValidateDate(String emailValidateDate) {
-		this.emailValidateDate = emailValidateDate;
-	}
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", account='" + account + '\'' +
+                ", salt='" + salt + '\'' +
+                ", isLock=" + isLock +
+                ", nickname='" + nickname + '\'' +
+                ", sex=" + sex +
+                ", email='" + email + '\'' +
+                ", qq=" + qq +
+                ", phone='" + phone + '\'' +
+                ", tel='" + tel + '\'' +
+                ", postDate='" + postDate + '\'' +
+                ", type=" + type +
+                ", lastLoginIp='" + lastLoginIp + '\'' +
+                ", lastLoginDate='" + lastLoginDate + '\'' +
+                ", isValidateEmail=" + isValidateEmail +
+                ", emailValidateCode='" + emailValidateCode + '\'' +
+                ", emailValidateDate='" + emailValidateDate + '\'' +
+                ", credits=" + credits +
+                ", openid='" + openid + '\'' +
+                ", accessToken='" + accessToken + '\'' +
+                '}';
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
+    public String getOpenid() {
+        return openid;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		User other = (User) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
-	}
+    public void setOpenid(String openid) {
+        this.openid = openid;
+    }
 
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", account=" + account + ", password="
-				+ password + ", salt=" + salt + ", isLock=" + isLock
-				+ ", nickname=" + nickname + ", sex=" + sex + ", email="
-				+ email + ", qq=" + qq + ", phone=" + phone + ", tel=" + tel
-				+ ", postDate=" + postDate + ", type=" + type
-				+ ", lastLoginIp=" + lastLoginIp + ", lastLoginDate="
-				+ lastLoginDate + ", isValidateEmail=" + isValidateEmail
-				+ ", emailValidateCode=" + emailValidateCode
-				+ ", emailValidateDate=" + emailValidateDate + ", credits" + credits + "]";
-	}
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        User other = (User) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
+    }
 
 }

@@ -54,10 +54,11 @@
 	    <property name="unauthorizedUrl" value="/unauthorized"/>
 	    <property name="filterChainDefinitions">
 	        <value>
-	            /admin/** = authc,roles[admin]
+	            /admin/** = authc
 	            /druid/** = authc,roles[admin]
 	            /logout/** = logout
-	            /user/register = anon
+	            /user/qqSignin = anon
+                /user/register = anon
 	            /user/signin = anon
 	            /user/share = authc
 	            /user/comment = authc
