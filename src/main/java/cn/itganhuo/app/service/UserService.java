@@ -24,6 +24,7 @@ import org.apache.shiro.authc.AuthenticationException;
 
 import cn.itganhuo.app.entity.User;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -139,4 +140,10 @@ public interface UserService {
      * @return 返回处理状态
      */
     public RespMsg qqSignin(int type, User user, HttpServletRequest request, HttpServletResponse response);
+
+    /**
+     * 进入会员中心主页，本方法主要是查询首页上的数据。
+     * @return
+     */
+    public ModelAndView center();
 }

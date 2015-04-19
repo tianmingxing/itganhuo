@@ -16,14 +16,16 @@
  */
 package cn.itganhuo.app.web.controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
+import cn.itganhuo.app.common.page.Pagination;
+import cn.itganhuo.app.common.pool.ConfigPool;
+import cn.itganhuo.app.common.pool.ConstantPool;
+import cn.itganhuo.app.common.utils.DateUtil;
+import cn.itganhuo.app.common.utils.StringUtil;
 import cn.itganhuo.app.entity.*;
+import cn.itganhuo.app.service.ArticleService;
 import cn.itganhuo.app.service.AttentionService;
+import cn.itganhuo.app.service.CommentService;
+import cn.itganhuo.app.service.ReplyService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
@@ -32,22 +34,13 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import cn.itganhuo.app.common.page.Pagination;
-import cn.itganhuo.app.common.pool.ConfigPool;
-import cn.itganhuo.app.common.pool.ConstantPool;
-import cn.itganhuo.app.common.utils.DateUtil;
-import cn.itganhuo.app.common.utils.StringUtil;
-import cn.itganhuo.app.service.ArticleService;
-import cn.itganhuo.app.service.CommentService;
-import cn.itganhuo.app.service.ReplyService;
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <h2>文章类请求控制器</h2>
@@ -74,6 +67,7 @@ public class ArticleController {
     private ReplyService replyService;
     @Autowired
     private AttentionService attentionService;
+
 
     /**
      * <h2>文章列表页</h2>
@@ -217,35 +211,7 @@ public class ArticleController {
      */
     @RequestMapping(value = "/article/{ymd}/{id}", method = RequestMethod.GET)
     public ModelAndView getArticleById(@PathVariable(value = "ymd") String ymd, @PathVariable(value = "id") Integer id, HttpServletRequest request) {
-        ModelAndView mav = new ModelAndView();
-        // 查询文章详细信息，包括作者、补充、补充人信息、评论、评论人信息、回复、回复人信息、标签
-        Map<String, Object> param = new HashMap<String, Object>();
-        param.put("id", id);
-        param.put("ymd", ymd);
-        Article article_detail = articleService.getArticleDetailById(param);
-        if (article_detail != null && article_detail.getId() > 0) {
-            // 统计并更新文章访问人数，同一个会话期内只统计一次。
-            Object obj = request.getSession().getAttribute(ConstantPool.VISITS_FLAG);
-            if (obj == null) {
-                articleService.addVisitorNumById(id);
-            }
-
-            // 获取当前登录用户信息
-            Subject current_user = SecurityUtils.getSubject();
-            User user = (User) current_user.getSession().getAttribute(ConstantPool.USER_SHIRO_SESSION_ID);
-
-            // 查询当前文章相关联的其它文章
-            List<Article> related_article = articleService.getSameLabelArticleById(id);
-
-            // 返回封装数据到控制器
-            mav.addObject("article", article_detail);
-            mav.addObject("user", user);
-            mav.addObject("path", request.getContextPath());
-            mav.addObject("related_article", related_article);
-            mav.setViewName("article_detail");
-        } else {
-            mav.setViewName("error/error");
-        }
+        ModelAndView mav = articleService.getArticleById(ymd, id, request);
         return mav;
     }
 
@@ -378,28 +344,7 @@ public class ArticleController {
     @RequestMapping(value = "/article/saveAttentionInfo", method = RequestMethod.POST)
     @ResponseBody
     public RespMsg saveAttentionInfo(Attention attention) {
-        RespMsg respMsg = new RespMsg();
-        Subject current_user = SecurityUtils.getSubject();
-        User user_model = (User) current_user.getSession().getAttribute(ConstantPool.USER_SHIRO_SESSION_ID);
-        if (user_model != null) {
-            // 判断用户是否有关注过该标签
-            Map<String, Object> param = new HashMap<String, Object>();
-            param.put("userId", user_model.getId());
-            param.put("labelId", attention.getLabelId());
-            List<Attention> attentions = attentionService.find(param);
-            if (attentions == null || attentions.size() == 0) {
-                attention.setUserId(user_model.getId());
-                if (!attentionService.save(attention)) {
-                    respMsg.setStatus("9999");
-                    respMsg.setMessage(ConfigPool.getString("respMsg.attention.SaveConcernInfoFailed"));
-                }
-            } else {
-                respMsg.setStatus("2000");
-                respMsg.setMessage(ConfigPool.getString("respMsg.attention.YouBeenConcernedAboutLabel"));
-            }
-        } else {
-            respMsg.setStatus("1000");
-        }
+        RespMsg respMsg = attentionService.saveAttentionInfo(attention);
         return respMsg;
     }
 

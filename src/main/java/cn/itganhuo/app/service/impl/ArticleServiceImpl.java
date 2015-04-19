@@ -16,18 +16,26 @@
  */
 package cn.itganhuo.app.service.impl;
 
+import cn.itganhuo.app.common.pool.ConfigPool;
+import cn.itganhuo.app.common.pool.ConstantPool;
 import cn.itganhuo.app.common.utils.DateUtil;
 import cn.itganhuo.app.common.utils.StringUtil;
 import cn.itganhuo.app.dao.ArticleDao;
 import cn.itganhuo.app.dao.ArticleLabelDao;
-import cn.itganhuo.app.entity.Article;
-import cn.itganhuo.app.entity.ArticleLabel;
+import cn.itganhuo.app.dao.AttentionDao;
+import cn.itganhuo.app.entity.*;
 import cn.itganhuo.app.service.ArticleService;
+import cn.itganhuo.app.service.AttentionService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -40,6 +48,10 @@ public class ArticleServiceImpl implements ArticleService {
     private ArticleDao articleDao;
     @Autowired
     private ArticleLabelDao articleLabelDao;
+    @Autowired
+    private AttentionService attentionService;
+    @Autowired
+    private AttentionDao attentionDao;
 
     /* (non-Javadoc)
      * @see cn.itganhuo.app.service.ArticleService#findArticleByCondition(java.util.Map)
@@ -172,6 +184,54 @@ public class ArticleServiceImpl implements ArticleService {
     public List<Map<String, Object>> queryPopularAuthors(int limit) {
         limit = (limit == 0) ? 10 : limit;
         return articleDao.queryPopularAuthors(limit);
+    }
+
+    @Override
+    public ModelAndView getArticleById(String ymd, Integer id, HttpServletRequest request) {
+        ModelAndView mav = new ModelAndView();
+        // 查询文章详细信息，包括作者、补充、补充人信息、评论、评论人信息、回复、回复人信息、标签
+        Map<String, Object> param = new HashMap<String, Object>();
+        param.put("id", id);
+        param.put("ymd", ymd);
+        Article article_detail = this.getArticleDetailById(param);
+        if (article_detail != null && article_detail.getId() > 0) {
+            // 统计并更新文章访问人数，同一个会话期内只统计一次。
+            Object obj = request.getSession().getAttribute(ConstantPool.VISITS_FLAG);
+            if (obj == null) {
+                this.addVisitorNumById(id);
+                request.getSession().setAttribute(ConstantPool.VISITS_FLAG, 1);
+            }
+
+            // 获取当前登录用户信息
+            Subject current_user = SecurityUtils.getSubject();
+            User user = (User) current_user.getSession().getAttribute(ConstantPool.USER_SHIRO_SESSION_ID);
+
+            // 查询当前文章相关联的其它文章
+            List<Article> related_article = this.getSameLabelArticleById(id);
+
+            //统计该文章收藏数量
+            Map<String, String> param2 = new HashMap<String, String>();
+            param2.put("articleId", String.valueOf(id));
+            param2.put("type", String.valueOf(3));
+            int collectionNumber = attentionDao.countAttentionByCondition(param2);
+
+            //统计当前作者话题数量
+            param.put("userId", article_detail.getUserId());
+            int articleNumber = articleDao.countArticleRows(param);
+
+
+            // 返回封装数据到控制器
+            mav.addObject("articleNumber", articleNumber);
+            mav.addObject("collectionNumber", collectionNumber);
+            mav.addObject("article", article_detail);
+            mav.addObject("user", user);
+            mav.addObject("path", request.getContextPath());
+            mav.addObject("related_article", related_article);
+            mav.setViewName("article_detail");
+        } else {
+            mav.setViewName("error/error");
+        }
+        return mav;
     }
 
 }

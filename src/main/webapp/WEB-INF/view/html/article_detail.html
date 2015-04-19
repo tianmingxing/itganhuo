@@ -29,7 +29,7 @@ function showErrImg(obj) {
                     <div class="post-cell">
                         <a href="javascript:appraise('2', '${article.id}');" class="post-big-vote"><span id="${article.id}_zan_article">${article.praiseNum}</span>赞</a>
                         <a href="javascript:appraise('3', '${article.id}');" class="post-big-hate" data-toggle="tooltip" data-placement="right" rel="tooltip" title="谨慎使用"><span id="${article.id}_cai_article">${article.trampleNum}</span>踩</a>
-                        <a href="javascript:;;" class="post-fav" data-toggle="tooltip" data-placement="right" rel="tooltip" title="关注并收藏">收藏</a>
+                        <a href="javascript:addAttention('${article.id}');" class="post-fav" data-toggle="tooltip" data-placement="right" rel="tooltip" title="关注并收藏">收藏</a>
                     </div>
                     <div class="fmt post-content">
                         <p>${article.content}</p>
@@ -42,7 +42,7 @@ function showErrImg(obj) {
                                     <a href="${path}/user/${article.user.account}" tabindex="-1"><img class="avatar-32" src="${path}/static/upload/photos/${article.user.id}.jpg" alt="${article.user.account}" onerror="showErrImg(this);"/></a>
                                 </td>
                                 <td class="post-author">
-                                    <h4><a href="${path}/user/${article.user.account}">${article.user.account}</a><strong>6</strong></h4>${article.postDate}<br />
+                                    <h4><a href="${path}/user/${article.user.account}">${article.user.account}</a><strong>${articleNumber}</strong></h4>${article.postDate}<br />
                                 </td>
                             </tr>
                         </table>
@@ -143,7 +143,7 @@ function showErrImg(obj) {
             <aside class="q-info">
                 <ul class="hor-count">
                     <li><strong>${article.visitorNum}</strong>浏览数</li>
-                    <li><strong>0</strong>收藏数</li>
+                    <li><strong>${collectionNumber}</strong>收藏数</li>
                 </ul>
             </aside>
 
@@ -236,7 +236,22 @@ function appraise(type, id) {
         }
     },"json");
 }
-
+function addAttention(id) {
+    if (id == null || id == '') {
+        alert('没有获取到文章编号请刷新页面后重试。');
+        return;
+    }
+    $.post('${path}/article/saveAttentionInfo', {type: 3, articleId: id}, function (data) {
+//        var json = $.parseJSON(data);
+        if (data.status == '0000') {
+            alert('收藏成功');
+        } else if (data.status == '1000') {
+            window.location.href = '${path}/user/signin';
+        } else {
+            alert(data.message);
+        }
+    },"json");
+}
 </script>
 <script>
 	window._bd_share_config = {

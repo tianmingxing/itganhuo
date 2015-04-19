@@ -19,16 +19,18 @@ package cn.itganhuo.app.entity;
 import java.io.Serializable;
 
 /**
- * 关注数据封装类：共有两种关注类型，一是可以关注标签，二是可以关注其它用户。
+ * 关注数据封装类：共有两种关注类型，一是可以关注标签，二是可以关注其它用户，三是收藏文章。
  * Created by 小兴 on 2015/3/22.
  */
 public class Attention implements Serializable {
 
+    private static final long serialVersionUID = -7494419104468878801L;
     private Integer id;
     private Integer type;
     private Integer userId;
     private Integer labelId;
     private Integer byUserId;
+    private Integer articleId;
     private String postDate;
 
     public Integer getId() {
@@ -79,6 +81,14 @@ public class Attention implements Serializable {
         this.postDate = postDate;
     }
 
+    public Integer getArticleId() {
+        return articleId;
+    }
+
+    public void setArticleId(Integer articleId) {
+        this.articleId = articleId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -104,6 +114,7 @@ public class Attention implements Serializable {
                 ", userId=" + userId +
                 ", labelId=" + labelId +
                 ", byUserId=" + byUserId +
+                ", articleId=" + articleId +
                 ", postDate='" + postDate + '\'' +
                 '}';
     }

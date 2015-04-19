@@ -8,13 +8,28 @@
 
     <select id="find" resultType="Attention" parameterType="Map">
         select
-        id, type, userId, labelId, byUserId, postDate
+        id, `type`, userId, labelId, byUserId, articleId, postDate
         from t_attention
         <where>
             <trim suffixOverrides="and">
                 <if test="userId != null and userId != ''">userId = #{userId} AND</if>
                 <if test="labelId != null and labelId != ''">labelId = #{labelId} AND</if>
                 <if test="byUserId != null and byUserId != ''">byUserId = #{byUserId} AND</if>
+                <if test="articleId != null and articleId != ''">articleId = #{articleId} AND</if>
+            </trim>
+        </where>
+    </select>
+
+    <select id="countAttentionByCondition" resultType="int" parameterType="Map">
+        select
+        COUNT(1) AS c
+        from t_attention
+        <where>
+            <trim suffixOverrides="and">
+                <if test="type != null and type != ''">type = #{type} AND</if>
+                <if test="labelId != null and labelId != ''">labelId = #{labelId} AND</if>
+                <if test="byUserId != null and byUserId != ''">byUserId = #{byUserId} AND</if>
+                <if test="articleId != null and articleId != ''">articleId = #{articleId} AND</if>
             </trim>
         </where>
     </select>

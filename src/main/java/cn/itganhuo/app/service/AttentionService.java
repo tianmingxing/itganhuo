@@ -17,6 +17,7 @@
 package cn.itganhuo.app.service;
 
 import cn.itganhuo.app.entity.Attention;
+import cn.itganhuo.app.entity.RespMsg;
 
 import java.util.List;
 import java.util.Map;
@@ -28,17 +29,25 @@ import java.util.Map;
 public interface AttentionService {
 
     /**
-     * 保存一条关注信息
-     * @param attention 关注信息封装类
-     * @return 成功返回真，否则返回假
-     */
-    public boolean save(Attention attention);
-
-    /**
      * 根据用户编号和标签编号或被关注用户编号查询列表数据
+     *
      * @param param 查询参数，可以传1-3个参数进来
      * @return 返回数据列表
      */
     public List<Attention> find(Map<String, Object> param);
+
+    /**
+     * <h2>保存关注数据，可以关注标签、关注作者和收藏文章</h2>
+     * <dl>
+     * <dt>功能描述</dt>
+     * <dd>这三者的关联数据全部放到关注表里，因为收藏文章也是一种关注行为。</dd>
+     * <dt>使用规范</dt>
+     * <dd>返回状态信息供前端业务处理</dd>
+     * </dl>
+     *
+     * @return 处理状态信息
+     * @author 深圳-小兴
+     */
+    public RespMsg saveAttentionInfo(Attention attention);
 
 }

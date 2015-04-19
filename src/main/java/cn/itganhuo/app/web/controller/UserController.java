@@ -218,32 +218,7 @@ public class UserController {
      */
     @RequestMapping(value = "/{account}", method = RequestMethod.GET)
     public ModelAndView center() {
-        ModelAndView mav = new ModelAndView();
-        Subject current_user = SecurityUtils.getSubject();
-        String account = (String) current_user.getPrincipal();
-        if (StringUtil.hasText(account)) {
-            User user = userService.loadByAccount(account);
-            if (user != null) {
-                Map<String, Object> param = new HashMap<String, Object>();
-                param.put("userId", user.getId());
-                param.put("offrow", 0);
-                param.put("rows", 5);
-
-                // 查询最近发布话题5篇文章
-                List<Article> articles = articleService.getArticleByUserId(param);
-                // 查询最近参与话题5篇文章
-                List<Article> dynamicArticles = articleService.getDynamicArticleByUserId(param);
-
-                mav.addObject("dynamicArticles", dynamicArticles);
-                mav.addObject("articles", articles);
-                mav.addObject("user", user);
-                mav.setViewName("user/center");
-            } else {
-                mav.setViewName("user/signin");
-            }
-        } else {
-            mav.setViewName("user/signin");
-        }
+        ModelAndView mav = userService.center();
         return mav;
     }
 

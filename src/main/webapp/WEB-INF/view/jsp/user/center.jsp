@@ -42,12 +42,12 @@ function showErrImg(obj) {
 						<span class="user_name"><a class="dark" href="#"><%=um.getAccount()%></a></span>&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/user/update">设置</a> 
 						<div class="board clearfix">
 							<div class="floor">
-								<a href="javascript:;;"><span class="big">196</span> 收藏</a>
+								<a href="javascript:;;"><span class="big">${collectionNumber}</span> 收藏</a>
 							</div>
 							<div class="floor">
-								<a href="javascript:;;"><span class="big">36</span> 关注</a>
+								<a href="javascript:;;"><span class="big">${attentionNumber}</span> 关注</a>
 								<div class="space"></div>
-								<a href="javascript:;;"><span class="big">52</span> 粉丝</a>
+								<a href="javascript:;;"><span class="big">${fansNumber}</span> 粉丝</a>
 								<div class="space"></div>
 								<span class="big"><%=um.getCredits()%></span> 积分
 							</div>
@@ -77,8 +77,8 @@ function showErrImg(obj) {
 				<div class="col_fade">
 					<span>
 						<img src="<%=path %>/static/imgs/04.png">
-						36 关注
-						52 粉丝
+						${attentionNumber} 关注
+						${fansNumber} 粉丝
 						<%=um.getCredits()%> 积分</span>
 				</div>
 				<div class="user_profile">

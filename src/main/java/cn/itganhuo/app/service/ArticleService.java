@@ -16,11 +16,14 @@
  */
 package cn.itganhuo.app.service;
 
-import java.util.List;
-import java.util.Map;
-
 import cn.itganhuo.app.entity.Article;
 import cn.itganhuo.app.entity.ArticleLabel;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 对文章做业务操作的接口
@@ -165,6 +168,7 @@ public interface ArticleService {
 
     /**
      * 在用户中心查询全部行数的动态文章，目前只查询当前用户有评论过的文章。
+     *
      * @param param 查询参数
      * @return 返回符合条件的总行数
      */
@@ -183,4 +187,13 @@ public interface ArticleService {
      * @author 深圳-小兴
      */
     List<Map<String, Object>> queryPopularAuthors(int limit);
+
+    /**
+     * 查询一篇文件详情
+     * @param ymd
+     * @param id
+     * @param request
+     * @return
+     */
+    public ModelAndView getArticleById(String ymd, Integer id, HttpServletRequest request);
 }

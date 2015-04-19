@@ -21,10 +21,13 @@ import cn.itganhuo.app.common.pool.ConstantPool;
 import cn.itganhuo.app.common.utils.DateUtil;
 import cn.itganhuo.app.common.utils.HttpUtil;
 import cn.itganhuo.app.common.utils.StringUtil;
+import cn.itganhuo.app.dao.AttentionDao;
 import cn.itganhuo.app.dao.UserDao;
+import cn.itganhuo.app.entity.Article;
 import cn.itganhuo.app.entity.RespMsg;
 import cn.itganhuo.app.entity.User;
 import cn.itganhuo.app.exception.EmailUnauthorizedException;
+import cn.itganhuo.app.service.ArticleService;
 import cn.itganhuo.app.service.UserService;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.LogManager;
@@ -37,6 +40,7 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -58,6 +62,10 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserDao userDao;
+    @Autowired
+    private ArticleService articleService;
+    @Autowired
+    private AttentionDao attentionDao;
 
     /*
      * (non-Javadoc)
@@ -287,6 +295,62 @@ public class UserServiceImpl implements UserService {
         }
 
         return respMsg;
+    }
+
+    @Override
+    public ModelAndView center() {
+        ModelAndView mav = new ModelAndView();
+        Subject current_user = SecurityUtils.getSubject();
+        String account = (String) current_user.getPrincipal();
+        if (StringUtil.hasText(account)) {
+            User user = userDao.loadByAccount(account);
+            if (user != null) {
+                Map<String, Object> param = new HashMap<String, Object>();
+                param.put("userId", user.getId());
+                param.put("offrow", 0);
+                param.put("rows", 5);
+
+                // 查询最近发布话题5篇文章
+                List<Article> articles = articleService.getArticleByUserId(param);
+                // 查询最近参与话题5篇文章
+                List<Article> dynamicArticles = articleService.getDynamicArticleByUserId(param);
+
+                //统计关注数量
+                Map<String, String> param3 = new HashMap<String, String>();
+                param3.put("userId", String.valueOf(user.getId()));
+                param3.put("type", String.valueOf(1));
+                int attentionNumber1 = attentionDao.countAttentionByCondition(param3);
+                param3.put("type", String.valueOf(2));
+                int attentionNumber2 = attentionDao.countAttentionByCondition(param3);
+
+                //统计粉丝数量
+                Map<String, String> param4 = new HashMap<String, String>();
+                param4.put("byUserId", String.valueOf(user.getId()));
+                param4.put("type", String.valueOf(1));
+                int fansNumber1 = attentionDao.countAttentionByCondition(param4);
+                param4.put("type", String.valueOf(2));
+                int fansNumber2 = attentionDao.countAttentionByCondition(param4);
+
+                //统计收藏数量
+                Map<String, String> param2 = new HashMap<String, String>();
+                param2.put("userId", String.valueOf(user.getId()));
+                param2.put("type", String.valueOf(3));
+                int collectionNumber = attentionDao.countAttentionByCondition(param2);
+
+                mav.addObject("fansNumber", fansNumber1 + fansNumber2);
+                mav.addObject("attentionNumber", attentionNumber1 + attentionNumber2);
+                mav.addObject("collectionNumber", collectionNumber);
+                mav.addObject("dynamicArticles", dynamicArticles);
+                mav.addObject("articles", articles);
+                mav.addObject("user", user);
+                mav.setViewName("user/center");
+            } else {
+                mav.setViewName("user/signin");
+            }
+        } else {
+            mav.setViewName("user/signin");
+        }
+        return mav;
     }
 
 }

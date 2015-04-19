@@ -17,6 +17,7 @@
 package cn.itganhuo.app.dao;
 
 import cn.itganhuo.app.entity.Attention;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
@@ -36,9 +37,9 @@ public interface AttentionDao {
      * @param attention 要插入数据
      * @return 成功返回真，否则返回假
      */
-    @Select("insert into t_attention (type, userId, labelId, byUserId, postDate) values (#{type}, #{userId}, " +
-            "#{labelId}, #{byUserId}, #{postDate});")
-    public int insert(Attention attention);
+    @Insert("insert into t_attention (type, userId, labelId, byUserId, articleId, postDate) values (#{type}, #{userId}, " +
+            "#{labelId}, #{byUserId}, #{articleId}, #{postDate});")
+    public boolean insert(Attention attention);
 
     /**
      * 根据用户编号和标签编号或被关注用户编号查询列表数据
@@ -47,5 +48,12 @@ public interface AttentionDao {
      * @return 返回数据列表
      */
     public List<Attention> find(Map<String, Object> param);
+
+    /**
+     * 根据条件统计关注表里数据行数
+     * @param param 查询条件，至少包含关注类型，其标签编号、被关注用户编号和文章编号是可选的。
+     * @return
+     */
+    public int countAttentionByCondition(Map<String, String> param);
 
 }

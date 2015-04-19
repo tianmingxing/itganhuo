@@ -16,10 +16,12 @@
  */
 package cn.itganhuo.app.service.impl;
 
+import cn.itganhuo.app.common.pool.ConfigPool;
 import cn.itganhuo.app.common.pool.ConstantPool;
 import cn.itganhuo.app.common.utils.DateUtil;
 import cn.itganhuo.app.dao.AttentionDao;
 import cn.itganhuo.app.entity.Attention;
+import cn.itganhuo.app.entity.RespMsg;
 import cn.itganhuo.app.entity.User;
 import cn.itganhuo.app.service.AttentionService;
 import org.apache.shiro.SecurityUtils;
@@ -27,6 +29,7 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,16 +44,37 @@ public class AttentionServiceImpl implements AttentionService {
     private AttentionDao attentionDao;
 
     @Override
-    public boolean save(Attention attention) {
-        attention.setPostDate(DateUtil.getNowDateTimeStr(null));
-        if (attentionDao.insert(attention) == 1) {
-            return true;
-        }
-        return false;
+    public List<Attention> find(Map<String, Object> param) {
+        return attentionDao.find(param);
     }
 
     @Override
-    public List<Attention> find(Map<String, Object> param) {
-        return attentionDao.find(param);
+    public RespMsg saveAttentionInfo(Attention attention) {
+        RespMsg respMsg = new RespMsg();
+        Subject current_user = SecurityUtils.getSubject();
+        User user_model = (User) current_user.getSession().getAttribute(ConstantPool.USER_SHIRO_SESSION_ID);
+        if (user_model != null) {
+            // 判断用户是否有关注过该标签
+            Map<String, Object> param = new HashMap<String, Object>();
+            param.put("userId", user_model.getId());
+            param.put("labelId", attention.getLabelId());
+            param.put("byUserId", attention.getByUserId());
+            param.put("articleId", attention.getArticleId());
+            List<Attention> attentions = this.find(param);
+            if (attentions == null || attentions.size() == 0) {
+                attention.setUserId(user_model.getId());
+                attention.setPostDate(DateUtil.getNowDateTimeStr(null));
+                if (!attentionDao.insert(attention)) {
+                    respMsg.setStatus("9999");
+                    respMsg.setMessage(ConfigPool.getString("respMsg.attention.SaveConcernInfoFailed"));
+                }
+            } else {
+                respMsg.setStatus("2000");
+                respMsg.setMessage(ConfigPool.getString("respMsg.attention.YouBeenConcernedAboutLabel"));
+            }
+        } else {
+            respMsg.setStatus("1000");
+        }
+        return respMsg;
     }
 }
