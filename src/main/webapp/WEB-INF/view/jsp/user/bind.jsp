@@ -17,12 +17,11 @@ String path = request.getContextPath();
 <link href="<%=path %>/static/css/min.css" rel="stylesheet" type="text/css" media="all">
 <script type="text/javascript" src="<%=path %>/static/js/plugin/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="<%=path %>/static/js/analytics.js"></script>
-<script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" data-appid="101210014" data-redirecturi="http://www.itganhuo.cn" charset="utf-8"></script>
+<script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" data-appid="101210014" data-redirecturi="http://www.itganhuo.cn/qc_callback.html" charset="utf-8"></script>
 <script type="text/javascript">
 function formCheck() {
-	var account = jQuery("#account").val(), password = jQuery("#password").val(), security_code = $('#security_code').val();
-	var email_reg = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/,
-	password_reg = /^.*[A-Za-z0-9\\w_-]+.*$/;
+	var account = jQuery("#account").val(), security_code = $('#security_code').val();
+	var email_reg = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
 	if (account == "") {
 		jQuery(".alert.alert-error").show();
 		jQuery("#j_msg").text("账号不能为空");
@@ -36,24 +35,7 @@ function formCheck() {
 	} else {
 		jQuery(".alert.alert-error").hide();
 	}
-	if (password == "") {
-		jQuery(".alert.alert-error").show();
-		jQuery("#j_msg").text("密码不能为空");
-		jQuery("#password").focus();
-		return;
-	} else if (password.length < 6) {
-		jQuery(".alert.alert-error").show();
-		jQuery("#j_msg").text("密码长度至少6个字符");
-		jQuery("#password").focus();
-		return;
-	} else if (!password_reg.test(password)) {
-		jQuery(".alert.alert-error").show();
-		jQuery("#j_msg").text("密码含有特殊字符");
-		jQuery("#password").focus();
-		return;
-	} else {
-		jQuery(".alert.alert-error").hide();
-	}
+
 	if (security_code == '') {
 		jQuery(".alert.alert-error").show();
 		jQuery("#j_msg").text("验证码不能为空。");
@@ -64,9 +46,9 @@ function formCheck() {
 	}
 	jQuery(".btn").attr("onclick", "");
 	jQuery(".alert.alert-error").hide();
-	jQuery.post('<%=path %>/user/register',jQuery("#register_form").serialize(),function(data) {
+	jQuery.post('<%=path %>/user/qqSignin',jQuery("#register_form").serialize(),function(data) {
 		if (data.status == '0000') {
-			window.location.href = '<%=path %>/user/signin';
+			window.location.href = '<%=path %>/user/' + data.appendInfo;
 		} else {
 			jQuery(".alert.alert-error").show();
 			jQuery("#j_msg").text(data.message);
@@ -74,7 +56,7 @@ function formCheck() {
 		}
 	});
 }
-jQuery(document).keyup(function(e){
+jQuery(document).keyup(function(e) {
 	var e = e || event, keycode = e.which || e.keyCode;
 	if (keycode == 13) {
 		jQuery(".btn").trigger("click");
@@ -89,14 +71,29 @@ function refreshCaptcha() {
 </head>
 <body>
 <script type="text/javascript">
-    if(QC.Login.check()){//如果已登录
-        QC.Login.getMe(function(openId, accessToken){
-            //alert(["当前登录用户的", "openId为："+openId, "accessToken为："+accessToken].join("\n"));
-            $('input[name="openid"]').val(openId);
-            $('input[name="openid"]').val(openId);
-            $('input[name="accessToken"]').val(accessToken);
+if(QC.Login.check()){
+    //检查本次登录进来的用户是否有绑定过本地账号，如果有则帮助它自动登录，否则就走下面的流程。
+    QC.Login.getMe(function (openId, accessToken) {
+        var paras = {};
+
+        $('input[name="openId"]').val(openId);
+        $('input[name="accessToken"]').val(accessToken);
+
+        QC.api("get_user_info", paras)
+        .success(function (s) {
+            $('input[name="nickname"]').val(s.data.nickname);
+            var imgSrc = (s.data.figureurl_2 == null || s.data.figureurl_2 == '') ? s.data.figureurl_qq_1 : s.data.figureurl_2;
+            $('#j_photo').attr('src', imgSrc);
+        })
+        .error(function (f) {
+            alert("获取用户信息失败！");
+            window.location.href = '/';
         });
-    }
+    });
+} else {
+    //如果是用户自己访问本页面则统一跳转到登录页面
+    window.location.href = '<%=path%>/user/signin';
+}
 </script>
 <%@ include file="../common/header.jsp" %>
 <div id='main'>
@@ -121,22 +118,23 @@ function refreshCaptcha() {
 				  <li class="active">完善资料</li>
 				</ul>
 			</div>
-			<div class="inner">
-				<div class="alert alert-error" style="display: block">
-				  <strong id="j_msg">通过第三方登录成功，请注册一个本地账号并与之关联。</strong>
-				</div>
-				<form id="register_form" class="form-horizontal">
-                    <input type="hidden" name="openid" value="">
-                    <input type="hidden" name="password" value="">
+            <div class="inner">
+                <div class="alert alert-error" style="display: block">
+                    <strong id="j_msg">系统检测到你已通过第三方成功登录，现在请注册一个本地账号与之关联。</strong>
+                </div>
+                <form id="register_form" class="form-horizontal">
+                    <input type="hidden" name="type" value="2">
+                    <input type="hidden" name="openId" value="">
                     <input type="hidden" name="accessToken" value="">
-					<div class="control-group">
-						<label class="control-label" for="account">本地账号</label>
-						<div class="controls">
-							<input class="input-xlarge" id="account" name="account" size="30" type="text">
-						</div>
-					</div>
+                    <div class="control-group" style="padding-left: 30%;"><img id="j_photo" src="" alt="头像"></div>
                     <div class="control-group">
-                        <label class="control-label" for="account">你的昵称</label>
+                        <label class="control-label" for="account">填个登录账号</label>
+                        <div class="controls">
+                            <input class="input-xlarge" id="account" name="account" size="30" type="text">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="nickname">要用这个昵称吗？</label>
                         <div class="controls">
                             <input class="input-xlarge" id="nickname" name="nickname" size="30" type="text">
                         </div>

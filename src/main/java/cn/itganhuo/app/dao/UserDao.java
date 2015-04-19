@@ -93,7 +93,7 @@ public interface UserDao {
 	/**
 	 * 根据帐户修改用户信息，不包含修改用户密码
 	 * 
-	 * @param record
+	 * @param user
 	 *            用户
 	 * @version 0.0.1-SNAPSHOT
 	 * @author 天津-小朱
@@ -104,7 +104,7 @@ public interface UserDao {
 	/**
 	 * 根据帐户修改密码，为了方法使用时安全，这里把修改密码单独做一个方法。
 	 * 
-	 * @param record
+	 * @param user
 	 *            用户
 	 * @version 0.0.1-SNAPSHOT
 	 * @author 天津-小朱
@@ -140,6 +140,6 @@ public interface UserDao {
      * @param openId
      * @return
      */
-    @Select("select * from t_user openId = #{openId}")
+    @Select("select * from t_user where openId = #{openId}")
     User loadbyOpenId(String openId);
 }

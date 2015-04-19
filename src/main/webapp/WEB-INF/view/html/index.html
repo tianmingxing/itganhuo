@@ -6,6 +6,7 @@
 <title>首页-IT干货技术分享网</title>
 <link rel="stylesheet" href="${path}/static/css/style.css" />
 <link rel="stylesheet" href="${path}/static/css/responsive.css" />
+<script type="text/javascript" src="${path}/static/js/plugin/jquery-1.8.3.min.js"></script>
 <script type="text/javascript">
     //当图片丢失时显示默认图片
     function showErrImg(obj) {
@@ -116,7 +117,9 @@ font-size: 13px;
 		    <h2 style="color: #D0021B;">工作经验分享平台</h2>
 		    <p>欢迎大家分享自己在工作中的经验，帮助更多的人最准确、便捷的找到自己想要的解决方案。</p>
 		    <ul class="list-unstyled">
+                <@shiro.guest>
 		        <li><span id="qqLoginBtn"></span></li>
+                </@shiro.guest>
 		    </ul>
 		</aside>
 		<div class="widget-box">
@@ -160,29 +163,29 @@ font-size: 13px;
 <#include "common/footer.html">
 
 </body>
-<script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" data-appid="101210014" data-redirecturi="http://www.itganhuo.cn" charset="utf-8"></script>
+<@shiro.guest>
+<script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" data-appid="101210014" data-redirecturi="http://www.itganhuo.cn/qc_callback.html" charset="utf-8"></script>
 <script type="text/javascript">
     QC.Login({
         btnId:"qqLoginBtn",
         size: "A_M"
-    }, function(reqData, opts){
-        QC.Login.getMe(function(openId, accessToken) {
-            // 往数据库中查询信息是否存在
-            jQuery.post('${path}/user/qqSignin', {'openId':openId, 'accessToken':accessToken}, function(data){
-                //查询信息是否存在，如果有则帮助用户自动登录否则跳转到信息绑定页面。
+    }, function(reqData, opts) {
+        QC.Login.getMe(function (openId, accessToken) {
+            jQuery.post('${path}/user/qqSignin', {type:1, securityCode:'', openId:openId, accessToken:accessToken}, function(data) {
                 if (data.status == '0000') {
-                    window.location.reload();
-                } else if (data.status == '1000') {
-                    window.location.href = "/user/bind";
+                    window.location.href = '${path}/user/' + data.appendInfo;
+                } else if (data.status == '0001') {
+                    window.location.href = '${path}/user/bind';
                 } else {
-                    alert(data.message);
+                    alert('第三方账号登录异常：{"错误码":' + data.status + ', {"错误信息:"' + data.message + '}');
                 }
             });
         });
-    },function(opts){
+    },function(opts) {
         alert('注销成功');
     });
 </script>
+</@shiro.guest>
 <script>
 	window._bd_share_config = {
 		common : {

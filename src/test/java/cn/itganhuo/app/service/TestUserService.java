@@ -42,11 +42,11 @@ public class TestUserService extends AbstractContextControllerTests {
 	
 	@Test(expected = LockedAccountException.class)
 	public void testLogin() {
-		Assert.notNull(userService.login("admin"));
+		Assert.notNull(userService.loadByAccount("admin"));
 	}
 	
 	@Test(expected = UnknownAccountException.class)
 	public void testLogin2() {
-		userService.login("superadmin");
+		userService.loadByAccount("superadmin");
 	}
 }

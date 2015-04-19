@@ -19,9 +19,14 @@ package cn.itganhuo.app.service;
 import java.util.List;
 import java.util.Map;
 
+import cn.itganhuo.app.entity.RespMsg;
 import org.apache.shiro.authc.AuthenticationException;
 
 import cn.itganhuo.app.entity.User;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 用户业务处理接口
@@ -36,11 +41,11 @@ public interface UserService {
 	 * 
 	 * @version 0.0.1-SNAPSHOT
 	 * @author 深圳-小兴
-	 * @param account
+	 * @param user
 	 *            账号
 	 * @return 会员信息
 	 */
-	public User login(String account) throws AuthenticationException;
+	public RespMsg login(User user, HttpServletRequest request);
 
 	/**
 	 * 会员注册
@@ -114,6 +119,24 @@ public interface UserService {
      * @param openId 身份编号
      * @return 经过筛选后的用户集合
      */
-    User loadbyOpenId(String openId);
+    public User loadbyOpenId(String openId);
 
+    /**
+     * 用户信息注册
+     * @param user 用户信息
+     * @param request
+     * @param response
+     * @return
+     */
+    public RespMsg userRegister(User user, HttpServletRequest request, HttpServletResponse response);
+
+    /**
+     * 第三方登录<br>
+     * @param type 1首页请求自动登录，2信息绑定页自动登录
+     * @param user 用户信息
+     * @param request
+     * @param response
+     * @return 返回处理状态
+     */
+    public RespMsg qqSignin(int type, User user, HttpServletRequest request, HttpServletResponse response);
 }

@@ -110,7 +110,7 @@ public class CommonController {
     public String logout() {
         Subject current_user = SecurityUtils.getSubject();
         current_user.logout();
-        return "redirect:/articles";
+        return "redirect:/user/signin";
     }
 
     /**

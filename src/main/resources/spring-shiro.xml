@@ -59,16 +59,10 @@
 	            /logout/** = logout
 	            /user/qqSignin = anon
                 /user/register = anon
+                /user/bind = anon
 	            /user/signin = anon
-	            /user/share = authc
-	            /user/comment = authc
-	            /user/upload = authc
-	            /user/uploadImg = authc
-	            /user/update = authc
-	            /user/updatePassword = authc
-	            /user/** = user
-	            /article/saveReply = authc
-	            /auth_email/** = anon
+	            /user/** = authc,roles[user]
+	            /article/saveReply = authc,roles[user]
 	            /** = anon
 	        </value>
 	    </property>
