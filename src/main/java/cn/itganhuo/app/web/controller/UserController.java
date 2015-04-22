@@ -94,8 +94,6 @@ public class UserController {
      */
     @RequestMapping(value = "/signin", method = RequestMethod.GET)
     public String refurlSignin() {
-        Subject current_user = SecurityUtils.getSubject();
-        current_user.logout();
         return "user/signin";
     }
 
@@ -175,41 +173,6 @@ public class UserController {
     }
 
     /**
-     * 通过第三方QQ完成登录功能
-     *
-     * @return 返回登录状态码
-     * @version 0.0.1-SNAPSHOT
-     * @author 深圳-小兴
-     */
-    @RequestMapping(value = "/qqSignin", method = RequestMethod.POST)
-    @ResponseBody
-    public RespMsg qqSignin(User user, @RequestParam String securityCode, @RequestParam int type, @RequestParam String openId, @RequestParam String accessToken, HttpServletRequest request, HttpServletResponse response) {
-        RespMsg respMsg = new RespMsg();
-        user.setOpenid(openId);
-        user.setPassword(openId);
-        user.setAccessToken(accessToken);
-
-        if (2 == type) {
-            //校验验证码：之所以采用手动校验是因为在集成shiro过滤器时发现诸多不便
-            String captcha = (String) request.getSession().getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
-            if (captcha == null && !captcha.equalsIgnoreCase(securityCode)) {
-                respMsg.setMessage(ConfigPool.getString("respMsg.common.SecurityCodeError"));
-                respMsg.setStatus("1005");
-                return respMsg;
-            }
-        }
-        respMsg = userService.qqSignin(type, user, request, response);
-        if ("0000".equals(respMsg.getStatus())) {
-            User loginUser = new User();
-            loginUser.setAccount(user.getAccount());
-            loginUser.setPassword(user.getOpenid());
-            respMsg.setAppendInfo(user.getAccount());
-            respMsg = userService.login(loginUser, request);
-        }
-        return respMsg;
-    }
-
-    /**
      * 进入用户中心页面
      *
      * @return 转发到用户中心页面
@@ -217,8 +180,8 @@ public class UserController {
      * @author 深圳-小兴
      */
     @RequestMapping(value = "/{account}", method = RequestMethod.GET)
-    public ModelAndView center() {
-        ModelAndView mav = userService.center();
+    public ModelAndView center(HttpServletRequest request, HttpServletResponse response) {
+        ModelAndView mav = userService.center(request, response);
         return mav;
     }
 
@@ -674,13 +637,4 @@ public class UserController {
         }
     }
 
-    /**
-     * 通过第三方登录后进入用户信息绑定页面<br>
-     *
-     * @return
-     */
-    @RequestMapping(value = "/bind", method = RequestMethod.GET)
-    public String refurlInfoBind() {
-        return "user/bind";
-    }
 }

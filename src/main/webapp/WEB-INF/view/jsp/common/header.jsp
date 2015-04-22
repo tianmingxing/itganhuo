@@ -12,7 +12,7 @@
 		</shiro:guest>
 		<shiro:user>
 			<ul class='nav pull-right'>
-				<li><a href='<%=request.getContextPath() %>/user/signin'>退出</a></li>
+				<li><a href='<%=request.getContextPath() %>/logout'>退出</a></li>
 				<li><a href='<%=request.getContextPath() %>/user/<shiro:principal/>'><shiro:principal/></a></li>
 			</ul>
 		</shiro:user>

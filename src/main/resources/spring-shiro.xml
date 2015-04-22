@@ -11,7 +11,7 @@
 	</bean>
 	
 	<!-- 凭证（密码）匹配器，sha512 64位编码，针对密码重复加密2次 -->
-	<bean id="matcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+	<bean id="matcher" class="cn.itganhuo.app.web.shiro.ShiroHashedCredentialsMatcher">
 		<property name="hashAlgorithmName" value="SHA-512" />
 		<property name="storedCredentialsHexEncoded" value="false" />
 		<property name="hashIterations" value="2" />
@@ -60,6 +60,7 @@
 	            /user/qqSignin = anon
                 /user/register = anon
                 /user/bind = anon
+                /user/center = anon
 	            /user/signin = anon
 	            /user/** = authc,roles[user]
 	            /article/saveReply = authc,roles[user]

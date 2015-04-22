@@ -16,6 +16,7 @@
  */
 package cn.itganhuo.app.web.controller;
 
+import java.io.IOException;
 import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -25,7 +26,10 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import com.qq.connect.QQConnectException;
+import com.qq.connect.oauth.Oauth;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
@@ -305,6 +309,22 @@ public class CommonController {
         model.addAttribute("path", request.getContextPath());
         model.addAttribute("servletPath", request.getServletPath());
         return "labels";
+    }
+
+    /**
+     * 开始进入QQ登录平台
+     * @return
+     */
+    @RequestMapping(value = "/qqLogin", method = RequestMethod.GET)
+    public void refurQQLogin(HttpServletRequest request, HttpServletResponse response) {
+        response.setContentType("text/html;charset=utf-8");
+        try {
+            response.sendRedirect(new Oauth().getAuthorizeURL(request));
+        } catch (IOException e) {
+            log.error(e);
+        } catch (QQConnectException e) {
+            log.error(e);
+        }
     }
 }
 

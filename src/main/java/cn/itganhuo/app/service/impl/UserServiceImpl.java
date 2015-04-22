@@ -18,6 +18,7 @@ package cn.itganhuo.app.service.impl;
 
 import cn.itganhuo.app.common.pool.ConfigPool;
 import cn.itganhuo.app.common.pool.ConstantPool;
+import cn.itganhuo.app.common.pool.ThreadLocalManager;
 import cn.itganhuo.app.common.utils.DateUtil;
 import cn.itganhuo.app.common.utils.HttpUtil;
 import cn.itganhuo.app.common.utils.StringUtil;
@@ -29,6 +30,10 @@ import cn.itganhuo.app.entity.User;
 import cn.itganhuo.app.exception.EmailUnauthorizedException;
 import cn.itganhuo.app.service.ArticleService;
 import cn.itganhuo.app.service.UserService;
+import com.qq.connect.QQConnectException;
+import com.qq.connect.api.OpenID;
+import com.qq.connect.javabeans.AccessToken;
+import com.qq.connect.oauth.Oauth;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -267,89 +272,132 @@ public class UserServiceImpl implements UserService {
         return respMsg;
     }
 
-    @Override
-    public RespMsg qqSignin(int type, User user, HttpServletRequest request, HttpServletResponse response) {
-        RespMsg respMsg = new RespMsg();
-        if (!StringUtil.hasText(user.getOpenid()) || !StringUtil.hasText(user.getAccessToken())) {
-            respMsg.setStatus("1000");
-            respMsg.setMessage(ConfigPool.getString("respMsg.ManuallyRequestPagePrompts"));
-            return respMsg;
-        }
-
-        //1、查询该OPENID是否存在，如果有则直接帮它自动登录。
-        User userInfo = this.loadbyOpenId(user.getOpenid());
-        if (userInfo == null) {
-            if (1 == type) {
-                respMsg.setStatus("0001");
+    /**
+     * 判断是否来自第三方的请求
+     *
+     * @param request
+     * @param response
+     * @return
+     */
+    private boolean qqSignin(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            AccessToken accessTokenObj = (new Oauth()).getAccessTokenByRequest(request);
+            String accessToken = null, openID = null;
+            long tokenExpireIn = 0L;
+            if (accessTokenObj == null || accessTokenObj.getAccessToken().equals("")) {
+                //没有获取到响应参数，我们的网站被CSRF攻击了或者用户取消了授权，此时跳转到登录页面。
+                return false;
             } else {
-                //2、如果不存在则先保存当前的用户再进行登录
-                respMsg = this.userRegister(user, request, response);
-            }
-        } else {
-            User loginUser = new User();
-            loginUser.setAccount(userInfo.getAccount());
-            loginUser.setPassword(userInfo.getOpenid());
-            respMsg.setAppendInfo(userInfo.getAccount());
-            //如果查询到了绑定的要本地账号则自动登录
-            respMsg = this.login(loginUser, request);
-        }
+                // 获取accessToken
+                accessToken = accessTokenObj.getAccessToken();
+                // 获取token有效时间
+                tokenExpireIn = accessTokenObj.getExpireIn();
 
-        return respMsg;
+                // 利用获取到的accessToken去获取当前用的openid
+                OpenID openIDObj = new OpenID(accessToken);
+                openID = openIDObj.getUserOpenID();
+
+                request.getSession().setAttribute("access_token", accessToken);
+                request.getSession().setAttribute("token_expirein", String.valueOf(tokenExpireIn));
+                request.getSession().setAttribute("openid", openID);
+            }
+        } catch (QQConnectException e) {
+            log.error(e);
+            return false;
+        }
+        return true;
     }
 
     @Override
-    public ModelAndView center() {
+    public ModelAndView center(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView mav = new ModelAndView();
         Subject current_user = SecurityUtils.getSubject();
         String account = (String) current_user.getPrincipal();
         if (StringUtil.hasText(account)) {
             User user = userDao.loadByAccount(account);
             if (user != null) {
-                Map<String, Object> param = new HashMap<String, Object>();
-                param.put("userId", user.getId());
-                param.put("offrow", 0);
-                param.put("rows", 5);
-
-                // 查询最近发布话题5篇文章
-                List<Article> articles = articleService.getArticleByUserId(param);
-                // 查询最近参与话题5篇文章
-                List<Article> dynamicArticles = articleService.getDynamicArticleByUserId(param);
-
-                //统计关注数量
-                Map<String, String> param3 = new HashMap<String, String>();
-                param3.put("userId", String.valueOf(user.getId()));
-                param3.put("type", String.valueOf(1));
-                int attentionNumber1 = attentionDao.countAttentionByCondition(param3);
-                param3.put("type", String.valueOf(2));
-                int attentionNumber2 = attentionDao.countAttentionByCondition(param3);
-
-                //统计粉丝数量
-                Map<String, String> param4 = new HashMap<String, String>();
-                param4.put("byUserId", String.valueOf(user.getId()));
-                param4.put("type", String.valueOf(1));
-                int fansNumber1 = attentionDao.countAttentionByCondition(param4);
-                param4.put("type", String.valueOf(2));
-                int fansNumber2 = attentionDao.countAttentionByCondition(param4);
-
-                //统计收藏数量
-                Map<String, String> param2 = new HashMap<String, String>();
-                param2.put("userId", String.valueOf(user.getId()));
-                param2.put("type", String.valueOf(3));
-                int collectionNumber = attentionDao.countAttentionByCondition(param2);
-
-                mav.addObject("fansNumber", fansNumber1 + fansNumber2);
-                mav.addObject("attentionNumber", attentionNumber1 + attentionNumber2);
-                mav.addObject("collectionNumber", collectionNumber);
-                mav.addObject("dynamicArticles", dynamicArticles);
-                mav.addObject("articles", articles);
-                mav.addObject("user", user);
-                mav.setViewName("user/center");
+                mav = this.enterCenter(user);
             } else {
                 mav.setViewName("user/signin");
             }
         } else {
-            mav.setViewName("user/signin");
+            //判断是否是从第三方过来的请求，返回true表示采用了QQ第三方登录。
+            if (this.qqSignin(request, response)) {
+                //开始为用户模拟登录
+                String openID = (String) request.getSession().getAttribute("openid");
+                User userInfo = this.loadbyOpenId(openID);
+
+                if (userInfo != null) {
+                    User loginUser = new User();
+                    loginUser.setAccount(userInfo.getAccount());
+                    loginUser.setPassword("");
+
+                    ThreadLocalManager.getInstance().setValue(ConstantPool.LOGIN_TYPE);
+                    RespMsg respMsg = this.login(loginUser, request);
+                    ThreadLocalManager.getInstance().remove();
+
+                    if ("0000".equals(respMsg.getStatus())) {
+                        mav = this.enterCenter(userInfo);
+                    }
+                } else {
+                    // 如果没有发现本地账号则进入信息绑定页面
+                    mav.setViewName("user/bind");
+                }
+
+            } else {
+                mav.setViewName("user/signin");
+            }
         }
+        return mav;
+    }
+
+    /**
+     * 准确用户中心页面所需要的资料
+     *
+     * @param user
+     * @return
+     */
+    private ModelAndView enterCenter(User user) {
+        ModelAndView mav = new ModelAndView();
+        Map<String, Object> param = new HashMap<String, Object>();
+        param.put("userId", user.getId());
+        param.put("offrow", 0);
+        param.put("rows", 5);
+
+        // 查询最近发布话题5篇文章
+        List<Article> articles = articleService.getArticleByUserId(param);
+        // 查询最近参与话题5篇文章
+        List<Article> dynamicArticles = articleService.getDynamicArticleByUserId(param);
+
+        //统计关注数量
+        Map<String, String> param3 = new HashMap<String, String>();
+        param3.put("userId", String.valueOf(user.getId()));
+        param3.put("type", String.valueOf(1));
+        int attentionNumber1 = attentionDao.countAttentionByCondition(param3);
+        param3.put("type", String.valueOf(2));
+        int attentionNumber2 = attentionDao.countAttentionByCondition(param3);
+
+        //统计粉丝数量
+        Map<String, String> param4 = new HashMap<String, String>();
+        param4.put("byUserId", String.valueOf(user.getId()));
+        param4.put("type", String.valueOf(1));
+        int fansNumber1 = attentionDao.countAttentionByCondition(param4);
+        param4.put("type", String.valueOf(2));
+        int fansNumber2 = attentionDao.countAttentionByCondition(param4);
+
+        //统计收藏数量
+        Map<String, String> param2 = new HashMap<String, String>();
+        param2.put("userId", String.valueOf(user.getId()));
+        param2.put("type", String.valueOf(3));
+        int collectionNumber = attentionDao.countAttentionByCondition(param2);
+
+        mav.addObject("fansNumber", fansNumber1 + fansNumber2);
+        mav.addObject("attentionNumber", attentionNumber1 + attentionNumber2);
+        mav.addObject("collectionNumber", collectionNumber);
+        mav.addObject("dynamicArticles", dynamicArticles);
+        mav.addObject("articles", articles);
+        mav.addObject("user", user);
+        mav.setViewName("user/center");
         return mav;
     }
 

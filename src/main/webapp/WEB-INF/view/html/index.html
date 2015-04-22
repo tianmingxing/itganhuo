@@ -118,7 +118,7 @@ font-size: 13px;
 		    <p>欢迎大家分享自己在工作中的经验，帮助更多的人最准确、便捷的找到自己想要的解决方案。</p>
 		    <ul class="list-unstyled">
                 <@shiro.guest>
-		        <li><span id="qqLoginBtn"></span></li>
+		        <li><a href="${path}/qqLogin"><img alt="图片" src="" /></a></li>
                 </@shiro.guest>
 		    </ul>
 		</aside>
@@ -163,29 +163,6 @@ font-size: 13px;
 <#include "common/footer.html">
 
 </body>
-<@shiro.guest>
-<script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" data-appid="101210014" data-redirecturi="http://www.itganhuo.cn/qc_callback.html" charset="utf-8"></script>
-<script type="text/javascript">
-    QC.Login({
-        btnId:"qqLoginBtn",
-        size: "A_M"
-    }, function(reqData, opts) {
-        QC.Login.getMe(function (openId, accessToken) {
-            jQuery.post('${path}/user/qqSignin', {type:1, securityCode:'', openId:openId, accessToken:accessToken}, function(data) {
-                if (data.status == '0000') {
-                    window.location.href = '${path}/user/' + data.appendInfo;
-                } else if (data.status == '0001') {
-                    window.location.href = '${path}/user/bind';
-                } else {
-                    alert('第三方账号登录异常：{"错误码":' + data.status + ', {"错误信息:"' + data.message + '}');
-                }
-            });
-        });
-    },function(opts) {
-        alert('注销成功');
-    });
-</script>
-</@shiro.guest>
 <script>
 	window._bd_share_config = {
 		common : {

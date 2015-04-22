@@ -16,7 +16,6 @@ String path = request.getContextPath();
 <link href="<%=path %>/static/css/min.css" rel="stylesheet" type="text/css" media="all">
 <script type="text/javascript" src="<%=path %>/static/js/plugin/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="<%=path %>/static/js/analytics.js"></script>
-    <script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" data-appid="101210014" data-redirecturi="http://www.itganhuo.cn/qc_callback.html" charset="utf-8"></script>
 <script type="text/javascript">
 function formCheck() {
 	var account = jQuery("#account").val(), password = jQuery("#password").val(), security_code = $('#security_code').val();
@@ -83,7 +82,6 @@ function refreshCaptcha() {
 </script>
 </head>
 <body>
-<script type="text/javascript">QC.Login.signOut();</script>
 <%@ include file="../common/header.jsp" %>
 <div id='main'>
 	<div id='sidebar'>

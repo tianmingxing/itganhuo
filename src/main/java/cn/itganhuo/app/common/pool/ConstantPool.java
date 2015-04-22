@@ -82,5 +82,8 @@ public class ConstantPool {
      * 替换字符，用来在检测到敏感字符后进行替换
      */
     public final static String REPLACEMENT_CHARACTER = "*";
-
+    /**
+     * 登录类型，第三方登录时给期赋值，这样在密码匹配时就可以取值了。不管要次第三方登录是否成功这个值在当时就应该设置为空。
+     */
+    public final static String LOGIN_TYPE = "login_type";
 }

@@ -16,115 +16,110 @@
  */
 package cn.itganhuo.app.service;
 
-import java.util.List;
-import java.util.Map;
-
 import cn.itganhuo.app.entity.RespMsg;
-import org.apache.shiro.authc.AuthenticationException;
-
 import cn.itganhuo.app.entity.User;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 用户业务处理接口
- * 
- * @version 0.0.1-SNAPSHOT
+ *
  * @author 深圳-小兴，天津-天津-小朱
+ * @version 0.0.1-SNAPSHOT
  */
 public interface UserService {
 
-	/**
-	 * 根据登录账号查询对应的唯一一条记录
-	 * 
-	 * @version 0.0.1-SNAPSHOT
-	 * @author 深圳-小兴
-	 * @param user
-	 *            账号
-	 * @return 会员信息
-	 */
-	public RespMsg login(User user, HttpServletRequest request);
+    /**
+     * 根据登录账号查询对应的唯一一条记录
+     *
+     * @param user 账号
+     * @return 会员信息
+     * @version 0.0.1-SNAPSHOT
+     * @author 深圳-小兴
+     */
+    public RespMsg login(User user, HttpServletRequest request);
 
-	/**
-	 * 会员注册
-	 * <ol>
-	 * <li>收集会员账号和密码保存到数据库</li>
-	 * </ol>
-	 * 
-	 * @version 0.0.1-SNAPSHOT
-	 * @author 深圳-小兴
-	 * @param user
-	 * @return
-	 */
-	public int insert(User user);
+    /**
+     * 会员注册
+     * <ol>
+     * <li>收集会员账号和密码保存到数据库</li>
+     * </ol>
+     *
+     * @param user
+     * @return
+     * @version 0.0.1-SNAPSHOT
+     * @author 深圳-小兴
+     */
+    public int insert(User user);
 
-	/**
-	 * 根据账户查找用户信息
-	 * 
-	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-小朱
-	 * @param account 账号
-	 * @return 用户
-	 */
-	public User loadByAccount(String account);
+    /**
+     * 根据账户查找用户信息
+     *
+     * @param account 账号
+     * @return 用户
+     * @version 0.0.1-SNAPSHOT
+     * @author 天津-小朱
+     */
+    public User loadByAccount(String account);
 
-	/**
-	 * 根据主键查询一条用户信息
-	 * 
-	 * @version 0.0.1-SNAPSHOT
-	 * @author 深圳-小兴
-	 * @param id
-	 *            主键
-	 * @return 用户
-	 */
-	public User loadById(int id);
+    /**
+     * 根据主键查询一条用户信息
+     *
+     * @param id 主键
+     * @return 用户
+     * @version 0.0.1-SNAPSHOT
+     * @author 深圳-小兴
+     */
+    public User loadById(int id);
 
-	/**
-	 * 修改用户信息
-	 * 
-	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-小朱
-	 * @param user
-	 * @return
-	 */
-	public int updateInfoByAccount(User user);
+    /**
+     * 修改用户信息
+     *
+     * @param user
+     * @return
+     * @version 0.0.1-SNAPSHOT
+     * @author 天津-小朱
+     */
+    public int updateInfoByAccount(User user);
 
-	/**
-	 * 修改用户密码
-	 * 
-	 * @version 0.0.1-SNAPSHOT
-	 * @author 天津-小朱
-	 * @param user
-	 * @return
-	 */
-	public boolean updatePasswordByAccount(User user);
+    /**
+     * 修改用户密码
+     *
+     * @param user
+     * @return
+     * @version 0.0.1-SNAPSHOT
+     * @author 天津-小朱
+     */
+    public boolean updatePasswordByAccount(User user);
 
-	/**
-	 * <h2>根据条件查询用户列表信息</h2>
-	 * 
-	 * @version 0.0.1-SNAPSHOT
-	 * @author 深圳-小兴
-	 * @param condition 查询条件
-	 * @return 经过筛选后的用户集合
-	 */
-	public Map<String, List<Object>> getUserList(Map<Object, Object> condition);
+    /**
+     * <h2>根据条件查询用户列表信息</h2>
+     *
+     * @param condition 查询条件
+     * @return 经过筛选后的用户集合
+     * @version 0.0.1-SNAPSHOT
+     * @author 深圳-小兴
+     */
+    public Map<String, List<Object>> getUserList(Map<Object, Object> condition);
 
     /**
      * <h2>根据身份编号查询用户列表信息</h2>
      *
-     * @version 0.0.1-SNAPSHOT
-     * @author 深圳-小兴
      * @param openId 身份编号
      * @return 经过筛选后的用户集合
+     * @version 0.0.1-SNAPSHOT
+     * @author 深圳-小兴
      */
     public User loadbyOpenId(String openId);
 
     /**
      * 用户信息注册
-     * @param user 用户信息
+     *
+     * @param user     用户信息
      * @param request
      * @param response
      * @return
@@ -132,18 +127,9 @@ public interface UserService {
     public RespMsg userRegister(User user, HttpServletRequest request, HttpServletResponse response);
 
     /**
-     * 第三方登录<br>
-     * @param type 1首页请求自动登录，2信息绑定页自动登录
-     * @param user 用户信息
-     * @param request
-     * @param response
-     * @return 返回处理状态
-     */
-    public RespMsg qqSignin(int type, User user, HttpServletRequest request, HttpServletResponse response);
-
-    /**
      * 进入会员中心主页，本方法主要是查询首页上的数据。
+     *
      * @return
      */
-    public ModelAndView center();
+    public ModelAndView center(HttpServletRequest request, HttpServletResponse response);
 }
