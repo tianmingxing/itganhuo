@@ -297,9 +297,9 @@ public class UserServiceImpl implements UserService {
                 OpenID openIDObj = new OpenID(accessToken);
                 openID = openIDObj.getUserOpenID();
 
-                request.getSession().setAttribute("access_token", accessToken);
-                request.getSession().setAttribute("token_expirein", String.valueOf(tokenExpireIn));
-                request.getSession().setAttribute("openid", openID);
+                request.getSession().setAttribute(ConstantPool.ACCESS_TOKEN, accessToken);
+                request.getSession().setAttribute(ConstantPool.TOKEN_EXPIREIN, String.valueOf(tokenExpireIn));
+                request.getSession().setAttribute(ConstantPool.OPEN_ID, openID);
             }
         } catch (QQConnectException e) {
             log.error(e);

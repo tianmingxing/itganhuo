@@ -123,9 +123,6 @@ if(QC.Login.check()){
                     <strong id="j_msg">系统检测到你已通过第三方成功登录，现在请注册一个本地账号与之关联。</strong>
                 </div>
                 <form id="register_form" class="form-horizontal">
-                    <input type="hidden" name="type" value="2">
-                    <input type="hidden" name="openId" value="">
-                    <input type="hidden" name="accessToken" value="">
                     <div class="control-group" style="padding-left: 30%;"><img id="j_photo" src="" alt="头像"></div>
                     <div class="control-group">
                         <label class="control-label" for="account">填个登录账号</label>

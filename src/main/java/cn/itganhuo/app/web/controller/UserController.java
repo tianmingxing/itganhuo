@@ -19,6 +19,7 @@ package cn.itganhuo.app.web.controller;
 import cn.itganhuo.app.common.page.Pagination;
 import cn.itganhuo.app.common.pool.ConfigPool;
 import cn.itganhuo.app.common.pool.ConstantPool;
+import cn.itganhuo.app.common.pool.ThreadLocalManager;
 import cn.itganhuo.app.common.utils.DateUtil;
 import cn.itganhuo.app.common.utils.StringUtil;
 import cn.itganhuo.app.entity.*;
@@ -220,6 +221,47 @@ public class UserController {
             mav.setViewName("user/signin");
         }
         return mav;
+    }
+
+    /**
+     * 通过第三方QQ完成登录功能
+     *
+     * @return 返回登录状态码
+     * @version 0.0.1-SNAPSHOT
+     * @author 深圳-小兴
+     */
+    @RequestMapping(value = "/qqSignin", method = RequestMethod.POST)
+    @ResponseBody
+    public RespMsg qqSignin(User user, @RequestParam String securityCode, HttpServletRequest request, HttpServletResponse response) {
+        RespMsg respMsg = new RespMsg();
+        //校验验证码：之所以采用手动校验是因为在集成shiro过滤器时发现诸多不便
+        String captcha = (String) request.getSession().getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
+        if (captcha == null && !captcha.equalsIgnoreCase(securityCode)) {
+            respMsg.setMessage(ConfigPool.getString("respMsg.common.SecurityCodeError"));
+            respMsg.setStatus("1005");
+            return respMsg;
+        }
+        String accessToken = (String) request.getSession().getAttribute(ConstantPool.ACCESS_TOKEN);
+        String tokenExpireIn = (String) request.getSession().getAttribute(ConstantPool.TOKEN_EXPIREIN);
+        String openId = (String) request.getSession().getAttribute(ConstantPool.OPEN_ID);
+
+        //如果没有上面的三个值则说明请求到绑定页面是非法的。
+        if (!StringUtil.hasText(accessToken) || !StringUtil.hasText(tokenExpireIn) || !StringUtil.hasText(openId)) {
+            respMsg.setMessage(ConfigPool.getString("respMsg.ManuallyRequestPagePrompts"));
+            respMsg.setStatus("1006");
+            return respMsg;
+        }
+
+        user.setAccessToken(accessToken);
+        user.setOpenid(openId);
+        user.setPassword(tokenExpireIn);
+        respMsg = userService.userRegister(user, request, response);
+        if ("0000".equals(respMsg.getStatus())) {
+            ThreadLocalManager.getInstance().setValue(ConstantPool.LOGIN_TYPE);
+            respMsg = userService.login(user, request);
+            ThreadLocalManager.getInstance().remove();
+        }
+        return respMsg;
     }
 
     /**
