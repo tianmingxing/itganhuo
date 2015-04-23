@@ -30,6 +30,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
+import org.pegdown.PegDownProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
@@ -52,6 +53,8 @@ public class ArticleServiceImpl implements ArticleService {
     private AttentionService attentionService;
     @Autowired
     private AttentionDao attentionDao;
+    @Autowired
+    private PegDownProcessor pegDownProcessor;
 
     /* (non-Javadoc)
      * @see cn.itganhuo.app.service.ArticleService#findArticleByCondition(java.util.Map)
@@ -223,6 +226,7 @@ public class ArticleServiceImpl implements ArticleService {
             // 返回封装数据到控制器
             mav.addObject("articleNumber", articleNumber);
             mav.addObject("collectionNumber", collectionNumber);
+            article_detail.setContent(pegDownProcessor.markdownToHtml(article_detail.getContent()));
             mav.addObject("article", article_detail);
             mav.addObject("user", user);
             mav.addObject("path", request.getContextPath());
