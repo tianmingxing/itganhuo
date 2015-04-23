@@ -70,32 +70,44 @@ public class ConstantPool {
      * 存放到本次会话中的访问者前一次访问时间的标识
      */
     public final static String LAST_REQUEST_TIME = "last_request_time";
+
     /**
      * 存放到本次会话期内访问次数标识
      */
     public final static String VISITS_DURING_SESSION = "visits_during_session";
+
     /**
      * 访问者标识，它的存在与否用来决定在会话期内是否统计文章访问量
      */
     public final static String VISITS_FLAG = "visits_flag";
+
     /**
      * 替换字符，用来在检测到敏感字符后进行替换
      */
     public final static String REPLACEMENT_CHARACTER = "*";
+
     /**
      * 登录类型，第三方登录时给期赋值，这样在密码匹配时就可以取值了。不管要次第三方登录是否成功这个值在当时就应该设置为空。
      */
     public final static String LOGIN_TYPE = "login_type";
+
     /**
      * 第三方登录访问令牌
      */
     public final static String ACCESS_TOKEN = "access_token";
+
     /**
      * 第三方登录访问令牌有效时间
      */
     public final static String TOKEN_EXPIREIN = "token_expirein";
+
     /**
      * 第三方登录访问者编号
      */
     public final static String OPEN_ID = "open_id";
+
+    /**
+     * 第三方登录调用用户基本信息
+     */
+    public final static String USER_INFO_BEAN = "user_info_bean";
 }

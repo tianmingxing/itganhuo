@@ -17,7 +17,6 @@ String path = request.getContextPath();
 <link href="<%=path %>/static/css/min.css" rel="stylesheet" type="text/css" media="all">
 <script type="text/javascript" src="<%=path %>/static/js/plugin/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="<%=path %>/static/js/analytics.js"></script>
-<script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" data-appid="101210014" data-redirecturi="http://www.itganhuo.cn/qc_callback.html" charset="utf-8"></script>
 <script type="text/javascript">
 function formCheck() {
 	var account = jQuery("#account").val(), security_code = $('#security_code').val();
@@ -70,31 +69,7 @@ function refreshCaptcha() {
 </script>
 </head>
 <body>
-<script type="text/javascript">
-if(QC.Login.check()){
-    //检查本次登录进来的用户是否有绑定过本地账号，如果有则帮助它自动登录，否则就走下面的流程。
-    QC.Login.getMe(function (openId, accessToken) {
-        var paras = {};
 
-        $('input[name="openId"]').val(openId);
-        $('input[name="accessToken"]').val(accessToken);
-
-        QC.api("get_user_info", paras)
-        .success(function (s) {
-            $('input[name="nickname"]').val(s.data.nickname);
-            var imgSrc = (s.data.figureurl_2 == null || s.data.figureurl_2 == '') ? s.data.figureurl_qq_1 : s.data.figureurl_2;
-            $('#j_photo').attr('src', imgSrc);
-        })
-        .error(function (f) {
-            alert("获取用户信息失败！");
-            window.location.href = '/';
-        });
-    });
-} else {
-    //如果是用户自己访问本页面则统一跳转到登录页面
-    window.location.href = '<%=path%>/user/signin';
-}
-</script>
 <%@ include file="../common/header.jsp" %>
 <div id='main'>
 	<div id='sidebar'>
@@ -123,7 +98,7 @@ if(QC.Login.check()){
                     <strong id="j_msg">系统检测到你已通过第三方成功登录，现在请注册一个本地账号与之关联。</strong>
                 </div>
                 <form id="register_form" class="form-horizontal">
-                    <div class="control-group" style="padding-left: 30%;"><img id="j_photo" src="" alt="头像"></div>
+                    <div class="control-group" style="padding-left: 30%;"><img src="${img}" alt="头像"></div>
                     <div class="control-group">
                         <label class="control-label" for="account">填个登录账号</label>
                         <div class="controls">
@@ -133,7 +108,7 @@ if(QC.Login.check()){
                     <div class="control-group">
                         <label class="control-label" for="nickname">要用这个昵称吗？</label>
                         <div class="controls">
-                            <input class="input-xlarge" id="nickname" name="nickname" size="30" type="text">
+                            <input class="input-xlarge" id="nickname" name="nickname" size="30" type="text" value="${nickname}">
                         </div>
                     </div>
 					<div class="control-group">

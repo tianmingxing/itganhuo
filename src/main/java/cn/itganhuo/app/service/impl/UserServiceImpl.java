@@ -32,7 +32,9 @@ import cn.itganhuo.app.service.ArticleService;
 import cn.itganhuo.app.service.UserService;
 import com.qq.connect.QQConnectException;
 import com.qq.connect.api.OpenID;
+import com.qq.connect.api.qzone.UserInfo;
 import com.qq.connect.javabeans.AccessToken;
+import com.qq.connect.javabeans.qzone.UserInfoBean;
 import com.qq.connect.oauth.Oauth;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.LogManager;
@@ -297,9 +299,14 @@ public class UserServiceImpl implements UserService {
                 OpenID openIDObj = new OpenID(accessToken);
                 openID = openIDObj.getUserOpenID();
 
+                //查询用户基本信息
+                UserInfo qzoneUserInfo = new UserInfo(accessToken, openID);
+                UserInfoBean userInfoBean = qzoneUserInfo.getUserInfo();
+
                 request.getSession().setAttribute(ConstantPool.ACCESS_TOKEN, accessToken);
                 request.getSession().setAttribute(ConstantPool.TOKEN_EXPIREIN, String.valueOf(tokenExpireIn));
                 request.getSession().setAttribute(ConstantPool.OPEN_ID, openID);
+                request.getSession().setAttribute(ConstantPool.USER_INFO_BEAN, userInfoBean);
             }
         } catch (QQConnectException e) {
             log.error(e);
@@ -324,7 +331,7 @@ public class UserServiceImpl implements UserService {
             //判断是否是从第三方过来的请求，返回true表示采用了QQ第三方登录。
             if (this.qqSignin(request, response)) {
                 //开始为用户模拟登录
-                String openID = (String) request.getSession().getAttribute("openid");
+                String openID = (String) request.getSession().getAttribute(ConstantPool.OPEN_ID);
                 User userInfo = this.loadbyOpenId(openID);
 
                 if (userInfo != null) {
@@ -341,6 +348,10 @@ public class UserServiceImpl implements UserService {
                     }
                 } else {
                     // 如果没有发现本地账号则进入信息绑定页面
+                    // 查询用户基本信息
+                    UserInfoBean userInfoBean = (UserInfoBean) request.getSession().getAttribute(ConstantPool.USER_INFO_BEAN);
+                    mav.addObject("img", userInfoBean.getAvatar().getAvatarURL100());
+                    mav.addObject("nickname", userInfoBean.getNickname());
                     mav.setViewName("user/bind");
                 }
 

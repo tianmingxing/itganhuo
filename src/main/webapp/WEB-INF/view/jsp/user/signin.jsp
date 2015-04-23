@@ -133,8 +133,8 @@ function refreshCaptcha() {
 						</div>
 					</div>
 					<div class="form-actions">
-						<input type="button" class="btn" value="登录" onclick="formCheck();">
-						<a id="forgot_password" href="javascript:;;">忘记密码了?</a>
+						<input type="button" class="btn" value="登录" onclick="formCheck();">&nbsp;&nbsp;&nbsp;&nbsp;你也可以采用第三方
+                        <a href="<%=path%>/qqLogin"><img alt="图片" src="<%=path%>/static/imgs/bt_white_76X24.png" /></a>
 					</div>
 				</form>
 			</div>
