@@ -48,6 +48,10 @@ public class Label implements Serializable {
      * 标签添加时间
      */
     private String postDate;
+    /**
+     * 查询类型：0正常，1只显示在首页，2只显示在标签页
+     */
+    private Integer searchType;
     /*
      * 标签添加人信息
      */
@@ -124,6 +128,14 @@ public class Label implements Serializable {
         this.attentionNumber = attentionNumber;
     }
 
+    public Integer getSearchType() {
+        return searchType;
+    }
+
+    public void setSearchType(Integer searchType) {
+        this.searchType = searchType;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -151,7 +163,17 @@ public class Label implements Serializable {
 
     @Override
     public String toString() {
-        return "Label [id=" + id + ", userId=" + userId + ", name=" + name + ", description=" + description + ", postDate=" + postDate + ", user=" + user + "]";
+        return "Label{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", postDate='" + postDate + '\'' +
+                ", searchType=" + searchType +
+                ", user=" + user +
+                ", articles=" + articles +
+                ", attentionNumber=" + attentionNumber +
+                '}';
     }
 
 }

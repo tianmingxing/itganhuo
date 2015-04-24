@@ -110,12 +110,12 @@ public interface LabelService {
      * <dd>无</dd>
      * </dl>
      *
-     * @param userId 当前用户编号
+     * @param label
      * @return 标签集合
      * @version 0.0.1-SNAPSHOT
      * @author 深圳-小兴
      */
-    public List<Map<String, String>> getLabelByCondition2(int userId);
+    public List<Map<String, String>> getLabelByCondition2(Label label);
 
     /**
      * <h2>统计标签使用率最高的列表，现在默认只查询前10个。</h2>

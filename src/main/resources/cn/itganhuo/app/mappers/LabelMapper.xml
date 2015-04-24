@@ -18,13 +18,15 @@
             <if test="userId != null and userId != ''">a.userId = #{userId}</if>
             <if test="name != null and name != ''">a.name like "%"#{name}"%"</if>
             <if test="description != null and description != ''">a.description like "%"#{description}"%"</if>
+            <if test="searchType != null and searchType != ''">a.searchType = #{searchType}</if>
         </where>
     </select>
 
-    <select id="getLabelByCondition2" resultType="Map" parameterType="int">
+    <select id="getLabelByCondition2" resultType="Map" parameterType="Label">
         SELECT a.*, (SELECT COUNT(1) FROM t_attention b WHERE b.userId = #{userId} AND b.type = 1 AND b.labelId = a.`id`) AS isAttention
         ,(SELECT COUNT(1) FROM t_attention b WHERE b.type = 1 AND b.labelId = a.`id`) AS attentionNumber
         FROM t_label a
+        WHERE a.searchType = #{searchType};
     </select>
 
     <insert id="insert" parameterType="Label" useGeneratedKeys="true" keyProperty="id">

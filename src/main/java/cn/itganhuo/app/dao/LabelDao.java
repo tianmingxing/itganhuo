@@ -69,10 +69,10 @@ public interface LabelDao {
     /**
 	 * 按条件查询标签
 	 *
-	 * @param userId
+	 * @param label
 	 * @return
 	 */
-	public List<Map<String, String>> getLabelByCondition2(int userId);
+	public List<Map<String, String>> getLabelByCondition2(Label label);
 
     /**
      * 统计标签使用率最高的列表

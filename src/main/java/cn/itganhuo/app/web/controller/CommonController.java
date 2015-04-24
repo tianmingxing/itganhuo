@@ -16,18 +16,17 @@
  */
 package cn.itganhuo.app.web.controller;
 
-import java.io.IOException;
-import java.text.MessageFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import cn.itganhuo.app.common.pool.ConfigPool;
+import cn.itganhuo.app.common.utils.DateUtil;
+import cn.itganhuo.app.common.utils.StringUtil;
+import cn.itganhuo.app.entity.Article;
+import cn.itganhuo.app.entity.Label;
+import cn.itganhuo.app.entity.RespMsg;
+import cn.itganhuo.app.entity.User;
+import cn.itganhuo.app.exception.InternalException;
+import cn.itganhuo.app.service.ArticleService;
+import cn.itganhuo.app.service.LabelService;
+import cn.itganhuo.app.service.UserService;
 import com.qq.connect.QQConnectException;
 import com.qq.connect.oauth.Oauth;
 import org.apache.logging.log4j.LogManager;
@@ -43,17 +42,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import cn.itganhuo.app.common.pool.ConfigPool;
-import cn.itganhuo.app.common.utils.DateUtil;
-import cn.itganhuo.app.common.utils.StringUtil;
-import cn.itganhuo.app.entity.Article;
-import cn.itganhuo.app.entity.Label;
-import cn.itganhuo.app.entity.RespMsg;
-import cn.itganhuo.app.entity.User;
-import cn.itganhuo.app.exception.InternalException;
-import cn.itganhuo.app.service.ArticleService;
-import cn.itganhuo.app.service.LabelService;
-import cn.itganhuo.app.service.UserService;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.text.MessageFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <h2>公共访问路径控制类</h2>
@@ -262,7 +260,9 @@ public class CommonController {
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public String refurlIndex(Model model, HttpServletRequest request) {
         // 1、查询标签列表
-        List<Label> ls = labelService.getLabelByCondition(null);
+        Label label = new Label();
+        label.setSearchType(1);
+        List<Label> ls = labelService.getLabelByCondition(label);
         // 2、根据标签查询其所对应的文章
         if (ls != null && ls.size() > 0) {
             for (int i = 0; i < ls.size(); i++) {
@@ -296,14 +296,17 @@ public class CommonController {
     public String refurlLabels(Model model, HttpServletRequest request) {
         Subject current_user = SecurityUtils.getSubject();
         String account = (String) current_user.getPrincipal();
+        Label label = new Label();
+        label.setSearchType(1);
         if (StringUtil.hasText(account)) {
             User user = userService.loadByAccount(account);
             // 1、查询标签列表
-            List<Map<String, String>> lists = labelService.getLabelByCondition2(user.getId());
+            label.setUserId(user.getId());
+            List<Map<String, String>> lists = labelService.getLabelByCondition2(label);
             model.addAttribute("lists", lists);
         } else {
             // 2、查询标签列表
-            List<Label> ls = labelService.getLabelByCondition(null);
+            List<Label> ls = labelService.getLabelByCondition(label);
             model.addAttribute("ls", ls);
         }
         model.addAttribute("path", request.getContextPath());
@@ -313,6 +316,7 @@ public class CommonController {
 
     /**
      * 开始进入QQ登录平台
+     *
      * @return
      */
     @RequestMapping(value = "/qqLogin", method = RequestMethod.GET)

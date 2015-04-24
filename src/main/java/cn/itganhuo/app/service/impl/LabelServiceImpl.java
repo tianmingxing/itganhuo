@@ -91,8 +91,8 @@ public class LabelServiceImpl implements LabelService {
 	}
 
     @Override
-    public List<Map<String, String>> getLabelByCondition2(int userId) {
-        return labelDao.getLabelByCondition2(userId);
+    public List<Map<String, String>> getLabelByCondition2(Label label) {
+        return labelDao.getLabelByCondition2(label);
     }
 
     @Override
